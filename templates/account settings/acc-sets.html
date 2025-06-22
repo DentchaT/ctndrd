@@ -1,0 +1,91 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/acc-set.css' %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
+integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
+crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<div class="middle">
+    
+    <div class="profile" style="
+    flex: 1;
+    width: 75%;
+    margin-right: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0,0,0,0.16) 0px 1px 4px;
+    border-radius: 20px;
+    height: max-content;">
+        <div class="profile-header">
+            {% if profile.profile_pic %}
+                <img src="{{ profile.profile_pic.url }}" alt="" class="profile-img">
+            {% else %}
+                <img src="{% static 'img/user_avatar.jpg' %}" alt="" class="profile-img">
+            {% endif %}
+            <div class="profile-text-container">
+                <h1 class="profile-titlez">{{ profile.firstname }} {{ profile.lastname }}</h1>
+                <p class="profile-emailz">@ {{ profile.user.username }}</p>
+            </div>
+        </div>
+
+        <div class="menu">
+            <a href="{% url 'profile' %}" class="menu-link"><i class="fa-solid fa-circle-user"></i>View Account</a>
+            <a href="{% url 'logout' %}" class="menu-link"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
+
+        </div>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="account" style="
+    flex: 2;
+    margin-top: 10px;
+    background-color: #fff;
+    box-shadow: rgba(0,0,0,0.16) 0px 1px 4px;
+    border-radius: 12px;
+    height: max-content;
+    width: 75%;">
+    {% csrf_token %}
+        <div class="account-header">
+            <h1 class="account-title">Edit account details</h1>
+            <div class="btn-container" style="width: 210px; 
+            display: flex; justify-content: space-between;">
+                <button class="btn-cancel">Cancel</button>
+                <button class="btn-save" type="submit">Save</button>
+            </div>
+        </div>
+
+        <div class="account-edit" style="width: 70%;">
+            <div class="input-container">
+                <label>First Name</label>
+                {{ form.firstname }}
+            </div>
+            <div class="input-container">
+                <label>Last Name</label>
+                {{ form.lastname }}
+            </div>
+        </div>
+
+        <div class="account-edit"  style="width: 70%;">
+            <div class="input-container">
+                <label>Profile_pic</label>
+                {{ form.profile_pic }}
+            </div>
+            <div class="input-container">
+                <label>Location</label>
+                {{ form.location }}
+            </div>
+        </div>
+
+        <div class="account-edit"  style="width: 70%;">
+            <div class="input-container">
+                <label>Bio</label>
+                {{ form.bio }}
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+</html>

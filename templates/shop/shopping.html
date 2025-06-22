@@ -1,0 +1,174 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="middle">
+        <div class="search-movie" style="
+            max-width: 500%;
+            margin: 5px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            border-radius: 10px; ">
+                <form  method="get"  class="movie-form" style="
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                border-radius: 20px;">
+                    <input type="search" name="q" placeholder="Enter item's name" style="
+                    width: 65%;
+                    height: 40px;
+                    padding: 10px;
+                    font-size: 16px;
+                    border: 1px solid #ccc;
+                    border-radius: 10px;
+                    font-family: 'Dosis,sans-serif;'">
+                    <button type="submit" style="
+                    width: 35%;
+                    height: 40px;
+                    background-color: #3498db;
+                    color: #fff;
+                    padding: 10px;
+                    border: none;
+                    border-radius: 10px;
+                    align-items: center;
+                    cursor: pointer;
+                    margin-left: 15px;
+                    font-family: 'Dosis',sans-serif;"
+                    onmouseover="this.style.color='blue'"
+                    onmouseout="this.style.color='white'" >Search</button>
+                </form>
+
+            </div>
+
+
+        <section class="products" >
+            <br><h2 style="text-decoration: underline; 
+            text-align:center; color:#0b3e9e;font-family: sans-serif;">Shop Products</h2> <br>
+            <div class="product-grid" style="
+            display: grid;
+            background-color: #ffffff;
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+            gap: 5px">
+
+
+                {% for p in product|slice:":23" %}
+                    <div class="product" style="
+                    width: 100%;
+                    text-align: center;
+                    background-color: #ffffff;
+                    padding: 10px;
+                    border: 1px solid #b6b5b5;
+                    border-radius: 10px;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                        <img style="
+                        width: 100%;
+                        height: 200px;
+                        object-fit: cover;
+                        border: 1px solid #3498db;
+                        border-radius: 10px 10px 0 0;" src="{{p.image.url}}" alt="Product 1">
+                        <h3>{{p.item}}</h3>
+                        <p>{{p.description}}</p>
+                        <p>Ugshs.{{p.price}}</p> <br>
+                        <button style="
+                        background-color: #3498db;
+                        color: #fff;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 5px;
+                        cursor: pointer;" class="add-to-cart">Order {{p.item}}</button>
+                        <div class="form-container" style="display: none;">
+                            <form method="post" enctype="multipart/form-data" class="add-to-cart-form"  style="
+                            padding: 20px;
+                            background-color: #daf9fc;
+                            border: 1px solid #ddd;
+                            border-radius: 3px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                            {% csrf_token %}
+                                <input type="hidden" name="product_id" value="{{p.id}}" >
+                                <label style=" display: block;margin-bottom: 10px;font-weight: bold;" for="telephone">Telephone:</label>
+                                <input style="
+                                width: 90%;
+                                height: 20px;
+                                margin-bottom: 20px;
+                                padding: 10px;
+                                border: 1px solid #ccc;
+                                border-radius: 5px;" type="tel" class="telephone" name="telephone" required><br>
+                                <label style=" display: block;margin-bottom: 10px;font-weight: bold;" for="price">Price:</label>
+                                <input style="
+                                width: 90%;
+                                height: 20px;
+                                margin-bottom: 20px;
+                                padding: 10px;
+                                border: 1px solid #ccc;
+                                border-radius: 5px;" type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
+                                <button type="submit" style="
+                                background-color: #3498db;
+                                color: #fff;
+                                padding: 10px 20px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;" name="order_submit">Yes</button>
+                                <button style="
+                                background-color: #ee3838;
+                                color: #fffefe;
+                                padding: 10px 20px;
+                                border: none;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                margin-left: 10px;" type="button" class="cancel-button">No</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div> <br>
+
+        </section>
+        
+    </div>
+
+    
+<script>
+
+const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+addToCartButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const formContainer = button.nextElementSibling;
+        formContainer.style.display = 'block';
+        button.style.display = 'none';
+    });
+});
+
+const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+
+addToCartForms.forEach(form => {
+    form.addEventListener('submit', () => {
+        // Add logic to handle form submission, e.g., send data to server
+        const formContainer = form.parentNode;
+        const addToCartButton = formContainer.previousElementSibling;
+        formContainer.style.display = 'none';
+        addToCartButton.style.display = 'inline-block';
+        //form.reset();
+    });
+
+    const cancelButton = form.querySelector('.cancel-button');
+    cancelButton.addEventListener('click', () => {
+        const formContainer = form.parentNode;
+        const addToCartButton = formContainer.previousElementSibling;
+        formContainer.style.display = 'none';
+        addToCartButton.style.display = 'inline-block';
+        form.reset();
+    });
+});
+
+</script>
+{% endblock %}

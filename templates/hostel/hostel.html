@@ -1,0 +1,118 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="middle">
+        <section id="search-section" style="
+        background-image: linear-gradient(to bottom, #696969, #194dda);
+        background-size: 100% 300px;
+        background-position: 0% 100%;
+        height: auto;
+        border-radius: 12px;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        color: #fff;">
+            <h2>Find Your Perfect Hostel</h2>
+            <form method="get" id="search-form">
+                <input style="background-color: #ffffff;
+                color: #000000;
+                padding: 6px;
+                margin-top: 3px;
+                border-radius: 5px;" type="text" name="s" id="search-input" placeholder="Enter Hostel...">
+                <select style="background-color: #ffffff;
+                color: #000000;
+                padding: 6px;
+                margin-top: 3px;
+                border-radius: 5px;" name="l" id="location-select">
+                    <option value="">Select Location</option>
+                    <option value="kampala">Kampala</option>
+                    <option value="Nakawa">Nakawa</option>
+                    <option value="Mbarara">Mbarara</option>
+                    <option value="Western region">Western region</option>
+                    <option value="Central region">Central region</option>
+                    <option value="Entebbe">Entebbe</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Northern region">Northern region</option>
+                    <option value="Eastern region">Eastern region</option>
+                </select>
+                <select style="background-color: #ffffff;
+                color: #000000;
+                padding: 6px;
+                margin-top: 3px;
+                border-radius: 5px;" name="p" id="price-select">
+                    <option value="">Select Price Range</option>
+                    <option value="200,000">shs:200,000</option>
+                    <option value="400,000">shs:400,000</option>
+                    <option value="500,000">shs:500,000</option>
+                    <option value="1,000,000">shs:1,000,000</option>
+                    <option value="1,500,000">shs:1,500,000</option>
+                </select>
+                <button style="background-color: #88bcf8;
+                color: #0f0f0f;
+                padding: 6px;
+                margin-top: 3px;
+                border-radius: 5px;" id="search-button">Search <i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </section>
+        <section id="hostel-list" style="
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        justify-content: space-evenly;
+        background-color: #fff;
+        border-radius: 12px;
+        padding-top: 12px;
+        padding-bottom: 12px;">
+            <!-- Hostel list will be populated here -->
+            {% for host in hostel %}
+                <div class="hostel-card" style="
+                background-color: #f7f7f7;
+                padding: 3px;
+                border: 1px solid #ddd;
+                margin-bottom: 15px;
+                border-radius: 10px;
+                width: 220px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <img style="
+                    width: 100%;
+                    height: 150px;
+                    object-fit: cover;
+                    border-radius: 10px 10px 0 0;" src="{{host.image.url}}" alt="Hostel Image">
+                    <div class="hostel-info" style="padding: 10px;">
+                        <h2 style="color: #194dda; font-size: 23px;">{{host.name}}</h2>
+                        <p style="font-size: 11px;">Location: {{host.location}}</p><br>
+                        <p style="font-size: 13px; font-weight: 600; text-decoration: underline;">Price: Ugshs.{{host.price}}</p>
+                        <p style="font-size: 12px;">About:{{host.about}}</p>
+                        <p style="font-size: 12px;">For: {{host.residents}}</p>
+                        <button class="view-contact-btn" data-phone-number="{{host.contact}}" style="background-color: #194dda; 
+                        color: #fff; 
+                        padding: 10px; 
+                        width: 100%; 
+                        border-radius: 5px;">View Contact <i class="fa-solid fa-phone-flip"></i></button>
+                    </div>
+                </div>
+            {% endfor %}
+        </section> <br>
+        
+    </div>
+
+    <script>
+        
+        // Get all buttons with class view-contact-btn
+        const buttons = document.querySelectorAll('.view-contact-btn');
+
+        // Add event listener to each button
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Get the phone number from data attribute
+                const phoneNumber = this.getAttribute('data-phone-number');
+                this.innerHTML = `${phoneNumber} <i class="fa-solid fa-phone-flip"></i>`;
+            });
+        });
+    </script>
+{% endblock %}

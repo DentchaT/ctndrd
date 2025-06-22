@@ -1,0 +1,62 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/messages.css' %}">
+<div class="middle">
+    <div class="phoneswrapper">
+        <div class="phone">
+        <div class="phone_head">
+            <div class="title"> Messages </div>
+            <div class="icon_bubble msg"> </div>
+        </div>
+        <div class="divider"> </div>
+        <div class="phone_body">
+            
+            {% if messages %}
+                {% for messag in messages|dictsortreversed:"latest_message.timestamp" %}
+                    <a href="{% url 'chat' messag.follow.id %}">
+                        <div class="chat">
+                            {% if messag.follow.profile_pic %}
+                                <img class="chat_avatar" src="{{messag.follow.profile_pic.url}}">
+                            {% else %}
+                                <img class="chat_avatar" src="{% static 'img/user_avatar.jpg' %}">
+                            {% endif %}
+                            <div class="chat_info">
+                                <div class="contact_name">{{messag.follow.user.profile.firstname}} {{messag.follow.user.profile.lastname}}</div>
+                                <div class="contact_msg">{{messag.latest_message.message}}</div>
+                            </div>
+                            <div class="chat_status">
+                                <div class="chat_date">{{messag.latest_message.timestamp|timesince}}</div>
+                                <div class="chat_new grad_pb"> Chat </div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+            <a href="{% url 'profile' %}"><div class="chat" style="justify-content: center;">
+                
+                <img class="chat_avatar" src="{% static 'img/connect.png' %}">
+                
+                <div class="chat_info">
+                    <div class="contact_name" style="color: red;">Connect back </div>
+                    <div class="contact_msg" style="color: black;">with users to chat with them</div>
+                </div>
+                <div class="chat_status">
+                    <div class="chat_date">{{messag.latest_message.timestamp|timesince}}</div>
+                    
+                </div>
+            </div></a>
+            {% endif %}
+
+        </div> <!-- phonebody -->
+        
+        <div class="phone_footer">
+            <div class="footer_divider grad_pb"> </div>
+        </div>
+        </div>
+        
+    
+    </div>
+</div>
+{% endblock %}

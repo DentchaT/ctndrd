@@ -1,0 +1,271 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="middle">
+        <div class="profile-container" style="
+        max-width: 800px;
+        margin: 10px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <div class="profile-header" style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;">
+                {% if follower.profile_pic %}
+                    <img style="
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    margin-bottom: 10px;" src="{{follower.profile_pic.url}}" alt="Profile Picture" class="profile-picture">
+                {% else %}
+                    <img style="
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    margin-bottom: 10px;" src="{% static 'img/user_avatar.jpg' %}" alt="Profile Picture" class="profile-picture">
+                {% endif %}
+                <h2 style="color: #194dda; 
+                font-family: sans-serif; 
+                font-size: 20px;">{{follower.firstname}} {{follower.lastname}}</h2>
+                <p>@{{follower.user.username}}</p>
+            </div>
+            <div class="profile-info" style=" padding-top: 20px;">
+                <div class="info-section" style=" margin-bottom: 20px; display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border: 1px solid #969494;
+                border-radius: 12px;
+                padding: 5px;
+                align-items: center;">
+                    <h2 style="text-decoration: underline; font-size: 20px; font-weight: 500;">About:</h2>
+                    <p style="font-size: 12px;
+                    padding: 3px;">{{follower.bio}}</p><br>
+                    
+                </div>
+
+                <div class="menu" style="display: flex;
+                margin-bottom: 12px;
+                align-items: center;
+                justify-content: space-around;
+                border: 1px solid #969494;
+                border-radius: 12px;
+                width: 100%;">
+                    {% if follower in profile.follows.all %}
+                        <a href="{% url 'follow_user' follower.pk %}" class="menu-link" style="
+                        display: block;
+                        text-decoration: none;
+                        color: #194dda;
+                        padding: 3px;
+                        margin: 2px;
+                        border-radius: 18px;"><i class="fa-solid fa-circle-user"></i>Disconnect</a>
+                    {% else %}
+                        <a href="{% url 'follow_user' follower.pk %}" class="menu-link" style="
+                        display: block;
+                        text-decoration: none;
+                        color: #194dda;
+                        padding: 3px;
+                        margin: 2px;
+                        border-radius: 18px;"><i class="fa-solid fa-circle-user"></i>Connect</a>
+                    {% endif %}
+                    {% if follower in profile.follows.all %}
+                    <a href="{% url 'chat' follower.id %}" class="menu-link" style="
+                    display: block;
+                    text-decoration: none;
+                    color: rgb(56, 187, 16);
+                    padding: 3px;
+                    margin: 2px;
+                    border-radius: 18px;"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Message</a>
+                    {% endif %}
+
+                </div>
+                
+                <div class="info-section">
+                    <h3 style="text-align: center;">Connected to: {{follower.follows.count}}</h3>
+                    {% if follower.follows.all %}
+                        <div class="follower-container" style="
+                        display: flex;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                        height: 120px;
+                        overflow-y: auto;">
+
+                            
+                            {% for follow in follower.follows.all %}
+                                {% if follow.user.profile.profile_pic %}
+                                    <a href="{% url 'view_profile' follow.id %}"><img style="
+                                    width: 50px;
+                                    height: 50px;
+                                    border-radius: 50%;
+                                    margin: 5px;" src="{{follow.user.profile.profile_pic.url}}" alt="Follower 1" class="follower-picture">
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'view_profile' follow.id %}"><img style="
+                                    width: 50px;
+                                    height: 50px;
+                                    border-radius: 50%;
+                                    margin: 5px;" src="{% static 'img/user_avatar.jpg' %}" alt="Follower 1" class="follower-picture">
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        
+
+                        </div>
+                    {% endif %}
+                </div>
+                <br>
+
+                <br><h2 style="text-decoration: underline; font-size: 100%; text-align:center; 
+                color:#0b3e9e;font-family: sans-serif;">{{follower.firstname}}'s Products: {{ follower.user.product_set.all.count }}</h2> <br>
+                
+                {% if follower.user.product_set.all %}
+                    <div class="product-grid" style="
+                    display: grid;
+                    background-color: #f1ebeb;
+                    width: 100%;
+                    height: 400px;
+                    overflow-y: auto;
+                    padding: 1px;
+                    border: 1px solid #858383;
+                    border-radius: 12px;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+                    gap: 2px">
+
+                        
+                        {% for p in follower.user.product_set.all|slice:":23" %}
+                            <div class="product" style="
+                            width: 100%;
+                            text-align: center;
+                            background-color: #ffffff;
+                            padding: 10px;
+                            border: 1px solid #b6b5b5;
+                            border-radius: 10px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                <img style="
+                                width: 100%;
+                                height: auto;
+                                object-fit: cover;
+                                border: 1px solid #3498db;
+                                border-radius: 10px 10px 0 0;" src="{{p.image.url}}" alt="Product 1">
+                                <h3>{{p.item}}</h3>
+                                <p>{{p.description}}</p>
+                                <p>Ugshs.{{p.price}}</p> <br>
+                                <button style="
+                                background-color: #3498db;
+                                color: #fff;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 5px;
+                                cursor: pointer;" class="add-to-cart">Order {{p.item}}</button>
+                                <div class="form-container" style="display: none;">
+                                    <form method="post" enctype="multipart/form-data" class="add-to-cart-form"  style="
+                                    padding: 20px;
+                                    background-color: #daf9fc;
+                                    border: 1px solid #ddd;
+                                    border-radius: 3px;
+                                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                    {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{p.id}}" >
+                                        <label style=" display: block;margin-bottom: 10px;font-weight: bold;" for="telephone">Telephone:</label>
+                                        <input style="
+                                        width: 90%;
+                                        height: 20px;
+                                        margin-bottom: 20px;
+                                        padding: 10px;
+                                        border: 1px solid #ccc;
+                                        border-radius: 5px;" type="tel" class="telephone" name="telephone" required><br>
+                                        <label style=" display: block;margin-bottom: 10px;font-weight: bold;" for="price">Price:</label>
+                                        <input style="
+                                        width: 90%;
+                                        height: 20px;
+                                        margin-bottom: 20px;
+                                        padding: 10px;
+                                        border: 1px solid #ccc;
+                                        border-radius: 5px;" type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
+                                        <button type="submit" style="
+                                        background-color: #3498db;
+                                        color: #fff;
+                                        padding: 10px 20px;
+                                        border: none;
+                                        border-radius: 5px;
+                                        cursor: pointer;" name="order_submit">Yes</button>
+                                        <button style="
+                                        background-color: #ee3838;
+                                        color: #fffefe;
+                                        padding: 10px 20px;
+                                        border: none;
+                                        border-radius: 5px;
+                                        cursor: pointer;
+                                        margin-left: 10px;" type="button" class="cancel-button">No</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="product-grid" style="
+                    display: grid;
+                    background-color: #f1ebeb;
+                    width: 100%;
+                    overflow-y: auto;
+                    padding: 15px;
+                    border-radius: 12px;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+                    gap: 2px">
+                        <p>Sorry; <b>{{follower.firstname}}</b> doesn't have any posted products. Once they post some, they will appear here.</p>
+                    </div>
+                {% endif %} <br>
+                    
+
+                
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const formContainer = button.nextElementSibling;
+                formContainer.style.display = 'block';
+                button.style.display = 'none';
+            });
+        });
+        
+        const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+        
+        addToCartForms.forEach(form => {
+            form.addEventListener('submit', () => {
+                // Add logic to handle form submission, e.g., send data to server
+                const formContainer = form.parentNode;
+                const addToCartButton = formContainer.previousElementSibling;
+                formContainer.style.display = 'none';
+                addToCartButton.style.display = 'inline-block';
+                //form.reset();
+            });
+        
+            const cancelButton = form.querySelector('.cancel-button');
+            cancelButton.addEventListener('click', () => {
+                const formContainer = form.parentNode;
+                const addToCartButton = formContainer.previousElementSibling;
+                formContainer.style.display = 'none';
+                addToCartButton.style.display = 'inline-block';
+                form.reset();
+            });
+        });
+        
+        
+        
+    </script>
+{% endblock %}
+</body>
+</html>

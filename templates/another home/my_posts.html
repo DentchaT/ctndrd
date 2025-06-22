@@ -1,0 +1,405 @@
+{% extends 'another home/base.html' %} 
+{% load static %}
+
+{% block content %}
+
+<div class="middle">
+
+    <!--   =======================------feeds sections--------============================= -->
+    <form method="get">
+      <div class="create-post">
+        <div style="width: 25px;" class="profile-photo">
+          {% if profile.profile_pic %}
+            <img style="
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;" src="{{ profile.profile_pic.url }}" alt="">
+          {% else %}
+            <img style="
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;" src="{% static 'img/user_avatar.jpg' %}" alt="">
+          {% endif %}
+        </div>
+        <input
+          type="text"
+          placeholder="my social posts details"
+          id="create-post"
+          name="q"
+        />
+      </div>
+
+      <button style="align-items: center;
+      color: #587dc4;
+      background-color: rgb(255, 255, 255);
+      width: 120px;
+      margin-top: -5%;
+      font-size: 15px;
+      margin-left: 5%;
+      height: 30px;
+      font-weight: 500;
+      border-radius: 0 12px;" type="submit"  name="post_submit"> search <i class="fa-solid fa-magnifying-glass"></i></button>
+
+    </form>
+    <!--   =======================------feeds sections--------============================= -->
+
+    <div style="display: flex; 
+    justify-content: space-around;
+    padding: 10px;
+    margin: 10px;">
+        <a href="{% url 'home' %}"><p style="border: 2px solid white;color: green; border-radius: 12px;padding: 5px; font-size: 13px;">Back to home</p></a>
+        <a href="{% url 'profile' %}"><p style="border: 2px solid white; color: #4458f7; border-radius: 12px; padding: 5px;font-size: 13px;">Back to profile</p></a> 
+    </div>
+
+    <div class="feeds">
+        {% for post in posts %}
+            {% if post.image %}
+
+                <div class="feed">
+                    <div class="head">
+                    <div class="user">
+                        <div class="profile-photo">
+                        {% if post.author.profile.profile_pic %}
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img style="
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                object-position: center;" src="{{ post.author.profile.profile_pic.url }}" alt=""></a>
+
+                            
+                        {% else %}
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img style="
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                object-position: center;" src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                        {% endif %}
+                        </div>
+                        <div class="ingo">
+                        <h3 style="font-size: 15px;">{{ post.author.profile.firstname }} {{ post.author.profile.lastname }}</h3>
+                        <small style="font-size: 10px;">Posted {{ post.created_at|timesince }} ago</small>
+                        </div>
+                    </div>
+                    <span class="edit">
+                        <a href="{% url 'delete_post' post.id %}"><i style="color: #454546;" class="fa-solid fa-delete-left"></i></a>
+                    </span>
+                    </div>
+                    <div class="photo">
+                        <img src="{{ post.image.url }}" alt="img" />
+                    </div>
+
+                    <div class="action-button">
+                    <div class="intraction-buttons">
+
+
+                        <span>
+                            <a href="{% url 'post_like' post.id %}" class="like-btn" data-post-id="{{ post.id }}">
+                                {% if user in post.likes.all %}
+                                    <i id="like-icon-{{ post.id }}" class="fa-solid fa-heart" style="color: red;"></i>
+                                {% else %}
+                                    <i id="like-icon-{{ post.id }}" class="fa-regular fa-heart"></i>
+                                {% endif %}
+                            </a>
+                        </span>
+                        
+                        <span><i class="fa-regular fa-comment" onclick="toggleComments(this)"></i></span>
+                    </div>
+                    <!------bookmark--------->
+                    <div class="bookmark">
+                        <span>
+                            <a href="#" class="save-post" data-post-id="{{ post.id }}">
+                                {% if post.id in saved_posts %}
+                                    <i class="fa-solid fa-bookmark"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-bookmark"></i>
+                                {% endif %}
+                            </a>
+                        </span>
+                    </div>
+                    </div>
+                    <div class="liked-by">
+                    {% for user in post.likes.all|slice:":3" %}
+                    {% if user.profile.profile_pic %}
+                        <span><img style="height: 20px; 
+                        width: 20px;" src="{{ user.profile.profile_pic.url }}" alt="" /></span>
+                    {% else %}
+                        <span><img style="height: 20px; 
+                        width: 20px;" src="{% static 'img/user_avatar.jpg' %}" alt="" /></span>
+                    {% endif %}
+                    {% endfor %}
+                    <p style="display: flex; justify-content: space-around;"> <b><span  id="like-count-{{ post.id }}">{{ post.number_of_likes }}</span></b> likes,<b><span>{{post.comments.count}} </span></b> Comments </p>
+                    
+                    </div>
+                    <div class="caption">
+                    <p>
+                        <b> {{ post.author.profile.firstname }}: </b>{{ post.content }} 
+                    </p>
+                    </div>
+
+
+
+                    
+                    <div class="comments-section" style="display: none; padding: 10px; border-top: 1px solid #ccc;">
+                        <h4 style="color: #4458f7;;"> {{post.comments.count}} Comments </h4>
+                        <div class="comments-list" style="padding: 10px; overflow-y: auto; max-height: 200px;">
+                            <!-- comments will be listed here -->
+                            {% for comment in post.comments.all %}
+                            <div style="display: flex; padding: 2%;">
+                                {% if comment.user.profile.profile_pic %}
+                                    <a href="{% url 'view_profile' pk=comment.user.profile.id %}"><img style="width: 35px;
+                                    height: 35px;
+                                    border-radius: 50%;
+                                    margin-right: 2%;" src="{{ comment.user.profile.profile_pic.url }}" alt=""></a>
+                                {% else %}
+                                    <a href="{% url 'view_profile' pk=comment.user.profile.id %}"><img style="width: 35px;
+                                    height: 35px;
+                                    border-radius: 50%;
+                                    margin-right: 2%;" src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                                {% endif %}
+                                <div style="display: flex; 
+                                flex-direction: column;;">
+                                    <b style="font-size: 15px;">@{{ comment.user.username }} </b> 
+                                    <p style="font-size: 9px;"> {{ comment.date_added|timesince }} ago </p>
+                                </div>
+                                
+                            </div>
+                            <p style="color: #454546; font-size: 12px;">....{{ comment.body }} </p><br>
+                            
+                            {% endfor %}
+                        </div>
+                        <form method="post" enctype="multipart/form-data" style="padding: 10px; border-top: 1px solid #ccc; display: flex;">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{post.id}}" >
+                            <input type="text" required name="body" placeholder="Add a comment..." style="width: 70%; padding: 10px; border: none; border-radius: 5px; background-color: #f0f0f0;">
+                            <button type="submit" name="comment_submit" style="width: 30%; padding: 10px; border: none; border-radius: 5px; background-color: blue; color: #fff; cursor: pointer;">Post</button>
+                        </form>
+                    </div>
+
+                </div>
+            {% elif post.video %}
+
+                <div class="feed">
+                    <div class="head">
+                    <div class="user">
+                        <div class="profile-photo">
+                        {% if post.author.profile.profile_pic %}
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img style="
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                object-position: center;" src="{{ post.author.profile.profile_pic.url }}" alt=""></a>
+                        {% else %}
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img style="
+                                width: 40px;
+                                height: 40px;
+                                border-radius: 50%;
+                                object-fit: cover;
+                                object-position: center;" src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                        {% endif %}
+                        </div>
+                        <div class="ingo">
+                        <h3 style="font-size: 15px;">{{ post.author.profile.firstname }} {{ post.author.profile.lastname }}</h3>
+                        <small style="font-size: 10px;">Posted {{ post.created_at|timesince }} ago</small>
+                        </div>
+                    </div>
+                    <span class="edit">
+                        <a href="{% url 'delete_post' post.id %}"><i style="color: #454546;" class="fa-solid fa-delete-left"></i></a>
+                    </span>
+                    </div>
+                    <div class="photo">
+
+                        <video controls controlsList="nodownload" style="width: 100%;max-height: 250px;">   
+                            <source src="{{ post.video.url }}" type="video/mp4">
+                            <source src="{{ post.video.url|slice:'0:-4' }}.webm" type="video/webm">
+                            <source src="{{ post.video.url|slice:'0:-4' }}.ogg" type="video/ogg">
+                            Your browser does not support the video tag
+                        </video>
+                        
+                    </div>
+
+                    <div class="action-button">
+                    <div class="intraction-buttons">
+
+
+                        <span>
+                            <a href="{% url 'post_like' post.id %}" class="like-btn" data-post-id="{{ post.id }}">
+                                {% if user in post.likes.all %}
+                                    <i id="like-icon-{{ post.id }}" class="fa-solid fa-heart" style="color: red;"></i>
+                                {% else %}
+                                    <i id="like-icon-{{ post.id }}" class="fa-regular fa-heart"></i>
+                                {% endif %}
+                            </a>
+                        </span>
+                        
+                        <span><i class="fa-regular fa-comment" onclick="toggleComments(this)"></i></span>
+                    </div>
+                    <!------bookmark--------->
+                    <div class="bookmark">
+                        <span>
+                            <a href="#" class="save-post" data-post-id="{{ post.id }}">
+                                {% if post.id in saved_posts %}
+                                    <i class="fa-solid fa-bookmark"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-bookmark"></i>
+                                {% endif %}
+                            </a>
+                        </span>
+                    </div>
+                    </div>
+                    <div class="liked-by">
+                    {% for user in post.likes.all|slice:":3" %}
+                    {% if user.profile.profile_pic %}
+                        <span><img style="height: 20px; 
+                        width: 20px;" src="{{ user.profile.profile_pic.url }}" alt="" /></span>
+                    {% else %}
+                        <span><img style="height: 20px; 
+                        width: 20px;" src="{% static 'img/user_avatar.jpg' %}" alt="" /></span>
+                    {% endif %}
+                    {% endfor %}
+                    <p style="display: flex; justify-content: space-around;"> <b><span  id="like-count-{{ post.id }}">{{ post.number_of_likes }}</span></b> likes,<b><span>{{post.comments.count}} </span></b> Comments </p>
+                    
+                    </div>
+                    <div class="caption">
+                    <p>
+                        <b> {{ post.author.profile.firstname }}: </b>{{ post.content }} 
+                    </p>
+                    </div>
+
+
+                    <div class="comments-section" style="display: none; padding: 10px; border-top: 1px solid #ccc;">
+                        <h4 style="color: #4458f7;;">{{post.comments.count}} Comments</h4>
+                        <div class="comments-list" style="padding: 10px; overflow-y: auto; max-height: 200px;">
+                            <!-- comments will be listed here -->
+                            {% for comment in post.comments.all %}
+                            <div style="display: flex;padding: 2%;">
+                                {% if comment.user.profile.profile_pic %}
+                                    <img style="width: 35px;
+                                    height: 35px;
+                                    border-radius: 50%;
+                                    margin-right: 2%;" src="{{ comment.user.profile.profile_pic.url }}" alt="">
+                                {% else %}
+                                    <img style="width: 35px;
+                                    height: 35px;
+                                    border-radius: 50%;
+                                    margin-right: 2%;" src="{% static 'img/user_avatar.jpg' %}" alt="">
+                                {% endif %}
+                                <div style="display: flex; flex-direction: column;">
+                                    <b style="font-size: 15px;">@ {{ comment.user.username }} </b> 
+                                    <p style="font-size: 9px;"> {{ comment.date_added|timesince }} ago </p>
+                                </div>
+                            </div>
+                            <p style="color: #454546; font-size: 15px;">.....{{ comment.body }} </p><br>
+                            
+                            {% endfor %}
+                        </div>
+                        <form method="post" enctype="multipart/form-data" style="padding: 10px; border-top: 1px solid #ccc; display: flex;">
+                            {% csrf_token %}
+                            <input type="hidden" name="post_id" value="{{post.id}}" >
+                            <input type="text" required name="body" placeholder="Add a comment..." style="width: 70%; padding: 10px; border: none; border-radius: 5px; background-color: #f0f0f0;">
+                            <button type="submit" name="comment_submit" style="width: 30%; padding: 10px; border: none; border-radius: 5px; background-color: blue; color: #fff; cursor: pointer;">Post</button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
+        
+        {% endfor %}
+
+      
+    </div>
+  </div>
+
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+
+    //for file input in chat
+    const fileInputs = document.querySelectorAll('input[name="media"]');
+    fileInputs.forEach((fileInput) => {
+        const parent = fileInput.parentNode;
+        const image = parent.querySelector('img');
+        image.addEventListener('click', () => {
+            fileInput.click();
+        });
+    });
+    
+    //for post like
+    $(document).ready(function() {
+        $('.like-btn').click(function(event) {
+            event.preventDefault();
+            var post_id = $(this).data('post-id');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "post_like" 0 %}'.replace('0', post_id),
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.liked) {
+                        $('#like-icon-' + post_id).removeClass('fa-regular').addClass('fa-solid').css('color', 'red');
+                    } else {
+                        $('#like-icon-' + post_id).removeClass('fa-solid').addClass('fa-regular').css('color', '');
+                    }
+                    $('#like-count-' + post_id).text(response.like_count);
+                }
+            });
+        });
+    });
+
+    //--------------------- for bookmark---------------
+    $(document).ready(function() {
+        $('.save-post').click(function(event) {
+            event.preventDefault();
+            var post_id = $(this).data('post-id');
+            var bookmarkIcon = $(this).find('i');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "post_save" 0 %}'.replace('0', post_id),
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.saved) {
+                        bookmarkIcon.removeClass('fa-regular').addClass('fa-solid');
+                    } else {
+                        bookmarkIcon.removeClass('fa-solid').addClass('fa-regular');
+                    }
+                }
+            });
+        });
+    });
+
+    
+    //--------------------------comments--------------------
+    function toggleComments(icon) {
+        const commentsSection = icon.closest('.feed').querySelector('.comments-section');
+        commentsSection.style.display = commentsSection.style.display === 'block' ? 'none' : 'block';
+    }
+    
+    //-------------------three dots on post--------------
+    function showOptions() {
+        document.getElementById("options-modal").style.display = "flex";
+    }
+
+    function hideOptions() {
+        document.getElementById("options-modal").style.display = "none";
+    }
+
+    function deletePost() {
+        // Add your delete post logic here
+        console.log("Post deleted");
+        hideOptions();
+    }
+
+
+    
+    
+</script>
+{% endblock %}

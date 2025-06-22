@@ -1,0 +1,119 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+    
+
+{% block content %}
+
+    <div class="middle">
+
+        <div class="search-movie" style="
+        max-width: 500%;
+        margin: 5px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px; ">
+            <form  method="get"  class="movie-form" style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 20px;">
+                <input type="search" name="q" placeholder="Enter Item" style="
+                width: 65%;
+                height: 40px;
+                padding: 10px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 10px;
+                font-family: 'Dosis,sans-serif;'">
+                <button type="submit" style="
+                width: 35%;
+                height: 40px;
+                background-color: #3498db;
+                color: #fff;
+                padding: 10px;
+                border: none;
+                border-radius: 10px;
+                align-items: center;
+                cursor: pointer;
+                margin-left: 15px;
+                font-family: 'Dosis',sans-serif;"
+                onmouseover="this.style.color='blue'"
+                onmouseout="this.style.color='white'">Search</button>
+            </form>
+        </div>
+
+
+        <h2 style="text-align: center;">Product Orders</h2>
+        <hr style="background-color: #000000; height: 1px; margin: 0 30%;"><br>
+        <div class="row">
+            <div class="col-lg-12" style="background-color: rgb(255, 255, 255);
+            padding: 5%;
+            border-radius: 12px;">
+
+                {% if orders %}
+                    {% for order in orders %}
+                        <div class="order-card" style="
+                        margin-bottom: 20px;
+                        background-color: white;
+                        padding: 5px;
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                        background-image: url('{{order.product.image.url}}');">
+                            <div class="row">
+
+                                <div style="display: flex; gap: 5px;
+                                align-items: center;
+                                justify-content: center;"> 
+
+                                    <div class="col-lg-3">
+                                        {% if order.buyer.profile.profile_pic %}
+                                            <img src="{{order.buyer.profile.profile_pic.url}}" alt="Buyer Profile Pic" class="buyer-profile-pic" style="
+                                            width: 30px;
+                                            height: 30px;
+                                            border: 2px solid white;
+                                            object-fit: cover;
+                                            border-radius: 50%;">
+                                        {% else %}
+                                            <img src="{% static 'img/user_avatar.jpg' %}" alt="Buyer Profile Pic" class="buyer-profile-pic" style="
+                                            width: 30px;
+                                            height: 30px;
+                                            border: 2px solid white;
+                                            object-fit: cover;
+                                            border-radius: 50%;">
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-2" style="background-color: white;
+                                    width: 100%;
+                                    padding: 15px;
+                                    font-size: smaller;
+                                    border-radius: 10px;">
+                                        
+                                        <p><b style="color: blue;">Item Name:</b> {{order.product.item}}</p>
+                                        <p><b>Price:</b>Ugshs.{{order.product.price}}</p>
+                                        <hr style="background-color: #a6aaac; height: 3px;">
+                                        <span> <b style="color: blue;">Buyer:</b> {{order.buyer.profile.firstname}} {{order.buyer.profile.lastname}}</span>
+                                        <p><b>Contact:</b> {{order.telephone}}</p>
+                                        <p> <b>Date:</b> {{order.date_added}}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <br><br><br>
+                    <h3 style="text-align: center; color: #3498db;">You don't have any pending orders.</h3> <br>
+                    <p style="text-align: center;">Customers'details shall show up here once they order for your products</p> <br>
+                    <a style="color: #3498db; text-decoration: underline;" href="{% url 'profile' %}"><h4 style="text-align: center;">Add Product</h4></a><br><br>
+
+
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,768 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    <div class="middle">
+        <div class="profile-container" style="
+        max-width: 800px;
+        margin: 10px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+            <div class="profile-header" style="
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;">
+                {% if profile.profile_pic %}
+                    <img style="
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    margin-bottom: 10px;" src="{{profile.profile_pic.url}}" alt="Profile Picture" class="profile-picture">
+                {% else %}
+                    <img style="
+                    width: 100px;
+                    height: 100px;
+                    border-radius: 50%;
+                    margin-bottom: 10px;" src="{% static 'img/user_avatar.jpg' %}" alt="Profile Picture" class="profile-picture">
+                {% endif %}
+                
+                <h2 style="color: #194dda; font-family: sans-serif; font-size: 20px;">{{profile.firstname}} {{profile.lastname}}</h2>
+                <p>@{{profile.user.username}}</p>
+            </div>
+            <div class="profile-info" style=" padding-top: 20px;">
+                <div class="info-section" style=" margin-bottom: 20px; display: flex;
+                flex-direction: column;
+                justify-content: center;
+                border: 1px solid #969494;
+                border-radius: 12px;
+                padding: 5px;
+                align-items: center;">
+                    <h2 style="text-decoration: underline; font-size: 20px; font-weight: 500;">About:</h2>
+                    <p style="font-size: 12px;
+                    padding: 3px;">{{profile.bio}}</p><br>
+                    
+                </div>
+
+                <div class="menu" style="display: flex;
+                margin-bottom: 12px;
+                align-items: center;
+                justify-content: space-around;
+                border: 1px solid #969494;
+                border-radius: 12px;
+                width: 100%;">
+                    <a href="{% url 'account-settings' %}" class="menu-link" style="
+                    display: block;
+                    text-decoration: none;
+                    color: #194dda;
+                    padding: 3px;
+                    margin: 2px;
+                    border-radius: 18px;"><i class="fa-solid fa-circle-user"></i>Edit Account</a>
+                    <a href="{% url 'logout' %}" class="menu-link" style="
+                    display: block;
+                    text-decoration: none;
+                    color: red;
+                    padding: 3px;
+                    margin: 2px;
+                    border-radius: 18px;"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
+
+                </div>
+                {% if request.user.post.all %}
+                    <div style="border: 1px solid green;
+                    text-align: center;
+                    border-radius: 50px;
+                    padding: 2px;">
+                        <a style="color: green;
+                        text-decoration: underline;" href="{% url 'my_posts' %}">My Social Posts ({{profile.user.post_set.all.count}})</a>
+                    </div>
+                {% else %}
+                    <div style="border: 1px solid green;
+                    text-align: center;
+                    border-radius: 50px;
+                    padding: 2px;">
+                        <a style="color: green;
+                        text-decoration: underline;" href="{% url 'home' %}">Add posts to view them</a>
+                    </div>
+                {% endif %}
+                <br>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #ffffff;
+                color: #364989;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;"><a style="color: #364989;" href="{% url 'orders' %}">View orders</a></button>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #CDDFEF;
+                color: #364989;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="add-movie-btn">Product_add</button>
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="form-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    padding: 10px;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Product name:</label>
+                        <input style="
+                        padding: 10px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="item">
+    
+                        
+    
+                        <label style="margin-bottom: 10px;" for="category">Key statement</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="description">
+    
+                        <label style="margin-bottom: 10px;" for="title">Product Image</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="image">
+    
+                        <label style="margin-bottom: 10px;" for="actors">Price</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="price">
+    
+                        <button style="
+                        padding: 10px;
+                        background-color: #3498db;
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        width: 50%;
+                        cursor: pointer;" type="submit" name="product_submit">Submit</button>
+                    </form>
+                </div>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #65A7D3;
+                color: #fff;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="add-moviez-btn">Song_add</button> 
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="formz-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    padding: 10px;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Song Title:</label>
+                        <input style="
+                        padding: 10px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="title">
+
+                        <label style="margin-bottom: 10px;" for="title">Poster:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="poster" name="poster">
+
+                        <label style="margin-bottom: 10px;" for="title">Song:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="song">
+
+                        <label style="margin-bottom: 10px;" for="actors">Artist:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="artist">
+
+                        <label style="margin-bottom: 10px;" for="category">Genre:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="genre">
+
+                        <button style="
+                        padding: 10px;
+                        background-color: #3498db;
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        width: 50%;
+                        cursor: pointer;" name="music_submit" type="submit">Submit</button>
+                    </form>
+                </div>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #386CAF;
+                color: #B2D3EB;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="adda-movie-btn">Hostel_add</button>
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="forma-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    padding: 10px;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Hostel name:</label>
+                        <input style="
+                        padding: 10px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="name">
+
+                        
+
+                        <label style="margin-bottom: 10px;" for="category">About</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="about">
+
+                        <label style="margin-bottom: 10px;" for="category">Residents</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="residents">
+
+                        <label style="margin-bottom: 10px;" for="category">Location</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="location">
+
+                        <label style="margin-bottom: 10px;" for="title">Image</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="image">
+
+                        <label style="margin-bottom: 10px;" for="title">Hostel Video</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="video">
+
+                        <label style="margin-bottom: 10px;" for="actors">Price</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="price">
+
+                        <label style="margin-bottom: 10px;" for="category">Contact</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="tel" required id="category" name="contact">
+
+                        <button style="
+                        padding: 10px;
+                        background-color: #194dda;
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        width: 50%;
+                        cursor: pointer;" type="submit" name="hostel_submit">Submit</button>
+                    </form>
+                </div>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #364989;
+                color: #CDDFEF;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="add-moviex-btn">Movie_add</button>
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="formx-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+                    padding: 10px;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Movie Title:</label>
+                        <input style="
+                        padding: 10px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="title">
+
+                        <label style="margin-bottom: 10px;" for="title">Poster:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="poster" name="poster">
+
+                        <label style="margin-bottom: 10px;" for="title">Movie:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="movie">
+
+                        <label style="margin-bottom: 10px;" for="actors">Actors:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="actors">
+
+                        <label style="margin-bottom: 10px;" for="rating">Rating:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" required type="number" id="rating" name="rating" step="0.1" min="0" max="10">
+
+                        <label style="margin-bottom: 10px;" for="description">Description:</label>
+                        <textarea style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" required id="description" name="description"></textarea>
+
+                        <label style="margin-bottom: 10px;" for="category">Category:</label>
+                        <input style="
+                        padding: 10px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="category">
+
+                        <button style="
+                        padding: 10px;
+                        background-color: #302f2f;
+                        color: #fff;
+                        border: none;
+                        border-radius: 12px;
+                        width: 50%;
+                        cursor: pointer;" name="movie_submit" type="submit">Submit</button>
+                    </form>
+                </div>
+
+                <br><br><br>
+                <div class="info-section">
+                    <h3 style="text-align: center;">Connected to: {{profile.follows.count}}</h3>
+                    {% if profile.follows.all %}
+                        <div class="follower-container" style="
+                        display: flex;
+                        justify-content: center;
+                        flex-wrap: wrap;
+                        height: 120px;
+                        overflow-y: auto;">
+
+                            
+                            {% for follow in profile.follows.all %}
+                                {% if follow.user.profile.profile_pic %}
+                                    <a href="{% url 'view_profile' follow.id %}"><img style="
+                                    width: 50px;
+                                    height: 50px;
+                                    border-radius: 50%;
+                                    margin: 5px;" src="{{follow.user.profile.profile_pic.url}}" alt="Follower 1" class="follower-picture">
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'view_profile' follow.id %}"><img style="
+                                    width: 50px;
+                                    height: 50px;
+                                    border-radius: 50%;
+                                    margin: 5px;" src="{% static 'img/user_avatar.jpg' %}" alt="Follower 1" class="follower-picture">
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                               
+                        </div>
+                    {% endif %}
+                </div>
+                <br>
+
+                <div class="info-section" style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;">
+                    <br><h3 style="text-align: center; 
+                    margin-bottom: 8px;
+                    color: blue;">Suggestions... <i class="fa-solid fa-user-plus"></i></h3>
+                    <div class="search-users">
+                        <form action="" method="get">
+                            <input style="border: 1px solid grey;
+                            border-radius: 12px;
+                            height: 30px;
+                            width: 70%;
+                            align-items: center;
+                            text-align: center;" name="q" type="text" placeholder="Enter name">
+                            <button style="color: #109617;
+                            font-weight: 500;
+                            background-color: white;
+                            font-size: 15px;" type="submit">Search</button>
+                        </form>
+                    </div><br>
+                    <div class="post-container" style="
+                    padding: 10px;
+                    width: 90%;
+                    height: 320px;
+                    overflow-y: auto;
+                    background-color: #f5f5f5;
+                    border-radius: 12px;
+                    border: 1px solid #ddd;">
+                        {% for s in suggestion|slice:":12" %}
+                            {% if s not in profile.follows.all %}
+                                <div class="post" style="
+                                padding: 10px;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;
+                                align-items: center;
+                                border-bottom: 1px solid #ddd;">
+                                    
+                                    <div style="display: flex; gap: 5px; align-items: center;">
+                                        {% if s.profile_pic %}
+                                            <a href="{% url 'view_profile' s.id %}"><img style="
+                                            width: 40px;
+                                            height: 40px;
+                                            border-radius: 50%;" src="{{s.profile_pic.url}}" alt="{{s.username}}">
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'view_profile' s.id %}"><img style="
+                                            width: 40px;
+                                            height: 40px;
+                                            border-radius: 50%;" src="{% static 'img/user_avatar.jpg' %}" alt="{{s.username}}">
+                                            </a>
+                                        {% endif %}
+                                        <div>
+                                            <h4>{{s.firstname}} {{s.lastname}}</h4>
+                                            <p style="margin-top: 2px;">@{{s.user.username}}</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <a href="{% url 'follow_user' s.pk %}"><button type="submit" style="
+                                            width: 100px;
+                                            height: 30px;
+                                            background-color: #194dda;
+                                            border-radius: 5px;
+                                            color: #ffffff;">Connect</button></a>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        
+                    </div>
+                </div>
+
+                <br><br>
+                <div class="info-section" style="
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;">
+                    <br><h3 style="text-align: center; 
+                    margin-bottom: 8px;
+                    color: blue;">Connection Requests ({{followers.count}}) <i class="fa-solid fa-user-plus"></i></h3>
+                    <br>
+                    {% if followers %}
+                        <div class="post-container" style="
+                        padding: 10px;
+                        width: 90%;
+                        height: 320px;
+                        overflow-y: auto;
+                        background-color: #f5f5f5;
+                        border-radius: 12px;
+                        border: 1px solid #ddd;">
+                            {% for s in followers|slice:":12" %}
+                                
+                                <div class="post" style="
+                                padding: 10px;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;
+                                align-items: center;
+                                border-bottom: 1px solid #ddd;">
+                                    
+                                    <div style="display: flex; gap: 5px; align-items: center;">
+                                        {% if s.profile_pic %}
+                                            <a href="{% url 'view_profile' s.id %}"><img style="
+                                            width: 40px;
+                                            height: 40px;
+                                            border-radius: 50%;" src="{{s.profile_pic.url}}" alt="{{s.user.username}}">
+                                            </a>
+                                        {% else %}
+                                            <a href="{% url 'view_profile' s.id %}"><img style="
+                                            width: 40px;
+                                            height: 40px;
+                                            border-radius: 50%;" src="{% static 'img/user_avatar.jpg' %}" alt="{{s.username}}">
+                                            </a>
+                                        {% endif %}
+                                        <div>
+                                            <h4>{{s.firstname}} {{s.lastname}}</h4>
+                                            <p style="margin-top: 2px;">@{{s.user.username}}</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div>
+                                        <a href="{% url 'follow_user' s.pk %}"><button type="submit" style="
+                                            width: 100px;
+                                            height: 30px;
+                                            background-color: #194dda;
+                                            border-radius: 5px;
+                                            color: #ffffff;">Accept</button></a>
+                                    </div>
+                                </div>
+                                
+                            {% endfor %}
+                            
+                        </div>
+                    {% endif %}
+                </div>
+                
+
+                <br><h2 style="text-decoration: underline; font-size: 100%; text-align:center; 
+                color:blue;font-family: sans-serif;">My Products: {{ profile.user.product_set.all.count }}</h2>
+                <h3 style="text-align: center;
+                text-decoration: underline;
+                width: 100%;
+                font-size: 100%;
+                color: #272729;
+                margin-top: 15px;"> (This is how users see them...) </h3><br>
+
+                {% if profile.user.product_set.all %}
+                    <div class="product-grid" style="
+                    display: grid;
+                    background-color: #ffffff;
+                    width: 100%;
+                    height: 400px;
+                    overflow-y: auto;
+                    padding: 1px;
+                    border: 1px solid #858383;
+                    border-radius: 12px;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+                    gap: 2px">
+
+                        
+                        {% for p in profile.user.product_set.all|slice:":23" %}
+                            <div class="product" style="
+                            width: 100%;
+                            text-align: center;
+                            background-color: #ffffff;
+                            padding: 10px;
+                            border: 1px solid #b6b5b5;
+                            border-radius: 10px;
+                            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                <img style="
+                                width: 100%;
+                                height: 200px;
+                                object-fit: cover;
+                                border: 1px solid #3498db;
+                                border-radius: 10px 10px 0 0;" src="{{p.image.url}}" alt="Product 1">
+                                <h3>{{p.item}}</h3>
+                                <p>{{p.description}}</p>
+                                <p>Ugshs.{{p.price}}</p> <br>
+                                <button style="
+                                background-color: #3498db;
+                                color: #fff;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 5px;
+                                cursor: pointer;" class="add-to-cart">Order {{p.item}}</button>
+                                <div class="form-container" style="display: none;">
+                                    <form method="post" enctype="multipart/form-data" class="add-to-cart-form"  style="
+                                    padding: 20px;
+                                    background-color: #daf9fc;
+                                    border: 1px solid #ddd;
+                                    border-radius: 3px;
+                                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                                    {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{p.id}}" >
+                                        <label style=" display: block;margin-bottom: 10px;font-weight: bold;" for="telephone">Telephone:</label>
+                                        <input style="
+                                        width: 90%;
+                                        height: 20px;
+                                        margin-bottom: 20px;
+                                        padding: 10px;
+                                        border: 1px solid #ccc;
+                                        border-radius: 5px;" type="tel" class="telephone" name="telephone" required><br>
+                                        <label style=" display: block;margin-bottom: 10px;font-weight: bold;" for="price">Price:</label>
+                                        <input style="
+                                        width: 90%;
+                                        height: 20px;
+                                        margin-bottom: 20px;
+                                        padding: 10px;
+                                        border: 1px solid #ccc;
+                                        border-radius: 5px;" type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
+                                        <button type="submit" style="
+                                        background-color: #3498db;
+                                        color: #fff;
+                                        padding: 10px 20px;
+                                        border: none;
+                                        border-radius: 5px;
+                                        cursor: pointer;" name="order_submit">Yes</button>
+                                        <button style="
+                                        background-color: #ee3838;
+                                        color: #fffefe;
+                                        padding: 10px 20px;
+                                        border: none;
+                                        border-radius: 5px;
+                                        cursor: pointer;
+                                        margin-left: 10px;" type="button" class="cancel-button">No</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="product-grid" style="
+                    display: grid;
+                    background-color: #f1ebeb;
+                    width: 100%;
+                    overflow-y: auto;
+                    padding: 15px;
+                    border-radius: 12px;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+                    gap: 2px">
+                        <p>Sorry; <b>{{profile.firstname}}</b> you don't have any posted products. Once you post some, they will appear here.</p>
+                    </div>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+
+<script>
+    // Reusable function to toggle form container visibility
+    function toggleFormContainer(buttonId, containerId) {
+    const button = document.getElementById(buttonId);
+    const container = document.getElementById(containerId);
+
+    button.addEventListener('click', () => {
+        container.style.display = 'block';
+    });
+    }
+
+    // Usage
+    toggleFormContainer('add-movie-btn', 'form-container');
+    toggleFormContainer('add-moviez-btn', 'formz-container');
+    toggleFormContainer('adda-movie-btn', 'forma-container');
+    toggleFormContainer('add-moviex-btn', 'formx-container');
+
+    //------js for products======-------
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const formContainer = button.nextElementSibling;
+            formContainer.style.display = 'block';
+            button.style.display = 'none';
+        });
+    });
+    
+    const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', () => {
+            // Add logic to handle form submission, e.g., send data to server
+            const formContainer = form.parentNode;
+            const addToCartButton = formContainer.previousElementSibling;
+            formContainer.style.display = 'none';
+            addToCartButton.style.display = 'inline-block';
+            //form.reset();
+        });
+    
+        const cancelButton = form.querySelector('.cancel-button');
+        cancelButton.addEventListener('click', () => {
+            const formContainer = form.parentNode;
+            const addToCartButton = formContainer.previousElementSibling;
+            formContainer.style.display = 'none';
+            addToCartButton.style.display = 'inline-block';
+            form.reset();
+        });
+    });
+</script>
+
+{% endblock %}
+</body>
+</html>

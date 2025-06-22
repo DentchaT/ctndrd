@@ -1,0 +1,266 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="{% static 'img/ctndrd41.png' %}">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ctndrd | social | entertainment</title>
+  <link rel="stylesheet" href="{% static 'css/index.css' %}" />
+  <script src="{% static 'js/script.js' %}" defer></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+</head>
+    
+    <body>
+    <!-- /* ===================nav section=================== */ -->
+    
+        <nav>
+          <div class="container">
+            <div class="fes" style="display: flex; align-items: center; gap: 5px;">
+              <img style="
+              width: 40px;
+              height: 40px;
+              border: 2px solid rgb(148, 148, 248);
+              border-radius: 50%;" src="{% static 'img/ctndrd4.png' %}" alt="">
+              <h1>ctndrd</h1>
+            </div>
+            
+            <div class="search-bar">
+              <i class="fa-regular fa-face-smile"></i>
+              <input type="search" placeholder="Hi {{profile.firstname}}, wishing you a great time" />
+            </div>
+            <div class="create">
+              <div class="profile-photo">
+                {% if profile.profile_pic %}
+                  <a href="{% url 'profile' %}"><img style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  object-fit: cover;
+                  object-position: center;" src="{{ profile.profile_pic.url }}" alt=""></a>
+                {% else %}
+                <a href="{% url 'profile' %}"><img style="
+                  width: 40px;
+                  height: 40px;
+                  border-radius: 50%;
+                  object-fit: cover;
+                  object-position: center;" src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </nav>
+    
+        <!-- /* ===================Main section=================== */ -->
+        <main>
+          <div class="container">
+            <!-- /* ===================Left side=================== */ -->
+    
+            <div class="left">
+              <a class="profile">
+                <div class="profile-photo">
+                  {% if profile.profile_pic %}
+                    <img style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    object-position: center;" src="{{ profile.profile_pic.url }}" alt="">
+                  {% else %}
+                    <img style="
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    object-position: center;" src="{% static 'img/user_avatar.jpg' %}" alt="">
+                  {% endif %}
+                </div>
+                <div class="handle">
+                  <h4> {{ profile.firstname }} {{ profile.lastname }}</h4>
+                  <p class="text-muted">@ {{ profile.user.username }}</p>
+                </div>
+              </a>
+              <!-- ===================== sidebar ========================= -->
+              <div class="sidebar">
+                <a class="manu-item active" href="{% url 'home' %}">
+                  <span><i class="fa-solid fa-house"></i></span>
+                  <h3>Home</h3>
+                </a>
+                <a class="manu-item" id="messages-notifications" href="{% url 'messages' %}">
+                  <span><i class="fa-solid fa-message"><small class="notification-count">^</small></i></span>
+                  <h3 style="color: black;">messages</h3>
+                </a>
+                <a class="manu-item" href="{% url 'shop' %}">
+                  <span><i class="fa-solid fa-shop"></i></span>
+                  <h3 style="color: black;">Shop</h3>
+                </a>
+                
+                <a class="manu-item" href="{% url 'music' %}">
+                  <span><i class="fa-solid fa-music"></i></span>
+                  <h3 style="color: black;">Music</h3>
+                </a>
+                <a class="manu-item" href="{% url 'movie' %}">
+                  <span><i class="fa-solid fa-film"></i></span>
+                  <h3 style="color: black;">Movies</h3>
+                </a>
+                <a class="manu-item" href="{% url 'hostel' %}">
+                  <span><i class="fa-solid fa-hotel"></i></span>
+                  <h3 style="color: black;">Hostels</h3>
+                </a>
+                <a class="manu-item" id="theme">
+                  <span><i class="fa-solid fa-palette"></i></span>
+                  <h3 style="color: black;">Theme</h3>
+                </a>
+                <a class="manu-item" href="{% url 'account-settings' %}">
+                  <span><i class="fa-solid fa-gear"></i></span>
+                  <h3 style="color: black;">Settings</h3>
+                </a>
+              </div>
+              <div class="end-sidebar">
+                <label for="create-post" class="btn btn-primary">Create Post</label>
+              </div>
+            </div>
+            <!-- ===================== end of left ========================= -->
+    
+            <!-- /* ===================middle side=================== */ -->
+            {% block content %}
+
+            {% endblock %} 
+            <!-- /* =================== end of middle side=================== */ -->
+    
+            <!-- /* ===================right side=================== */ -->
+            <div class="right">
+              <div class="messages">
+                <div class="heading">
+                  <h3>Message</h3>
+                  <i class="fa-regular fa-pen-to-square"></i>
+                </div>
+                <!-- ------- search bar---------- -->
+                <div class="search-bar">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input
+                    type="search"
+                    placeholder="Search Message"
+                    id="message-search"
+                  />
+                </div>
+                
+                {% if messages %}
+                  {% for messag in messages|dictsortreversed:"latest_message.timestamp" %}
+                    <a href="{% url 'chat' messag.follow.id %}"><div class="message">
+                      <div class="profile-photo">
+                        {% if messag.follow.profile_pic %}
+                          <img style="width: 35px; height: 35px; border-radius: 50%;" src="{{messag.follow.profile_pic.url}}" alt="" />
+                        {% else %}
+                          <img style="width: 35px; height: 35px; border-radius: 50%;" src="{% static 'img/user_avatar.jpg' %}" alt="" />
+                        {% endif %}
+                      </div>
+                      <div class="message-body">
+                        <h5 style="color: black;">{{messag.follow.user.profile.firstname}} {{messag.follow.user.profile.lastname}}</h5>
+                        <p class="text-muted">{{messag.latest_message.message}}</p>
+                      </div>
+                    </div></a>
+                  {% endfor %}
+                {% endif %}
+              </div>
+              <!-- ------- end of message---------- -->
+    
+              <!-- ------- Friend request---------- -->
+              <div class="friend-requests">
+                <h3>Request</h3>
+                <!-- ------- Friend request---------- -->
+                {% for s in followers|slice:":4" %}
+                  <div class="request">
+                    <div class="info">
+                      <div class="profile-photo">
+                        {% if s.profile_pic %}
+                          <a href="{% url 'view_profile' s.id %}"><img style="width: 40px;height: 40px;border-radius: 50%;" src="{{s.profile_pic.url}}" alt="" /></a>
+                        {% else %}
+                          <a href="{% url 'view_profile' s.id %}"><img style="width: 40px;height: 40px;border-radius: 50%;" src="{% static 'img/user_avatar.jpg' %}" alt="" /></a>
+                        {% endif %}
+                      </div>
+                      <div class="sender">
+                        <h4>{{s.firstname}} {{s.lastname}}</h4>
+                        <small class="text-muted">@{{s.user.username}}</small>
+                      </div>
+                    </div>
+                    <div class="action">
+                      <button class="btn btn-primary"> <a style="color: aliceblue;" href="{% url 'follow_user' s.pk %}">Accept</a></button>
+                      <button class="btn"><a style="color: black;" href="{% url 'decline_user' s.pk %}">Decline</a></button>
+                    </div>
+                  </div>
+                {% endfor %}
+                
+              </div>
+            </div>
+            <!-- /* =================== End of right side=================== */ -->
+          </div>
+    
+          <footer>
+            <div class="footer-copyRight">
+              <div style="gap: 5px; margin: 5px; width: 100%;border-radius: 12px; background-color: rgb(191, 229, 247);display: flex; padding: 10px;">
+                <a style="color: blue;" href="{% url 'terms' %}"><p>@ctndrd terms and conditions</p></a>
+                <p>Send feedback to <span style="color: blue;">support@ctndrd.com</span></p>
+              </div>
+            </div>
+          </footer>
+        </main>
+        <!-- /* =================== End of Main section=================== */ -->
+    
+        <!--    -------------------------  THEME customized -------------------->
+    
+        <div class="customize-theme">
+          <div class="card">
+            <h2>Customize your view</h2>
+            <p class="text-muted">Manage your font size, color, and background.</p>
+            <div class="font-size">
+              <h2>Font Size</h2>
+              <div>
+                <h6>Aa</h6>
+                <div class="choose-size">
+                  <span class="font-size-1"></span>
+                  <span class="font-size-2"></span>
+                  <span class="font-size-3 active"></span>
+                  <span class="font-size-4"></span>
+                  <span class="font-size-5"></span>
+                </div>
+                <h3>Aa</h3>
+              </div>
+            </div>
+    
+            <!--    -------------------------  PRIMARY COLOR -------------------->
+            <div class="color">
+              <h2>Color</h2>
+              <div class="choose-color">
+                <span class="color-1 active"></span>
+                <span class="color-2"></span>
+                <span class="color-3"></span>
+                <span class="color-4"></span>
+                <span class="color-5"></span>
+              </div>
+            </div>
+    
+            <!--    -------------------------  BACKGROUND COLOR -------------------->
+            <!-- <div class="background">
+              <h3>Background</h3>
+              <div class="choose-bg">
+                <div class="bg-1 active">
+                  <span></span>
+                  <h5 for="bg-1">Light</h5>
+                </div>
+                <div class="bg-2">
+                  <span></span>
+                  <h5 for="bg-2">Dim</h5>
+                </div>
+                <div class="bg-3">
+                  <span></span>
+                  <h5 for="bg-3">Lights Out</h5>
+                </div>
+              </div> -->
+            <!-- </div> -->
+          </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?familly=Poppins:wght@400;500;600;700;800&dis');
+
+.popular_grid{
+    display: grid;
+}
+
+.form-input{
+    height: fit-content;
+    width: 100%;
+}
+.form-input input{
+    color: #fff;
+    align-items: center;
+    font-size: 12px;
+    border-radius: 12px;
+}
+
+/* ------Media Queries------ */
+@media screen and (max-width: 900px){
+
+    .popular_grid{
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        gap: 1rem;
+    }
+    .popular_card{
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
+
+}
+
+@media screen and (max-width: 600px){
+   
+    .header_container{
+        padding-bottom: 25rem;
+    }
+
+
+    .popular_grid{
+        width: 95%;
+        margin-left: auto;
+        margin-right: auto;
+        display: grid;
+    }
+    .popular_card{
+        width: 100%;
+        height: 85%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .popular_card img{
+        height: 45%
+    }
+    .popular_card_hover h4{
+        font-size: 8px;
+    }
+    .popular_content h4{
+        font-size: 8px;
+    }
+
+
+}

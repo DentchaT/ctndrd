@@ -1,0 +1,594 @@
+{% extends 'another home/base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+<div class="middle">
+
+    <div class="chat-global" style="
+    width: 100%;
+    height: fit-content;
+    margin: 16% auto;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 30px 70px 0 rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    position: relative;">
+
+        <div class="nav-top" style="
+        position: absolute;
+        background: #fff;
+        top: -55px;
+        width: 100%;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid rgba(51,51,51,0.2);
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;">
+            <div class="location" style="
+            width: 100px;
+            display: flex;
+            align-items: center;">
+                <img style="
+                margin-left: 10px;
+                width: 30px;
+                " src="{% static 'img/left.svg' %}" alt="">
+                <a style="color: black;" href="{% url 'messages' %}"><p style="
+                font-size: 20px;
+                margin-left: -25%;
+                ">Back</p></a>
+            </div>
+
+            <div class="utilisateur" style="
+            width: 100px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;">
+                <p style="
+                font-size: 100%;
+                font-weight: 400;
+                display: flex;
+                text-decoration: underline;
+                ">{{ follower.user.profile.firstname }}</p>
+                <p style="
+                font-size: 13px;
+                opacity: 0.8;
+                color: blue;
+                ">.....</p>
+            </div>
+
+            <div class="logos-call" style="
+            width: 100px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;">
+                {% if follower.user.profile.profile_pic %}
+                    <a href="{% url 'view_profile' follower.id %}"><img style="
+                    margin-right: 10px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    " src="{{follower.user.profile.profile_pic.url}}" alt="">
+                    </a>
+                {% else %}
+                    <a href="{% url 'view_profile' follower.id %}"><img style="
+                    margin-right: 10px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    " src="{% static 'img/user_avatar.jpg' %}" alt="">
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="conversation" style="
+        width: 95%;
+        height: 440px;
+        margin: 0 auto;
+        padding-top: 40px;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;">
+            {% if chats %}
+                {% for messag in chats %}
+                    {% if messag.receiver == request.user %}
+                        <div class="talkleft" style="
+                        margin: 5px 0;
+                        color: #f1f1f1;
+                        display: flex;
+                        align-items: center;
+                        font-size: 10px;
+                        width: 100%;">
+                            {% if messag.sender.profile.profile_pic %}
+                                <img style="
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                margin-bottom: auto;
+                                " src="{{messag.sender.profile.profile_pic.url}}" alt="">
+                            {% else %}
+                                <img style="
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                margin-bottom: auto;
+                                " src="{% static 'img/user_avatar.jpg' %}" alt="">
+                            {% endif %}
+                            {% if messag.image %}
+                                <div style="display: flex; flex-direction: column; justify-content: end;">
+                                    <img style="border-radius: 12px  12px 0 0; padding: 1px;" src="{{messag.image.url}}" alt="">
+                                    <p style="
+                                    padding: 15px;
+                                    text-align: right;
+                                    line-height: 25px;
+                                    border-radius: 0 0 10px 10px;
+                                    font-size: 12px;
+                                    width: 100%;
+                                    color: black;
+                                    margin-right: 5px;
+                                    background: #ffffff;
+                                    border: 1px solid rgb(109, 155, 107);
+                                    padding: 10px;
+                                    border-width: 0.5px;
+                                    ">{{messag.message}}</p>
+                                </div>
+                            {% else %}
+                            <p style="
+                            padding: 15px;
+                            color: black;
+                            text-align: left;
+                            line-height: 25px;
+                            border-radius: 10px;
+                            background: #fff;
+                            font-size: 12px;
+                            margin-left: 5px;
+                            width: 100%;
+                            border: 1px solid blue;
+                            padding: 10px;
+                            border-width: 0.5px;
+                            ">{{messag.message}}</p>
+                            {% endif %}
+                        </div>
+                    {% elif messag.sender == request.user %}    
+                        <div class="talkright" style="
+                        margin: 5px 0;
+                        color: #f1f1f1;
+                        display: flex;
+                        align-items: center;
+                        font-size: 10px;
+                        width: 100%;
+                        margin-left: auto;">
+                            {% if messag.image %}
+                                <div style="display: flex; flex-direction: column; justify-content: end;">
+                                    <img style="border-radius: 12px  12px 0 0; padding: 1px;" src="{{messag.image.url}}" alt="">
+                                    <p style="
+                                    padding: 15px;
+                                    text-align: right;
+                                    line-height: 25px;
+                                    border-radius: 0 0 10px 10px;
+                                    font-size: 12px;
+                                    width: 100%;
+                                    color: black;
+                                    margin-right: 5px;
+                                    background: #ffffff;
+                                    border: 1px solid rgb(109, 155, 107);
+                                    padding: 10px;
+                                    border-width: 0.5px;
+                                    ">{{messag.message}}</p>
+                                </div>
+                            {% else %}
+                            
+                            <p style="
+                            padding: 15px;
+                            text-align: right;
+                            line-height: 25px;
+                            border-radius: 10px;
+                            font-size: 12px;
+                            width: 100%;
+                            color: black;
+                            margin-right: 5px;
+                            background: #ffffff;
+                            border: 1px solid rgb(109, 155, 107);
+                            padding: 10px;
+                            border-width: 0.5px;
+                            ">{{messag.message}}</p>
+                            {% endif %}
+                            {% if messag.sender.profile.profile_pic %}
+                                <img style="
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                margin-bottom: auto;
+                                " src="{{messag.sender.profile.profile_pic.url}}" alt="">
+                            {% else %}
+                                <img style="
+                                width: 30px;
+                                height: 30px;
+                                border-radius: 50%;
+                                margin-bottom: auto;
+                                " src="{% static 'img/user_avatar.jpg' %}" alt="">
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+            
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="chat-form" style="
+        width: 100%;
+        height: 90px;
+        border-top: 1px solid #b6b4b4;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        background: #ffffff;
+        display: flex;
+        align-items: center;
+        justify-content: centre;">
+            {% csrf_token %}
+
+            <div class="container-input-stuffs" style="
+            background: #fff;
+            display: flex;
+            width: 90%;
+            height: 60px;
+            border-radius: 9999px;
+            margin-left: 15px;">
+
+                <div class="files-logo-cont">
+                    <img name="image" style="
+                    border-top-left-radius: 25px;
+                    border-bottom-left-radius: 25px;
+                    padding-left: 10px;
+                    display: block;
+                    height: 100%;
+                    width: 50px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    cursor: pointer;
+                    width: 30px;
+                    " src="{% static 'img/paper-clip.svg' %}" alt="">
+                    <input type="file" name="image" style="display: none;">
+                </div>
+
+                <div class="group-inp" style="
+                width: 90%;
+                height: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;">
+                    <input type="hidden"  name="receiver_id" value="{{follower.id}}">
+                    <textarea id="chat-input" style="
+                    resize: none;
+                    border: none;
+                    outline: none;
+                    padding-left: 10px;
+                    font-size: 16px;
+                    width: 100%;
+                    height: 40px;
+                    font-family: Arial, Helvetica, sans-serif;
+                    " placeholder="Enter your message here" required name="message" minlength="1" maxlength="10000"></textarea>
+                    <button id="emogi-picker-btn" type="button">
+                        <img style=" width: 30px; " src="{% static 'img/smile.svg' %}" alt=""> 
+                    </button>
+                    <div id="emogi-picker-container" style="
+                    display: none;
+                    position: absolute;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    border-radius: 12px;
+                    width: 80%;
+                    height: 65px;
+                    overflow-y: auto;
+                    padding: 10px;">
+                        <button style="margin: 5px;" type="button"></button>
+                    </div>
+                </div>
+
+                <button  class="submit-msg-btn" style="
+                background: #fff;
+                border-top-right-radius: 25px;
+                border-bottom-right-radius: 25px;
+                width: 70px;
+                border: none;
+                display: flex;
+                padding-right: 5px;
+                justify-content: center;
+                align-items: center;">
+                    <img style="
+                         width: 30px;
+                         " src="{% static 'img/send.svg' %}" alt="">
+                </button>
+            </div>
+
+            
+
+        </form>
+    </div>
+</div>
+
+<script>
+    // toggle the display of the emoji picker container:
+   document.getElementById('emogi-picker-btn').addEventListener('click', () => {
+        const emojiPickerContainer = document.getElementById('emogi-picker-container');
+        if (emojiPickerContainer.style.display === 'block') {
+            emojiPickerContainer.style.display = 'none';
+        } else {
+            emojiPickerContainer.innerHTML = `
+            <button>😊</button>
+            <button>👍</button>
+            <button>😄</button>
+            <button>😃</button>
+            <button>🙂</button>
+            <button>😍</button>
+            <button>😘</button>
+            <button>😗</button>
+            <button>😙</button>
+            <button>😚</button>
+            <button>😛</button>
+            <button>😜</button>
+            <button>😝</button>
+            <button>😞</button>
+            <button>😟</button>
+            <button>😠</button>
+            <button>😡</button>
+            <button>😢</button>
+            <button>😭</button>
+            <button>😳</button>
+            <button>😴</button>
+            <button>😵</button>
+            <button>😶</button>
+            <button>😷</button>
+            <button>😸</button>
+            <button>😹</button>
+            <button>😺</button>
+            <button>😻</button>
+            <button>😼</button>
+            <button>😽</button>
+            <button>😾</button>
+            <button>😿</button>
+            <button>🙀</button>
+            <button>🙁</button>
+            <button>🙂</button>
+            <button>🙃</button>
+            <button>🙄</button>
+            <button>🤔</button>
+            <button>🤷</button>
+            <button>👀</button>
+            <button>👁️</button>
+            <button>🗿️</button>
+            <button>🐶</button>
+            <button>🐱</button>
+            <button>🐔</button>
+            <button>🐷</button>
+            <button>👫</button>
+            <button>🤝</button>
+            <button>🌟</button>
+            <button>🎉</button>
+            <button>😎</button>
+            <button>👎</button>
+            <button>🤣</button>
+            <button>🚀</button>
+            <button>👽</button>
+            <button>💻</button>
+            <button>📱</button>
+            <button>🎉</button>
+            <button>🚫</button>
+            <button>🤔</button>
+            <button>👀</button>
+            <button>💔</button>
+            <button>😍</button>
+            <button>😘</button>
+            <button>👫</button>
+            <button>👭</button>
+            <button>🤝</button>
+            <button>🌎</button>
+            <button>🏠</button>
+            <button>🚗</button>
+            <button>🛫️</button>
+            <button>🛬️</button>
+            <button>🚣</button>
+            <button>🏊</button>
+            <button>🐶</button>
+            <button>🐱</button>
+            <button>🐔</button>
+            <button>🐷</button>
+            <button>🍔</button>
+            <button>🍕</button>
+            <button>🥤</button>
+            <button>🍣</button>
+            <button>🎂</button>
+            <button>🍰</button>
+            <button>🍫</button>
+            <button>💸</button>
+            <button>💰</button>
+            <button>📈</button>
+            <button>📊</button>
+            <button>📁</button>
+            <button>📝</button>
+            <button>📚</button>
+            <button>💡</button>
+            <button>🔥</button>
+            <button>💯</button>
+            <button>😢</button>
+            <button>😭</button>
+            <button>🤷</button>
+            <button>👻</button>
+            <button>🕷️</button>
+            <button>🕸️</button>
+            <button>🌟</button>
+            <button>🌠</button>
+            <button>🎊</button>
+            <button>🎁</button>
+            <button>📦</button>
+            <button>🚪</button>
+            <button>🏃</button>
+            <button>🏋️</button>
+            <button>🤸</button>
+            <button>🤹</button>
+            <button>🎨</button>
+            <button>🖌️</button>
+            <button>🎭</button>
+            <button>🎬</button>
+            <button>📺</button>
+            <button>📻</button>
+            <button>🎵</button>
+            <button>🎶</button>
+            <button>🕺</button>
+            <button>💃</button>
+            <button>🕴️</button>
+            <button>🤩</button>
+            <button>🤤</button>
+            <button>👺</button>
+            <button>👿</button>
+            <button>👽</button>
+            <button>👾</button>
+            <button>💥</button>
+            <button>🔪</button>
+            <button>🚮</button>
+            <button>🚯</button>
+            <button>🚰</button>
+            <button>🚱</button>
+            <button>🛑</button>
+            <button>🛠️</button>
+            <button>🔧</button>
+            <button>🔨</button>
+            <button>🛍️</button>
+            <button>🛒</button.
+            <button>🛠️</button>
+            <button>💼</button>
+            <button>📊</button>
+            <button>📈</button>
+            <button>📉</button>
+            <button>📊</button>
+            <button>💸</button>
+            <button>💳</button>
+            <button>🎯</button>
+            <button>🏹</button>
+            <button>🏸</button>
+            <button>🎣</button>
+            <button>🐟</button>
+            <button>🐠</button>
+            <button>🐡</button>
+            <button>🐙</button>
+            <button>🐚</button>
+            <button>🌴</button>
+            <button>🌻</button>
+            <button>🌺</button>
+            <button>🌼</button>
+            <button>🏠</button>
+            <button>🏡</button>
+            <button>🏢</button>
+            <button>🏣</button>
+            <button>🏥</button>
+            <button>🏦</button>
+            <button>🏨</button>
+            <button>🏩</button>
+            <button>🏪</button>
+            <button>🏫</button>
+            <button>🏬</button>
+            <button>🏭</button>
+            <button>🏯</button>
+            <button>🌃</button>
+            <button>🌆</button>
+            <button>🌇</button>
+            <button>🌉</button>
+            <button>🌊</button>
+            <button>🌋</button>
+            <button>🌌</button>
+            <button>🌍</button>
+            <button>🌎</button>
+            <button>🌏</button>
+            <button>🕰️</button>
+            <button>🕳️</button>
+            <button>🕴️</button>
+            <button>🕵️</button>
+            <button>🕺</button>
+            <button>🤝</button>
+            <button>🤜</button>
+            <button>🤛</button>
+            <button>🤚</button>
+            <button>🤙</button>
+            <button>🤘</button>
+            <button>🤖</button>
+            <button>🤗</button>
+            <button>🤠</button>
+            <button>🤡</button>
+            <button>🤢</button>
+            <button>🤣</button>
+            <button>🤤</button>
+            <button>🤥</button>
+            <button>🤦</button>
+            <button>🤧</button>
+            <button>🤨</button>
+            <button>🤩</button>
+            <button>🤪</button>
+            <button>🤫</button>
+            <button>🤬</button>
+            <button>🤭</button>
+            <button>🤮</button>
+            <button>🤯</button>
+            <button>🤰</button>
+            <button>🤱</button>
+            <button>🤲</button>
+            <button>🤳</button>
+            <button>🤴</button>
+            <button>🤵</button>
+            <button>🤶</button>
+            <button>🤷</button>
+            <button>🤸</button>
+            <button>🤹</button>
+            <button>🤺</button>
+            <button>🤻</button>
+            <button>🤼</button>
+            <button>🤽</button>
+            <button>🤾</button>
+            <button>🤿</button>
+            <button>🚀</button>
+            <button>🚁</button>
+            <button>🚂</button>
+            <button>🚃</button>
+            <button>🚄</button>
+            <button>🚅</button>
+            <button>🚆</button>
+            <button>🚇</button>
+            <button>🚈</button>
+            <button>🚉</button>
+            <button>🚊</button>
+            <button>🚋</button>
+            <button>🚌</button>
+            <button>🚍</button>
+            <button>🚎</button>
+            `;
+            emojiPickerContainer.style.display = 'block';
+        }
+    });
+
+    //  And add an event listener to add the selected emoji to the textarea:
+    document.getElementById('emogi-picker-container').addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const emoji = e.target.textContent;
+            document.getElementById('chat-input').value += emoji;
+        }
+    });
+
+    //for file input in chat
+    const images = document.querySelectorAll('img[src*="paper-clip.svg"]');
+
+    images.forEach((image) => {
+        image.addEventListener('click', () => {
+            const fileInput = image.nextElementSibling;
+            fileInput.click();
+        });
+    });
+</script>
+{% endblock %}
