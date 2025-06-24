@@ -1,2 +1,2 @@
-web: gunicorn registration.wsgi:application --log-file -
-web: python manage.py migrate && gunicorn registration.wsgi
+web: gunicorn appl.wsgi:application --log-file -
+web: python manage.py migrate && gunicorn appl.wsgi
