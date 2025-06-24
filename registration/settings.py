@@ -6,7 +6,7 @@
 
 from pathlib import Path
 import os
-from dotenv import load_dotenv
+#from dotenv import load_dotenv
 #import django_heroku #for heroku--------------
 import dj_database_url#for heroku------and---railway-----
 #from decouple import config#for heroku--------------
@@ -16,7 +16,7 @@ import dj_database_url#for heroku------and---railway-----
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #load our environmental variables
-load_dotenv()
+#load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -103,7 +103,7 @@ WSGI_APPLICATION = 'registration.wsgi.application'
 #}
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(default=os.environ.get['DATABASE_URL']
 }
 
 #-------------------------------------------------------------------------
