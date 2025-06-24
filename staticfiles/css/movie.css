@@ -1,0 +1,172 @@
+@import url("https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&display=swap");
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background: /*#121212;*/ whitesmoke;
+    color: #cbe4de;
+    font-family: "Dosis",sans-serif;
+
+    display: flex;
+    gap: 1rem;
+    min-height: 90vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+body h1{
+    color: /*skyblue;*/blue;
+    padding-top: 20px;
+}
+
+/*body h2{
+    color: /*skyblue;blue;
+    padding-top: 20px;
+}*/
+.container{
+    display: flex;
+    gap: 1rem;
+
+    align-items: center;
+    padding: 2rem;
+    width: 100%;
+    margin: 15px;
+}
+
+.card-container{
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    align-items: center;
+    color: black;
+    height: 500px;
+}
+
+.card{
+    width: 250px;
+    height: 500px;
+    display: flex;
+    align-items: end;
+    overflow: hidden;
+
+    border: 5px solid #d3e0dd;
+    border-radius: 1rem;
+    box-shadow: none;
+
+    background-position: center;
+    background-size: cover;
+    transition: all 500ms;
+}
+
+.card:hover{
+    border: 5px solid #cbe4de; 
+    cursor: pointer;
+}
+
+.card-content{
+    padding: 1rem;
+    padding-top: 2rem;
+    height: fit-content;
+    width: 100%;
+
+
+    background: linear-gradient(0deg,
+    rgb(0,0,0) 0%,
+    rgb(0,0,0)50%,
+    rgba(0,0,0,0)100%
+    );
+
+    animation: card-content 500ms ease-in forwards;
+}
+
+/*@keyframes{
+    0%{
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+ @keyframes{100%{
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}*/
+
+.card:hover .card-content{
+    animation: card-content 500ms cubic-bezier(0.06, 1.04, 0.67, 0.97) forwards;
+}
+.card-content p {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.card-actors{
+    font-size: 1.1rem !important;
+    font-weight: 300 !important;
+    color: white;
+}
+
+#john1{
+    background-image: url("img/john1.jpg");
+}
+#john2{
+    background-image: url("img/john2.jpg");
+}
+#john3{
+    background-image: url("img/john3.jpg");
+}
+#john4{
+    background-image: url("img/john4.jpg");
+}
+#john5{
+    background-image: url("img/john5.jpg");
+}
+
+.search-movie {
+    max-width: 500px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 40px;
+  }
+  
+  .movie-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 20px;
+  }
+  
+  .movie-form input[type="text"] {
+    width: 70%;
+    height: 40px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-family: "Dosis",sans-serif;
+  }
+  
+  .movie-form button{
+    width: 25%;
+    height: 40px;
+    background-color: lightblue;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 15px;
+    font-family: "Dosis",sans-serif;
+  }
+  
+  .movie-form button:hover {
+    background-color: blue;
+  }

@@ -6,14 +6,17 @@
 
 from pathlib import Path
 import os
-import django_heroku
-import dj_database_url
-from decouple import config
+from dotenv import load_dotenv
+#import django_heroku #for heroku--------------
+import dj_database_url#for heroku------and---railway-----
+#from decouple import config#for heroku--------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+#load our environmental variables
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,6 +28,7 @@ SECRET_KEY = 'django-insecure-mzuo-tt457h9occf(rk@cn+k4wi9-v&s+2fuk21naxpm(l^x0z
 DEBUG = True
 
 ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
 
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
@@ -37,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'whitenoise.runserver_nostatic',
 ]
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
@@ -84,12 +89,23 @@ WSGI_APPLICATION = 'registration.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+#DATABASES = {
+    #'default': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        #'ENGINE': 'django.db.backends.postgresql',
+        #'NAME': 'railway',
+        #'USER': 'postgres',
+        #'PASSWORD': os.environ.get('DB_PASSWORD'),
+        #'HOST': 'postgres.railway.internal',
+        #'PORT': '5432',
+    #}
+#}
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
+
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
@@ -137,7 +153,9 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
+#whitenoise storage stuff-----
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
@@ -150,7 +168,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-django_heroku.settings(locals())
+#django_heroku.settings(locals())#for heroku--------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------

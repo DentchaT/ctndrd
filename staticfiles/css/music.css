@@ -1,0 +1,123 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+.containers{
+    background: #cce1e7;
+}
+
+.containers .heading{
+    font-size: 2rem;
+    padding: 2rem;
+    text-align: center;
+    font-family: 'Poppins' sans-serif;
+    text-shadow: 0 .5rem 1rem #67d4f5;
+    color: rgb(41, 40, 40);
+}
+
+.containers .music-container{
+    display: flex;
+    align-items: center;
+    flex-flow: column;
+}
+
+.containers .music-container .box{
+    height: 8rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background: #f9f9f9;
+    border-radius: 1rem;
+    box-shadow: 0 .5rem 1rem #000;
+    overflow: hidden;
+    margin: 2rem;
+}
+
+.containers .music-container .box .image{
+    height: 100%;
+    width: 25%;
+}
+
+.containers .music-container .box .image img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.containers .music-container .box .music{
+    width: 75%;
+}
+
+.containers .music-container .box .music audio{
+    width: 100%;
+    outline: none;
+}
+
+.containers .music-container .box .music h3{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 200px;
+    margin-top: 1%;
+}
+
+.containers .music-container .box .music audio::-webkit-media-controls-enclosure{
+    background: none;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+    background-color: #e3e4e4; /* light blue */
+    border: 1%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    margin-bottom: 1%;
+	margin-top: 10%;
+}
+
+.search-form input[type="text"] {
+    width: 70%;
+    height: 30px;
+    padding: 10px;
+    font-size: 16px;
+    font-family: sans-serif;
+    border: none;
+    border-radius: 5px;
+}
+
+.search-form button[type="submit"] {
+    width: 40%;
+    height: 30px;
+    background-color: blue; /* white */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+@media (max-width:600px) {
+    .containers .music-container .box{
+        height: 17rem;
+        width: 90%;
+        flex-flow: column;
+    }
+
+    .containers .music-container .box .image{
+        height: 80%;
+        width: 100%;
+    }
+
+    .containers .music-container .box .music{
+        height: 20%;
+        width: 100%;
+    }
+
+}

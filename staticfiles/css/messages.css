@@ -1,0 +1,130 @@
+* { box-sizing: border-box}
+body{
+  font-family: 'Poppins', sans-serif;
+}
+.phoneswrapper{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone{
+  height:  650px;
+  width: 100%; 
+  border-radius: 22px;
+  border: 1px solid #cacaca;
+  overflow: hidden;
+  position: relative;
+  box-shadow: rgba(0, 0, 0, 0.15);
+  background-color: #fff
+
+}
+.phone_head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center;
+    height: 45px;
+    padding: 8%;
+}
+.phone_head .title{
+  font-size: 24px;
+  font-weight: 500;
+  color: #102158;
+}
+.icon_bubble.msg {
+    width: 30px;
+    height: 30px;
+    background: linear-gradient( 90deg, #4a3eea, #53d9ea);
+    border-radius: 50%;
+}
+
+.divider {
+    height: 1px;
+    width: 111%;
+    background: linear-gradient( 90deg, #4a3eea, #53d9ea);
+    margin-bottom: 12px;
+}
+.phone_body{
+  padding-left: 3%;
+  overflow-y: auto;
+  height: 800px;
+}
+.grad_pb{ 
+  background: linear-gradient( 90deg, #4a3eea, #53d9ea);
+  color: white; 
+  }
+img.chat_avatar {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  margin-right: 8px;
+}
+img.chat_avatar {
+  width: 45px;
+  box-shadow: rgba(31, 37, 72, 0.45);
+  border-radius: 50%;
+}
+
+.chat {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 0px;
+    border-bottom: 1px solid #0201445e; 
+    max-height: 100px;
+}
+
+.contact_name {
+  font-weight: 600;
+  color: #1c2b5f;
+  font-size: 15px;
+  margin-bottom: 2px;
+
+}
+
+.contact_msg {
+   
+    font-size: 13px;
+    color: rgb(48, 63, 202);
+    font-weight: lighter;
+}
+.chat_info {width: 50%;}
+
+.chat_date {
+  font-size: 12px;
+  color: #5a5a5a;
+  margin-bottom: 2px;
+}
+
+.chat_new{
+  padding: 2px 5px;
+  font-size: 11px;
+  border-radius: 2px;
+}
+.chat_status {
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.phone_footer {
+    position: absolute;
+    bottom: 0;
+    height: 61px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 0px;
+    background: linear-gradient(0deg, white 40%, #ffffffa1 85%, transparent 95%);
+}
+
+.footer_divider {
+    height: 5px;
+    width: 45%;
+    border-radius: 10px;
+  
+     margin-top: 35px;
+}
