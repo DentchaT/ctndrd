@@ -1,2 +1,1 @@
-web: gunicorn appl.wsgi --log-fil=-
-web: python manage.py migrate && gunicorn appl.wsg
+web: python manage.py migrate && python manage.py collectstatic --no-input && gunicorn registration.wsgi
