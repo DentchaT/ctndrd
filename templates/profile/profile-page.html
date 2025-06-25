@@ -72,7 +72,7 @@
                     border-radius: 18px;"><i class="fa-solid fa-right-from-bracket menu-icon"></i>Logout</a>
 
                 </div>
-                {% if request.user.post.all %}
+                <!--{% if request.user.post.all %}-->
                     <div style="border: 1px solid green;
                     text-align: center;
                     border-radius: 50px;
@@ -80,7 +80,7 @@
                         <a style="color: green;
                         text-decoration: underline;" href="{% url 'my_posts' %}">My Social Posts ({{profile.user.post_set.all.count}})</a>
                     </div>
-                {% else %}
+                <!--{% else %}
                     <div style="border: 1px solid green;
                     text-align: center;
                     border-radius: 50px;
@@ -88,7 +88,7 @@
                         <a style="color: green;
                         text-decoration: underline;" href="{% url 'home' %}">Add posts to view them</a>
                     </div>
-                {% endif %}
+                {% endif %}-->
                 <br>
 
                 <button style="
