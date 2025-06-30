@@ -6,7 +6,7 @@
 
 from pathlib import Path
 import os
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 #import django_heroku #for heroku--------------
 import dj_database_url#for heroku------and---railway-----
 #from decouple import config#for heroku--------------
@@ -16,7 +16,7 @@ import dj_database_url#for heroku------and---railway-----
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #load our environmental variables
-#load_dotenv()
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mzuo-tt457h9occf(rk@cn+k4wi9-v&s+2fuk21naxpm(l^x0z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['https://ctndrd.com','ctndrd.com','web-production-5e1e7.up.railway.app','https://web-production-5e1e7.up.railway.app']
 CSRF_TRUSTED_ORIGINS = ['https://ctndrd.com','https://web-production-5e1e7.up.railway.app']
@@ -91,8 +91,6 @@ WSGI_APPLICATION = 'registration.wsgi.application'
 
 #DATABASES = {
 #    'default': {
-#        #'ENGINE': 'django.db.backends.sqlite3',
-#        #'NAME': BASE_DIR / 'db.sqlite3',
 #        'ENGINE': 'django.db.backends.postgresql',
 #        'NAME': 'railway',
 #        'USER': 'postgres',
@@ -103,7 +101,7 @@ WSGI_APPLICATION = 'registration.wsgi.application'
 #}
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))#os.getenv('DATABASE_URL'))
 }
 
 #-------------------------------------------------------------------------
