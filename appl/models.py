@@ -13,7 +13,7 @@ class Post(models.Model):
     content = models.TextField()
     image = models.ImageField(upload_to = 'img/', blank=True, null=True ) 
     video = models.FileField(upload_to='videos/', blank=True, null=True)
-    author = models.ForeignKey(User, on_delete = models.CASCADE)
+    author = models.ForeignKey(User, on_delete = models.CASCADE, related_name='posts')
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     profile_pic = models.ImageField(upload_to = 'img/profile/', blank=True, null=True )
     created_at = models.DateTimeField(auto_now_add = True)
