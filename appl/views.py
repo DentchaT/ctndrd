@@ -315,7 +315,7 @@ def LoginPage(request):
             login(request,user)
             return redirect('home')
         else:
-            return HttpResponse("Email or password is incorrect")
+            return HttpResponse("Attention, Username or password is incorrect")
     return render(request, 'login&signup/login.html')
 #-----------------------LOGIN END HERE ------------------------------
 #-------------------------------------------------------------------------
