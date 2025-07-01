@@ -1,0 +1,5 @@
+[mounts]
+  media = "/registration/media"
+
+[deploy.postdeploy]
+  commands = ["python manage.py migrate", "python manage.py collectstatic"]
