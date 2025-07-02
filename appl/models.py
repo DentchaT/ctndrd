@@ -3,6 +3,10 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from datetime import timedelta
 from django.db.models.signals import post_save
+#cloudinary_model_settings
+from cloudinary_storage.storage import VideoMediaCloudinaryStorage
+from cloudinary_storage.validators import validate_video
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
@@ -11,8 +15,9 @@ from django.db.models.signals import post_save
 #--------------------POST--------------------------
 class Post(models.Model):
     content = models.TextField()
-    image = models.ImageField(upload_to = 'img/', blank=True, null=True ) 
-    video = models.FileField(upload_to='videos/', blank=True, null=True)
+    image = models.ImageField(upload_to = 'img/posts', blank=True, null=True ) 
+    #video = models.FileField(upload_to='videos/', blank=True, null=True)
+    video = models.ImageField(upload_to='videos/posts/', blank=True,null=True, storage=VideoMediaCloudinaryStorage(),validators=[validate_video])
     author = models.ForeignKey(User, on_delete = models.CASCADE, related_name='posts')
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     profile_pic = models.ImageField(upload_to = 'img/profile/', blank=True, null=True )
@@ -71,7 +76,7 @@ post_save.connect(create_profile, sender=User)
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------    
 
-#------------------STORY-----------------------------
+#------------------STORY-----------------------------not using it afterall-------
 class Story(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='img/stories/', blank=True, null=True)
@@ -114,7 +119,8 @@ class Movie(models.Model):
     rating=models.CharField(max_length=50, blank=True, null=True)
     category=models.CharField(max_length=50, blank=True, null=True)
     thumbnail = models.ImageField(upload_to = 'img/movie/', blank=True, null=True ) 
-    movie = models.FileField(upload_to='videos/movie/', blank=True, null=True)
+    #movie = models.FileField(upload_to='videos/movie/', blank=True, null=True)
+    movie = models.ImageField(upload_to='videos/movie/', blank=True,null=True, storage=VideoMediaCloudinaryStorage(),validators=[validate_video])
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -132,7 +138,8 @@ class Music(models.Model):
     artist = models.TextField()
     genre=models.CharField(max_length=50, blank=True, null=True)
     poster = models.ImageField(upload_to = 'img/music/', blank=True, null=True ) 
-    song = models.FileField(upload_to='videos/music/', blank=True, null=True)
+    #song = models.FileField(upload_to='videos/music/', blank=True, null=True)
+    song = models.ImageField(upload_to='raw/music/', blank=True, null=True, storage=RawMediaCloudinaryStorage())
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -184,7 +191,8 @@ class Hostel(models.Model):
     location=models.CharField(max_length=50, blank=True, null=True)
     price=models.CharField(max_length=50, blank=True, null=True)
     image = models.ImageField(upload_to = 'img/hostels/', blank=True, null=True )
-    video = models.FileField(upload_to='img/hostels/', blank='True', null= 'True') 
+    #video = models.FileField(upload_to='img/hostels/', blank='True', null= 'True') 
+    video = models.ImageField(upload_to='videos/hostels/', blank=True,null=True, storage=VideoMediaCloudinaryStorage(),validators=[validate_video])
     contact=models.CharField(max_length=50, blank='True', null='True')
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
