@@ -78,7 +78,7 @@
                     border-radius: 50px;
                     padding: 2px;">
                         <a style="color: green;
-                        text-decoration: underline;" href="{% url 'my_posts' %}">My Social Posts ({{profile.user.post_set.all.count}})</a>
+                        text-decoration: underline;" href="{% url 'my_posts' %}">My Social Posts ({{profile.user.posts.all.count}})</a>
                     </div>
                 {% else %}
                     <div style="border: 1px solid green;
