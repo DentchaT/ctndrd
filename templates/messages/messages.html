@@ -16,7 +16,7 @@
             {% if messages %}
                 {% for messag in messages|dictsortreversed:"latest_message.timestamp" %}
                     <a href="{% url 'chat' messag.follow.id %}">
-                        <div class="chat"  style="overflow-y: hidden;">
+                        <div class="chat"  style="padding-bottom: 3px; overflow-y: hidden;">
                             {% if messag.follow.profile_pic %}
                                 <img class="chat_avatar" src="{{messag.follow.profile_pic.url}}">
                             {% else %}
