@@ -22,7 +22,7 @@
                             {% else %}
                                 <img class="chat_avatar" src="{% static 'img/user_avatar.jpg' %}">
                             {% endif %}
-                            <div class="chat_info">
+                            <div class="chat_info" style="overflow-y: hidden;">
                                 <div class="contact_name">{{messag.follow.user.profile.firstname}} {{messag.follow.user.profile.lastname}}</div>
                                 <div class="contact_msg">{{messag.latest_message.message}}</div>
                             </div>
