@@ -6,17 +6,18 @@
 
 from pathlib import Path
 import os
-#from dotenv import load_dotenv
+from dotenv import load_dotenv
 #import django_heroku #for heroku--------------
 import dj_database_url#for heroku------and---railway-----
 #from decouple import config#for heroku--------------
+import cloudinary
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 #load our environmental variables
-#load_dotenv()
+load_dotenv()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -41,8 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',#cloudinary_cloud_storage
-    'cloudinary',#cloudinary_cloud_storage
+    #'cloudinary_storage',#cloudinary_cloud_storage
+    #'cloudinary',#cloudinary_cloud_storage
     'whitenoise.runserver_nostatic',
 ]
 #-------------------------------------------------------------------------
@@ -168,18 +169,29 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 #MEDIA_URL = '/media/' #we are using cloudinary instead
 
-#Cloudinary_cloud_storage_media _root:
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+#--------CLOUDINARY_STORAGE_CONFIGURATION-----------------------
 #cloudinary_cloud_storage_configuration:
+cloudinary.config(
+    cloud_name= os.environ.get("CLOUD_NAME"),#os.getenv('CLOUD_NAME'),
+    api_key= os.environ.get("CLOUD_API_KEY"),#os.getenv('CLOUD_API_KEY'),
+    api_secret= os.environ.get("CLOUD_API_SECRET"),#os.getenv('CLOUD_API_SECRET')
+)
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),#os.getenv('CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUD_API_KEY'),#os.getenv('CLOUD_API_KEY'),
     'API_SECRET': os.environ.get('CLOUD_API_SECRET'),#os.getenv('CLOUD_API_SECRET')
-    'SECURE': True,
-    'MEDIA_TAG': 'media',
-    'INVALID_VIDEO_ERROR_MESSAGE': 'Please upload a valid video file.',
+    #'SECURE': True,
+    #'MEDIA_TAG': 'media',
+    #'INVALID_VIDEO_ERROR_MESSAGE': 'Please upload a valid video file.',
 }
+
+
+#Cloudinary_cloud_storage_media _root:
+#CLOUDINARY_URL = 'https://res.cloudinary.com/%s/' % CLOUDINARY_STORAGE[os.getenv('CLOUD_NAME')]#os.environ.get('CLOUD_NAME')]#
+#MEDIA_URL = CLOUDINARY_URL#we are using cloudinary instead
+#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 #django_heroku.settings(locals())#for heroku--------------
 #-------------------------------------------------------------------------

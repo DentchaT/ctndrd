@@ -4,9 +4,10 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db.models.signals import post_save
 #cloudinary_model_settings
-from cloudinary_storage.storage import VideoMediaCloudinaryStorage
-from cloudinary_storage.validators import validate_video
-from cloudinary_storage.storage import RawMediaCloudinaryStorage
+from cloudinary.models import CloudinaryField
+#from cloudinary_storage.storage import VideoMediaCloudinaryStorage
+#from cloudinary_storage.validators import validate_video
+#from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
@@ -15,9 +16,10 @@ from cloudinary_storage.storage import RawMediaCloudinaryStorage
 #--------------------POST--------------------------
 class Post(models.Model):
     content = models.TextField()
-    image = models.ImageField(upload_to = 'img/posts', blank=True, null=True ) 
-    #video = models.FileField(upload_to='videos/', blank=True, null=True)
-    video = models.ImageField(upload_to='videos/posts/', blank=True,null=True, storage=VideoMediaCloudinaryStorage(),validators=[validate_video])
+    #image = models.ImageField(upload_to = 'img/posts/', blank=True, null=True ) 
+    image = CloudinaryField('img/posts/', blank=True, null=True )
+    #video = models.FileField(upload_to='videos/posts/', blank=True, null=True)
+    video = CloudinaryField('videos/posts/', resource_type='video', blank=True, null=True)
     author = models.ForeignKey(User, on_delete = models.CASCADE, related_name='posts')
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     profile_pic = models.ImageField(upload_to = 'img/profile/', blank=True, null=True )
@@ -50,7 +52,8 @@ class SavedPost(models.Model):
 #-----------------PROFILE----------------------------------
 class Profile(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
-    profile_pic=models.ImageField(upload_to='img/profile/',blank=True, null=True)
+    #profile_pic=models.ImageField(upload_to='img/profile/',blank=True, null=True)
+    profile_pic = CloudinaryField('img/profile/', blank=True, null=True )
     firstname=models.CharField(max_length=50, blank=True, null=True)
     lastname=models.CharField(max_length=50, blank=True, null=True)
     bio=models.TextField(blank=True)
@@ -118,9 +121,10 @@ class Movie(models.Model):
     actors = models.TextField()
     rating=models.CharField(max_length=50, blank=True, null=True)
     category=models.CharField(max_length=50, blank=True, null=True)
-    thumbnail = models.ImageField(upload_to = 'img/movie/', blank=True, null=True ) 
+    #thumbnail = models.ImageField(upload_to = 'img/movie/', blank=True, null=True ) 
+    thumbnail = CloudinaryField('img/movie/', blank=True, null=True )
     #movie = models.FileField(upload_to='videos/movie/', blank=True, null=True)
-    movie = models.ImageField(upload_to='videos/movie/', blank=True,null=True, storage=VideoMediaCloudinaryStorage(),validators=[validate_video])
+    movie = CloudinaryField('videos/movie/', resource_type='video', blank=True, null=True)
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -137,9 +141,10 @@ class Music(models.Model):
     title=models.CharField(max_length=50, blank=True, null=True)
     artist = models.TextField()
     genre=models.CharField(max_length=50, blank=True, null=True)
-    poster = models.ImageField(upload_to = 'img/music/', blank=True, null=True ) 
+    #poster = models.ImageField(upload_to = 'img/music/', blank=True, null=True )
+    poster = CloudinaryField('img/music/', blank=True, null=True )
     #song = models.FileField(upload_to='videos/music/', blank=True, null=True)
-    song = models.ImageField(upload_to='raw/music/', blank=True, null=True, storage=RawMediaCloudinaryStorage())
+    song = CloudinaryField('img/audio/', resource_type='raw', blank=True, null=True)
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -156,7 +161,8 @@ class Product(models.Model):
     item=models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField()
     price=models.CharField(max_length=50, blank=True, null=True)
-    image = models.ImageField(upload_to = 'img/product/', blank=True, null=True ) 
+    #image = models.ImageField(upload_to = 'img/product/', blank=True, null=True ) 
+    image = CloudinaryField('img/product/', blank=True, null=True )
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -190,9 +196,10 @@ class Hostel(models.Model):
     residents=models.CharField(max_length=50, blank=True, null=True)
     location=models.CharField(max_length=50, blank=True, null=True)
     price=models.CharField(max_length=50, blank=True, null=True)
-    image = models.ImageField(upload_to = 'img/hostels/', blank=True, null=True )
-    #video = models.FileField(upload_to='img/hostels/', blank='True', null= 'True') 
-    video = models.ImageField(upload_to='videos/hostels/', blank=True,null=True, storage=VideoMediaCloudinaryStorage(),validators=[validate_video])
+    #image = models.ImageField(upload_to = 'img/hostels/', blank=True, null=True )
+    image = CloudinaryField('img/hostels/', blank=True, null=True )
+    #video = models.FileField(upload_to='img/hostels/', blank='True', null= 'True')
+    video = CloudinaryField('videos/hostels/', resource_type='video', blank=True, null=True) 
     contact=models.CharField(max_length=50, blank='True', null='True')
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     created_at = models.DateTimeField(auto_now_add = True)
@@ -209,7 +216,8 @@ class Message(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_messages')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_messages')
     message = models.TextField()
-    image = models.ImageField(upload_to = 'img/message/', blank=True, null=True)
+    #image = models.ImageField(upload_to = 'img/message/', blank=True, null=True)
+    image = CloudinaryField('img/message/', blank=True, null=True )
     seen = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 #-------------------------------------------------------------------------
