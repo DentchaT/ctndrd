@@ -34,7 +34,12 @@ urlpatterns = [
     path('acc-settings', views.acc_settings, name='account-settings'),
     path('messages/',views.messages, name='messages'),
     path('terms', views.terms, name='terms'),
+    #-------------------------------------------------------------------------
+    #---------------------code by Dr.James Atwiine----------------------------
+    #-------------------------------------------------------------------------
+    path('hom',views.hom,name='hom'),
 ]
+
 
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------

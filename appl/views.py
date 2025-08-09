@@ -13,6 +13,9 @@ def terms(request):
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
+@login_required
+def hom(request):
+    return render(request,'ctndrd/home.html')
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):

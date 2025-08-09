@@ -1,0 +1,149 @@
+{% extends 'ctndrd/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block title %}homepage{% endblock %}
+    
+</head>
+<body>
+{% block content %}
+    <section>
+        <div class="post">
+            <div class="post-head">
+                <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                <div class="post-head-bio">
+                    <h4>ATWIINE JAMES</h4>
+                    <p>@atwiine_james, posted 1 month ago</p>
+                </div>
+                <p><i class="fa-solid fa-ellipsis"></i></p>
+            </div>
+            <div class="post-image">
+                <img src="{{ request.user.profile.profile_pic.url }}" alt="">
+            </div>
+            <div class="post-actions">
+                <div class="action">
+                    <p><i class="fa-regular fa-heart"></i></p>
+                    <p><i class="fa-regular fa-comments"></i></p>
+                </div>
+                <p><i class="fa-regular fa-bookmark"></i></p>
+            </div>
+            <div class="likes-comments">
+                <div class="profile-pics">
+                    <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                    <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                    <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                </div>
+                <div class="likcom">
+                    <p><span>100</span>likes</p>
+                    <p><span>30</span>comments</p>
+                </div>
+            </div>
+            <div class="post-message">
+                <h4>ATWIINE:</h4>
+                <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+            </div>
+            <div class="comments">
+                <div class="comm">
+                    <div class="sub-comment">
+                        <img src="{{ request.user.profile.profile_pic.url }}" alt="">
+                        <div class="post-messages">
+                            <h4>@atwiine_james</h4>
+                            <div class="pes">
+                                <p style="font-size: 12px;">1 month ago</p>
+                                <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sub-comment">
+                        <img src="{{ request.user.profile.profile_pic.url }}" alt="">
+                        <div class="post-messages">
+                            <h4>@atwiine_james</h4>
+                            <div class="pes">
+                                <p style="font-size: 12px;">1 month ago</p>
+                                <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-a-comment">
+                    <form action="">
+                        <input type="text" placeholder="Enter comment">
+                        <button type="submit">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="post">
+            <div class="post-head">
+                <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                <div class="post-head-bio">
+                    <h4>ATWIINE JAMES</h4>
+                    <p>@atwiine_james, posted 1 month ago</p>
+                </div>
+                <p><i class="fa-solid fa-ellipsis"></i></p>
+            </div>
+            <div class="post-image">
+                <img src="{{ request.user.profile.profile_pic.url }}" alt="">
+            </div>
+            <div class="post-actions">
+                <div class="action">
+                    <p><i class="fa-regular fa-heart"></i></p>
+                    <p><i class="fa-regular fa-comments"></i></p>
+                </div>
+                <p><i class="fa-regular fa-bookmark"></i></p>
+            </div>
+            <div class="likes-comments">
+                <div class="profile-pics">
+                    <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                    <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                    <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                </div>
+                <div class="likcom">
+                    <p><span>100</span>likes</p>
+                    <p><span>30</span>comments</p>
+                </div>
+            </div>
+            <div class="post-message">
+                <h4>ATWIINE:</h4>
+                <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+            </div>
+            <div class="comments">
+                <div class="comm">
+                    <div class="sub-comment">
+                        <img src="{{ request.user.profile.profile_pic.url }}" alt="">
+                        <div class="post-messages">
+                            <h4>@atwiine_james</h4>
+                            <div class="pes">
+                                <p style="font-size: 12px;">1 month ago</p>
+                                <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sub-comment">
+                        <img src="{{ request.user.profile.profile_pic.url }}" alt="">
+                        <div class="post-messages">
+                            <h4>@atwiine_james</h4>
+                            <div class="pes">
+                                <p style="font-size: 12px;">1 month ago</p>
+                                <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="post-a-comment">
+                    <form action="">
+                        <input type="text" placeholder="Enter comment">
+                        <button type="submit">Post</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}
+</body>
+</html>
