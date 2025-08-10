@@ -16,8 +16,12 @@ def terms(request):
 @login_required
 def hom(request):
     posts = Post.objects.all().order_by('-id')
+    for post in posts:
+        post.has_commented = post.comments.filter(user=request.user).exists()
+    saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
     mydict = {
-        'posts':posts
+        'posts':posts,
+        'saved_posts':saved_posts,
     }
     return render(request,'ctndrd/home.html',context=mydict)
 #--------------HOME PAGE-----------------------------------------
