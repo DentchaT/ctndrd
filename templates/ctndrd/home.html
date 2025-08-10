@@ -37,9 +37,11 @@
                     </div>
                     <div class="likes-comments">
                         <div class="profile-pics">
-                            <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
-                            <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
-                            <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                            {% for user in post.likes.all|slice:":3" %}
+                                <img src="{{ user.profile.profile_pic.url }}" alt="profilepic">
+                            <!--<img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                            <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">-->
+                            {% endfor %}
                         </div>
                         <div class="likcom">
                             <p><span>{{post.number_of_likes }}</span>likes</p>
