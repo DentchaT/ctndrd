@@ -98,6 +98,7 @@
         }
         .action{
             display: flex;
+            align-items: center;
             width: 30%;
             justify-content: space-between;
         }
@@ -231,11 +232,11 @@
         <nav class="navbar">
             <div class="nav-content">
                 <img src="{% static 'img/ctndrd4.png' %}" alt="home">
-                <p><a href="#"><i class='bx  bx-cart-minus'  ></i> </a></p>
-                <p><a href="#"><i class='bx  bx-headphone-alt-2'  ></i> </a></p>
+                <p><a href="#"><i class='bx  bx-store'  ></i> </a></p>
+                <p><a href="#"><i class='bx  bx-music-alt'  ></i> </a></p>
                 <p><a href="#"><i class='bx  bx-building-house'  ></i> </a></p>
                 <p><a href="#"><i class='bx  bx-movie-play'  ></i> </a></p>
-                <p><a href="#"><i class='bx  bx-message-circle-notification'  ></i> </a></p>
+                <p><a href="#"><i class='bx  bx-discussion'  ></i> </a></p>
                 <p><a href="#"><i class='bx  bx-cog'  ></i> </a></p>
                 <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
             </div>
