@@ -8,18 +8,18 @@ from django.http import JsonResponse
 from .forms import *
 
 def terms(request):
-    posts = Post.objects.all().order_by('-id')
-    mydict = {
-        'posts':posts
-    }
-    return render(request, 'terms/terms.html',context=mydict)
+    return render(request, 'terms/terms.html')
 #------------------SIGNUP, LOGIN, LOGOUT START HERE -------------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
 @login_required
 def hom(request):
-    return render(request,'ctndrd/home.html')
+    posts = Post.objects.all().order_by('-id')
+    mydict = {
+        'posts':posts
+    }
+    return render(request,'ctndrd/home.html',context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
