@@ -75,9 +75,11 @@
                             </div>
                         {% endif %}
                         <div class="post-a-comment">
-                            <form action="">
-                                <input type="text" placeholder="Enter comment">
-                                <button type="submit">Post</button>
+                            <form method="post" enctype="multipart/form-data" action="">
+                            {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{post.id}}" >
+                                <input type="text" required name="body" placeholder="Enter comment">
+                                <button type="submit" name="comment_submit" >Post</button>
                             </form>
                         </div>
                     </div>

@@ -23,6 +23,13 @@ def hom(request):
         'posts':posts,
         'saved_posts':saved_posts,
     }
+    if request.method == 'POST':
+        if 'comment_submit' in request.POST:
+            post_id = request.POST.get('post_id')
+            post = Post.objects.get(id=post_id)
+            comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
+            comment.save()
+            return redirect('home')
     return render(request,'ctndrd/home.html',context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
