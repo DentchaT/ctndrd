@@ -51,20 +51,22 @@
                         <p>{{post.content}}</p>
                     </div>
                     <div class="comments">
-                        <div class="comm">
-                            {% for comment in post.comments.all %}
-                                <div class="sub-comment">
-                                    <img src="{{comment.user.profile.profile_pic.url}}" alt="">
-                                    <div class="post-messages">
-                                        <h4>@{{comment.user.username}}</h4>
-                                        <div class="pes">
-                                            <p style="font-size: 12px;">{{comment.date_added|timesince}} ago</p>
-                                            <p>{{comment.body}}</p>
+                        {% if post.comments.all %}
+                            <div class="comm">
+                                {% for comment in post.comments.all %}
+                                    <div class="sub-comment">
+                                        <img src="{{comment.user.profile.profile_pic.url}}" alt="">
+                                        <div class="post-messages">
+                                            <h4>@{{comment.user.username}}</h4>
+                                            <div class="pes">
+                                                <p style="font-size: 12px;">{{comment.date_added|timesince}} ago</p>
+                                                <p>{{comment.body}}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                         <div class="post-a-comment">
                             <form action="">
                                 <input type="text" placeholder="Enter comment">
