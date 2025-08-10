@@ -12,7 +12,7 @@ def terms(request):
     mydict = {
         'posts':posts
     }
-    return render(request, 'terms/terms.html')
+    return render(request, 'terms/terms.html',context=mydict)
 #------------------SIGNUP, LOGIN, LOGOUT START HERE -------------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
