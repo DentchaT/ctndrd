@@ -42,8 +42,8 @@
                             <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
                         </div>
                         <div class="likcom">
-                            <p><span>100</span>likes</p>
-                            <p><span>30</span>comments</p>
+                            <p><span>{{post.number_of_likes }}</span>likes</p>
+                            <p><span>{{post.comments.all}}</span>comments</p>
                         </div>
                     </div>
                     <div class="post-message">
@@ -52,26 +52,28 @@
                     </div>
                     <div class="comments">
                         <div class="comm">
-                            <div class="sub-comment">
-                                <img src="{{ request.user.profile.profile_pic.url }}" alt="">
-                                <div class="post-messages">
-                                    <h4>@atwiine_james</h4>
-                                    <div class="pes">
-                                        <p style="font-size: 12px;">1 month ago</p>
-                                        <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+                            {% for comment in post.comments.all %}
+                                <div class="sub-comment">
+                                    <img src="{{comment.user.profile.profile_pic.url}}" alt="">
+                                    <div class="post-messages">
+                                        <h4>@{{comment.user.username}}</h4>
+                                        <div class="pes">
+                                            <p style="font-size: 12px;">{{comment.date_added|timesince}} ago</p>
+                                            <p>{{comment.body}}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="sub-comment">
-                                <img src="{{ request.user.profile.profile_pic.url }}" alt="">
-                                <div class="post-messages">
-                                    <h4>@atwiine_james</h4>
-                                    <div class="pes">
-                                        <p style="font-size: 12px;">1 month ago</p>
-                                        <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+                                <!--<div class="sub-comment">
+                                    <img src="{{ request.user.profile.profile_pic.url }}" alt="">
+                                    <div class="post-messages">
+                                        <h4>@atwiine_james</h4>
+                                        <div class="pes">
+                                            <p style="font-size: 12px;">1 month ago</p>
+                                            <p>It is with great pleasure that I introduce to you ctndrd.com</p>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </div>-->
+                            {% endfor %}
                         </div>
                         <div class="post-a-comment">
                             <form action="">
