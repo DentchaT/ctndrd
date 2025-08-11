@@ -89,6 +89,12 @@
             <p>No posts</p>
         {% endif %}
     </section>
+    <footer>
+        <div class="foot">
+            <a href="{% url 'discover' %}"><button>Discover</button></a>
+            <a href="{% url 'bookmark' %}"><button>Saved</button></a>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     //for post like
