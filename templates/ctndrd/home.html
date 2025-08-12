@@ -25,7 +25,11 @@
             {% for post in posts %}
                 <div class="post">
                     <div class="post-head">
-                        <img src="{{ post.author.profile.profile_pic.url }}" alt="profilepic">
+                        {% if post.author.profile.profile_pic %}
+                            <img src="{{ post.author.profile.profile_pic.url }}" alt="profilepic">
+                        {% else %}
+                            <img src="{% static 'img/user_avatar.jpg' %}" alt="profilepic">
+                        {% endif %}
                         <div class="post-head-bio">
                             <h4>{{post.author.profile.firstname}} {{post.author.profile.lastname}}</h4>
                             <p>@{{post.author.username}}, posted {{post.created_at|timesince}} ago</p>
@@ -33,7 +37,9 @@
                         <p><i class='bx  bx-dots-horizontal-rounded'></i></p>
                     </div>
                     <div class="post-image">
-                        <img src="{{ post.image.url }}" alt="">
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="">
+                        {% endif %}
                     </div>
                     <div class="post-actions">
                         <div class="action">
@@ -61,7 +67,11 @@
                     <div class="likes-comments">
                         <div class="profile-pics">
                             {% for user in post.likes.all|slice:":3" %}
-                                <img src="{{ user.profile.profile_pic.url }}" alt="profilepic">
+                                {% if user.profile.profile_pic %}
+                                    <img src="{{ user.profile.profile_pic.url }}" alt="profilepic">
+                                {% else %}
+                                    <img src="{% static 'img/user_avatar.jpg' %}" alt="profilepic">
+                                {% endif %}
                             {% endfor %} 
                         </div>
                         <div class="likcom">
@@ -78,7 +88,11 @@
                             <div class="comm">
                                 {% for comment in post.comments.all %}
                                     <div class="sub-comment">
-                                        <img src="{{comment.user.profile.profile_pic.url}}" alt="">
+                                        {% if comment.user.profile.profile_pic %}
+                                            <img src="{{comment.user.profile.profile_pic.url}}" alt="">
+                                        {% else %}
+                                            <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                                        {% endif %}
                                         <div class="post-messages">
                                             <h4>@{{comment.user.username}}</h4>
                                             <div class="pes">

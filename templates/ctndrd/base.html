@@ -261,9 +261,9 @@
             width: 23%;
             border: none;
             border-radius: 8px;
-            background-color: blue;
+            background-color: rgb(48, 241, 248);
             height: 40px;
-            color: #f4f6fc;
+            color: #050a30;
             font-family: sans-serif;
             font-size: 12px;
         }
@@ -327,18 +327,39 @@
     <header class="header">
         <nav class="navbar">
             <div class="nav-content">
-                <img src="{% static 'img/ctndrd4.png' %}" alt="home">
-                <p><a href="#"><i class='bx  bx-store'  ></i> </a></p>
-                <p><a href="#"><i class='bx  bx-music'  ></i> </a></p>
-                <p><a href="#"><i class='bx  bx-building-house'  ></i> </a></p>
-                <p><a href="#"><i class='bx  bx-movie-play'  ></i> </a></p>
-                <p><a href="#"><i class='bx  bx-message-dots'  ></i> </a></p>
-                <p><a href="#"><i class='bx  bx-cog'  ></i> </a></p>
-                <img src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                <img id="homepage" src="{% static 'img/ctndrd4.png' %}" alt="home">
+                <p><a href="{% url 'shop' %}"><i class='bx  bx-store'  ></i> </a></p>
+                <p><a href="{% url 'music' %}"><i class='bx  bx-music'  ></i> </a></p>
+                <p><a href="{% url 'hostel' %}"><i class='bx  bx-building-house'  ></i> </a></p>
+                <p><a href="{% url 'movie' %}"><i class='bx  bx-movie-play'  ></i> </a></p>
+                <p><a href="{% url 'messages' %}"><i class='bx  bx-message-dots'  ></i> </a></p>
+                <p><a href="{% url 'account-settings' %}"><i class='bx  bx-cog'  ></i> </a></p>
+                {% if request.user.profile.profile_pic %}
+                    <img id="profilepage" src="{{ request.user.profile.profile_pic.url }}" alt="profilepic">
+                {% else %}
+                    <img id="profilepage" src="{% static 'img/user_avatar.jpg' %}" alt="profilepic">
+                {% endif %}
             </div>
         </nav>
     </header>
     {% block content %}
     {% endblock %}
+
+    <script>
+        // for home and profile buttons
+        document.addEventListener('DOMContentLoaded', () => {
+            const homepageImg = document.getElementById('homepage');
+            const profilepageImg = document.getElementById('profilepage');
+
+            homepageImg.addEventListener('click', () => {
+                window.location.href = "{% url 'hom' %}"; // Adjust URL as needed
+            });
+
+            profilepageImg.addEventListener('click', () => {
+                window.location.href = "{% url 'profile' %}"; // Adjust URL as needed
+            });
+        });
+
+    </script>
 </body>
 </html>
