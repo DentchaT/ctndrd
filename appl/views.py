@@ -14,7 +14,7 @@ def terms(request):
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
 @login_required
-def hom(request):
+def home(request):
     posts = Post.objects.all().order_by('-id')
     for post in posts:
         post.has_commented = post.comments.filter(user=request.user).exists()

@@ -12,7 +12,7 @@ urlpatterns = [
     path('signup/',views.SignupPage,name='signup'),
     path('login/',views.LoginPage,name='login'),
     path('',views.LoginPage,name='login_page'),
-    path('home',views.HomePage,name='home'),
+    path('hom',views.HomePage,name='hom'),
     path('post_like/<int:pk>', views.post_like, name='post_like'),
     path('post_save/<int:pk>', views.post_save, name='post_save'),
     path('my_posts/',views.my_posts,name='my_posts'),
@@ -37,7 +37,7 @@ urlpatterns = [
     #-------------------------------------------------------------------------
     #---------------------code by Dr.James Atwiine----------------------------
     #-------------------------------------------------------------------------
-    path('hom',views.hom,name='hom'),
+    path('home',views.home,name='home'),
 ]
 
 
