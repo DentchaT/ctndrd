@@ -24,12 +24,30 @@ def hom(request):
         'saved_posts':saved_posts,
     }
     if request.method == 'POST':
-        if 'comment_submit' in request.POST:
+        if 'post_submit' in request.POST:
+            post_form = Postform(request.POST, request.FILES)
+            if post_form.is_valid():
+                post_content = request.POST.get('content')
+                post_media = request.FILES.get('media')
+                post = Post(
+                    content=post_content,
+                    author=request.user
+                )
+                if post_media:
+                    file_type = post_media.content_type.split('/')[0]
+                    if file_type == 'image':
+                        post.image = post_media
+                    elif file_type == 'video':
+                        post.video = post_media
+                        
+                post.save()
+                return redirect('hom')
+        elif 'comment_submit' in request.POST:
             post_id = request.POST.get('post_id')
             post = Post.objects.get(id=post_id)
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
-            return redirect('home')
+            return redirect('hom')
     return render(request,'ctndrd/home.html',context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
