@@ -39,6 +39,13 @@
                     <div class="post-image">
                         {% if post.image %}
                             <img src="{{ post.image.url }}" alt="">
+                        {% elif post.video %}
+                        <video id="post-video" controls loop muted autoplay playsinline>
+                            <source src="{{ post.video.url }}" type="video/mp4">
+                            <source src="{{ post.video.url|slice:'0:-4' }}.webm" type="video/webm">
+                            <source src="{{ post.video.url|slice:'0:-4' }}.ogg" type="video/ogg">
+                            Your browser does not support the video tag
+                        </video>
                         {% endif %}
                     </div>
                     <div class="post-actions">
@@ -183,6 +190,15 @@
                     }
                 }
             });
+        });
+    });
+
+    // for video-post
+    document.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('post-video');
+
+        video.addEventListener('click', () => {
+            video.muted = false;
         });
     });
 </script>
