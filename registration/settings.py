@@ -7,16 +7,14 @@
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-#import django_heroku #for heroku--------------
-import dj_database_url#for heroku------and---railway-----
-#from decouple import config#for heroku--------------
+import dj_database_url
 import cloudinary
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-#load our environmental variables
+
 load_dotenv()
 
 # Quick-start development settings - unsuitable for production
@@ -106,7 +104,7 @@ WSGI_APPLICATION = 'registration.wsgi.application'
 #}
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))#os.environ.get('DATABASE_URL'))#
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))#os.getenv('DATABASE_URL'))#
 }
 
 #-------------------------------------------------------------------------

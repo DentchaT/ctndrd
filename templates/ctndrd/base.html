@@ -52,6 +52,9 @@
             display: flex;
             flex-direction: column;
         }
+        .notex{
+            display: none;
+        }
         .post{
             margin-bottom: 10px;
         }
@@ -254,6 +257,27 @@
         }
         .foot button:hover{
             color: rgb(48, 241, 248);
+        }
+
+        @media screen and (min-width: 500px) {
+        .header{
+            display: none;
+        }
+        .post{
+            display: none;
+        }
+        .notex{
+            display: block;
+            font-family: sans-serif;
+        }
+        .notex-img{
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+        }
+        .footer{
+            display: none;
+        }
         }
     </style>
 </head>

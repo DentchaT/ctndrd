@@ -5,6 +5,7 @@
 
 {% block content %}
     <section>
+        <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
         {% if posts %}
             {% for post in posts %}
                 <div class="post">
@@ -89,7 +90,7 @@
             <p>No posts</p>
         {% endif %}
     </section>
-    <footer>
+    <footer class="footer">
         <div class="foot">
             <a href="{% url 'discover' %}"><button>Discover</button></a>
             <a href="{% url 'bookmark' %}"><button>Saved</button></a>
