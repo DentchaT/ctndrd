@@ -84,18 +84,9 @@ def discover(request):
 @login_required
 def bookmarked(request):
     saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
-    query=request.GET.get('s') 
-    if query:
-        posts = Post.objects.filter(
-            Q(content__icontains=query) |
-            Q(savedpost__user=request.user)
-            ).order_by('-savedpost__saved_at')
-        for post in posts:
-            post.has_commented = post.comments.filter(user=request.user).exists()
-    else:
-        posts = Post.objects.filter(savedpost__user=request.user).order_by('-savedpost__saved_at')
-        for post in posts:
-            post.has_commented = post.comments.filter(user=request.user).exists()
+    posts = Post.objects.filter(savedpost__user=request.user).order_by('-savedpost__saved_at')
+    for post in posts:
+        post.has_commented = post.comments.filter(user=request.user).exists()
 
     mydict={
         'posts':posts,
