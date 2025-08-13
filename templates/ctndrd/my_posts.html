@@ -1,0 +1,197 @@
+{% extends 'ctndrd/base.html' %}
+{% load static %}
+
+{% block title %}my_posts{% endblock %}
+
+{% block content %}
+    <section>
+        <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
+        <div class="create-post">
+            <form id="formx" method="get" action="">
+                <div class="create-post-form">
+                    <div class="input-img">
+                        <textarea name="q" rows="1" placeholder="My post search" id="create-post"></textarea>
+                        <div class="lst">
+                            <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
+                            <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
+                        </div>
+                    </div>
+                    <button type="submit" form="formx" name="post_submit">Search</button>
+                </div>
+            </form>
+        </div>
+        {% if posts %}
+            {% for post in posts %}
+                <div class="post">
+                    <div class="post-head">
+                        {% if post.author.profile.profile_pic %}
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img src="{{ post.author.profile.profile_pic.url }}" alt="profilepic"></a>
+                        {% else %}
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt="profilepic"></a>
+                        {% endif %}
+                        <div class="post-head-bio">
+                            <h4>{{post.author.profile.firstname}} {{post.author.profile.lastname}}</h4>
+                            <p>@{{post.author.username}}, posted {{post.created_at|timesince}} ago</p>
+                        </div>
+                        <p><i class='bx  bx-dots-horizontal-rounded'></i></p>
+                    </div>
+                    <div class="post-image">
+                        {% if post.image %}
+                            <img src="{{ post.image.url }}" alt="">
+                        {% elif post.video %}
+                        <video id="post-video" controls loop muted autoplay playsinline>
+                            <source src="{{ post.video.url }}" type="video/mp4">
+                            <source src="{{ post.video.url|slice:'0:-4' }}.webm" type="video/webm">
+                            <source src="{{ post.video.url|slice:'0:-4' }}.ogg" type="video/ogg">
+                            Your browser does not support the video tag
+                        </video>
+                        {% endif %}
+                    </div>
+                    <div class="post-actions">
+                        <div class="action">
+                            <a href="{% url 'post_like' post.id %}" class="like-btn" data-post-id="{{ post.id }}">
+                                {% if user in post.likes.all %}
+                                    <p style="color: red;"><i id="like-icon-{{ post.id }}" class='bx  bxs-heart'  ></i></p>
+                                {% else %}
+                                    <p style="color: #050a30;"><i id="like-icon-{{ post.id }}" class='bx bx-heart'></i></p>
+                                {% endif %}
+                            </a>
+                            {% if post.has_commented %}
+                                <p><i class='bx  bx-message-dots'  ></i> </p>
+                            {% else %}
+                                <p><i class='bx  bx-message'  ></i> </p>
+                            {% endif %}
+                        </div>
+                        <a href="#" class="save-post" data-post-id="{{ post.id }}">
+                            {% if post.id in saved_posts %}
+                                <p style="color: #050a30;"><i class='bx  bxs-bookmark-alt'  ></i> </p>
+                            {% else %}
+                                <p><i class='bx  bx-bookmark-alt'></i></p>
+                            {% endif %}
+                        </a>
+                    </div>
+                    <div class="likes-comments">
+                        <div class="profile-pics">
+                            {% for user in post.likes.all|slice:":3" %}
+                                {% if user.profile.profile_pic %}
+                                    <img src="{{ user.profile.profile_pic.url }}" alt="profilepic">
+                                {% else %}
+                                    <img src="{% static 'img/user_avatar.jpg' %}" alt="profilepic">
+                                {% endif %}
+                            {% endfor %} 
+                        </div>
+                        <div class="likcom">
+                            <p class="likes-count"><span>{{post.number_of_likes }}</span>likes</p>
+                            <p><span>{{post.comments.count}}</span>comments</p>
+                        </div>
+                    </div>
+                    <div class="post-message">
+                        <h4>{{post.author.profile.firstname}}:</h4>
+                        <p>{{post.content}}</p>
+                    </div>
+                    <div class="comments">
+                        {% if post.comments.all %}
+                            <div class="comm">
+                                {% for comment in post.comments.all %}
+                                    <div class="sub-comment">
+                                        {% if comment.user.profile.profile_pic %}
+                                            <a href="{% url 'view_profile' pk=comment.user.profile.id %}"><img src="{{comment.user.profile.profile_pic.url}}" alt=""></a>
+                                        {% else %}
+                                            <a href="{% url 'view_profile' pk=comment.user.profile.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                                        {% endif %}
+                                        <div class="post-messages">
+                                            <h4>@{{comment.user.username}}</h4>
+                                            <div class="pes">
+                                                <p style="font-size: 12px;">{{comment.date_added|timesince}} ago</p>
+                                                <p>{{comment.body}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <div class="post-a-comment">
+                            <form method="post" enctype="multipart/form-data" action="">
+                            {% csrf_token %}
+                                <input type="hidden" name="post_id" value="{{post.id}}" >
+                                <input type="text" required name="body" placeholder="Enter comment">
+                                <button type="submit" name="comment_submit" >Post</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Ooops...Try searching something else...!</p>
+        {% endif %}
+    </section>
+    <footer class="footer">
+        <div class="foot">
+            <a href="{% url 'home' %}"><button>Home</button></a>
+            <a href="{% url 'discover' %}"><button>Discover</button></a>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    //for file input in post
+    const fileInputs = document.querySelectorAll('input[name="media"]');
+    fileInputs.forEach((fileInput) => {
+        const parent = fileInput.parentNode;
+        const image = parent.querySelector('img');
+        image.addEventListener('click', () => {
+            fileInput.click();
+        });
+    });
+
+    //for post like
+    $(document).ready(function() {
+        $('.like-btn').click(function(event) {
+            event.preventDefault();
+            var $button = $(this); // Store $(this)
+            var post_id = $button.data('post-id');
+            var $icon = $('#like-icon-' + post_id);
+            $.ajax({
+                type: 'POST',
+                url: '{% url "post_like" 0 %}'.replace('0', post_id),
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.liked) {
+                        $icon.removeClass('bx-heart').addClass('bxs-heart').css('color', 'red').hide().fadeIn(200);
+                    } else {
+                        $icon.removeClass('bxs-heart').addClass('bx-heart').css('color', '#050a30').hide().fadeIn(200);
+                    }
+                    // Update like count display
+                    $button.closest('.post').find('.likes-count span').text(response.like_count);
+                }
+            });
+        });
+    });
+    
+    //--------------------- for bookmark---------------
+    $(document).ready(function() {
+        $('.save-post').click(function(event) {
+            event.preventDefault();
+            var post_id = $(this).data('post-id');
+            var bookmarkIcon = $(this).find('i');
+            $.ajax({
+                type: 'POST',
+                url: '{% url "post_save" 0 %}'.replace('0', post_id),
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                    if (response.saved) {
+                        bookmarkIcon.removeClass('bx-bookmark-alt').addClass('bxs-bookmark-alt').closest('p').css('color', '#050a30');
+                    } else {
+                        bookmarkIcon.removeClass('bxs-bookmark-alt').addClass('bx-bookmark-alt').closest('p').css('color', '');
+                    }
+                }
+            });
+        });
+    });
+
+</script>
+    
+{% endblock %}

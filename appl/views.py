@@ -103,6 +103,34 @@ def bookmarked(request):
         
     return render(request, 'ctndrd/bookmarked.html',context=mydict)
 
+@login_required
+def my_post(request):
+    saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
+    query=request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(content__icontains=query,author=request.user).order_by('-id')
+        for post in posts:
+            post.has_commented = post.comments.filter(user=request.user).exists()
+    else:
+        posts = Post.objects.filter(author=request.user).order_by('-id')
+        for post in posts:
+            post.has_commented = post.comments.filter(user=request.user).exists() 
+
+    mydict = {
+        'posts':posts,
+        'saved_posts':saved_posts
+    }
+
+    if request.method=='POST':
+        if 'comment_submit' in request.POST:
+            post_id = request.POST.get('post_id')
+            post = Post.objects.get(id=post_id)
+            comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
+            comment.save()
+            return redirect('discover')
+
+    return render(request, 'ctndrd/my_posts.html', context=mydict)
+
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
