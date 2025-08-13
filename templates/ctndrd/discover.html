@@ -8,7 +8,6 @@
         <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
         <div class="create-post">
             <form id="formx" method="get" action="">
-            {% csrf_token %}
                 <div class="create-post-form">
                     <div class="input-img">
                         <textarea name="q" rows="1" placeholder="Discover by searching post content " id="create-post"></textarea>
@@ -129,7 +128,7 @@
     <footer class="footer">
         <div class="foot">
             <a href="{% url 'home' %}"><button>Home</button></a>
-            <a href="{% url 'bookmark' %}"><button>Saved</button></a>
+            <a href="{% url 'bookmarked' %}"><button>Saved</button></a>
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

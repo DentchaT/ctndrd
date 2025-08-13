@@ -7,17 +7,16 @@
     <section>
         <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
         <div class="create-post">
-            <form id="formx" method="post" enctype="multipart/form-data" action="">
-            {% csrf_token %}
+            <form id="formx" method="get" action="">
                 <div class="create-post-form">
                     <div class="input-img">
-                        <textarea name="content" rows="1" required placeholder="what's on your mind, {{request.user.profile.firstname}}?" id="create-post"></textarea>
+                        <textarea name="s" rows="1" placeholder="Get saved posts by searching " id="create-post"></textarea>
                         <div class="lst">
-                            <input style="display: none;" type="file" class="btn btn-primary" required name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
-                            <img style="width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
+                            <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
+                            <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
                         </div>
                     </div>
-                    <button type="submit" form="formx" name="post_submit">Publish</button>
+                    <button type="submit" form="formx" name="s">Search</button>
                 </div>
             </form>
         </div>
@@ -123,13 +122,13 @@
                 </div>
             {% endfor %}
         {% else %}
-            <p>Follow users to view their posts, or go to Discover</p>
+            <p>Ooops...Try searching something else...!</p>
         {% endif %}
     </section>
     <footer class="footer">
         <div class="foot">
+            <a href="{% url 'home' %}"><button>Home</button></a>
             <a href="{% url 'discover' %}"><button>Discover</button></a>
-            <a href="{% url 'bookmarked' %}"><button>Saved</button></a>
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

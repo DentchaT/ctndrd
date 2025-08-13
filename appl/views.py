@@ -53,7 +53,7 @@ def home(request):
 
 @login_required
 def discover(request):
-
+    saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
     query=request.GET.get('q')
     if query:
         posts = Post.objects.filter(
@@ -61,9 +61,17 @@ def discover(request):
             Q(author__profile__lastname__icontains=query) |
             Q(content__icontains=query)
             ).order_by('-id')
+        for post in posts:
+            post.has_commented = post.comments.filter(user=request.user).exists()
     else:
         posts = Post.objects.all().order_by('-id')
+        for post in posts:
+            post.has_commented = post.comments.filter(user=request.user).exists()
 
+    mydict={
+        'posts':posts,
+        'saved_posts':saved_posts
+    }
     if request.method=='POST':
         if 'comment_submit' in request.POST:
             post_id = request.POST.get('post_id')
@@ -72,7 +80,38 @@ def discover(request):
             comment.save()
             return redirect('discover')
 
-    return render(request, 'ctndrd/discover.html', {'posts':posts}) 
+    return render(request, 'ctndrd/discover.html',context=mydict) 
+@login_required
+def bookmarked(request):
+    saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
+    query=request.GET.get('s') 
+    if query:
+        posts = Post.objects.filter(
+            Q(content__icontains=query) |
+            Q(savedpost__user=request.user)
+            ).order_by('-savedpost__saved_at')
+        for post in posts:
+            post.has_commented = post.comments.filter(user=request.user).exists()
+    else:
+        posts = Post.objects.filter(savedpost__user=request.user).order_by('-savedpost__saved_at')
+        for post in posts:
+            post.has_commented = post.comments.filter(user=request.user).exists()
+
+    mydict={
+        'posts':posts,
+        'saved_posts':saved_posts
+    }
+    
+    if request.method=='POST':
+        if 'comment_submit' in request.POST:
+            post_id = request.POST.get('post_id')
+            post = Post.objects.get(id=post_id)
+            comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
+            comment.save()
+            return redirect('bookmarked')
+        
+    return render(request, 'ctndrd/bookmarked.html',context=mydict)
+
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):

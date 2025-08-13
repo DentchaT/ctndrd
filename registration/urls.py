@@ -20,7 +20,7 @@ urlpatterns = [
     path('profile/',views.profile,name='profile'),
     path('view_profile/<int:pk>/',views.view_profile,name='view_profile'),
     path('delete_post/<int:pk>/',views.delete_post,name='delete_post'),
-    path('bookmark/',views.bookmark, name='bookmark'),
+    path('bookmark/',views.bookmark, name='bookmark'),#-------------------------
     path('discov/',views.discov, name='discov'),#------------------------------ 
     path('follow/<int:pk>/', views.follow_user, name='follow_user'),
     path('decline/<int:pk>/', views.decline_user, name='decline_user'),
@@ -39,6 +39,7 @@ urlpatterns = [
     #-------------------------------------------------------------------------
     path('home',views.home,name='home'),
     path('discover',views.discover, name='discover'),
+    path('bookmarked/',views.bookmarked, name='bookmarked'),
 ]
 
 
