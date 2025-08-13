@@ -15,7 +15,8 @@ def terms(request):
 #-------------------------------------------------------------------------
 @login_required
 def home(request):
-    posts = Post.objects.all().order_by('-id')
+    followed_users=request.user.profile.follows.all()
+    posts=Post.objects.filter(author_id__in=followed_users.values_list('user_id', flat=True)).order_by('-created_at')
     for post in posts:
         post.has_commented = post.comments.filter(user=request.user).exists()
     saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
