@@ -42,14 +42,37 @@ def home(request):
                         post.video = post_media
                         
                 post.save()
-                return redirect('hom')
+                return redirect('home')
         elif 'comment_submit' in request.POST:
             post_id = request.POST.get('post_id')
             post = Post.objects.get(id=post_id)
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
-            return redirect('hom')
+            return redirect('home')
     return render(request,'ctndrd/home.html',context=mydict)
+
+@login_required
+def discover(request):
+
+    query=request.GET.get('q')
+    if query:
+        posts = Post.objects.filter(
+            Q(author__profile__firstname__icontains=query) |
+            Q(author__profile__lastname__icontains=query) |
+            Q(content__icontains=query)
+            ).order_by('-id')
+    else:
+        posts = Post.objects.all().order_by('-id')
+
+    if request.method=='POST':
+        if 'comment_submit' in request.POST:
+            post_id = request.POST.get('post_id')
+            post = Post.objects.get(id=post_id)
+            comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
+            comment.save()
+            return redirect('discover')
+
+    return render(request, 'ctndrd/discover.html', {'posts':posts}) 
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -217,7 +240,7 @@ def bookmark(request):
 #-------------------------------------------------------------------------
 #------------------DISCOVER POSTS---------------------
 @login_required
-def discover(request):
+def discov(request):
 
     query=request.GET.get('q')
     if query:

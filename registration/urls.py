@@ -12,7 +12,7 @@ urlpatterns = [
     path('signup/',views.SignupPage,name='signup'),
     path('login/',views.LoginPage,name='login'),
     path('',views.LoginPage,name='login_page'),
-    path('hom',views.HomePage,name='hom'),
+    path('hom',views.HomePage,name='hom'),#---------------------------------
     path('post_like/<int:pk>', views.post_like, name='post_like'),
     path('post_save/<int:pk>', views.post_save, name='post_save'),
     path('my_posts/',views.my_posts,name='my_posts'),
@@ -21,7 +21,7 @@ urlpatterns = [
     path('view_profile/<int:pk>/',views.view_profile,name='view_profile'),
     path('delete_post/<int:pk>/',views.delete_post,name='delete_post'),
     path('bookmark/',views.bookmark, name='bookmark'),
-    path('discover/',views.discover, name='discover'),
+    path('discov/',views.discov, name='discov'),#------------------------------ 
     path('follow/<int:pk>/', views.follow_user, name='follow_user'),
     path('decline/<int:pk>/', views.decline_user, name='decline_user'),
     path('movie/',views.movie,name='movie'),
@@ -38,6 +38,7 @@ urlpatterns = [
     #---------------------code by Dr.James Atwiine----------------------------
     #-------------------------------------------------------------------------
     path('home',views.home,name='home'),
+    path('discover',views.discover, name='discover'),
 ]
 
 
