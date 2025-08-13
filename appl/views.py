@@ -1,6 +1,6 @@
 from django.shortcuts import render,HttpResponse,redirect, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate,login,logout as auth_logout
 from .models import Post, Profile, Story, Comments, Movie, Order,Message,SavedPost
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -441,6 +441,7 @@ def LoginPage(request):
 #-------------------------------------------------------------------------
 #----------------------------LOGOUT---------------------------
 def Logout(request):
+    auth_logout(request)
     return redirect('login')
 #----------------------------LOGOUT END HERE---------------------------
 #-------------------------------------------------------------------------
