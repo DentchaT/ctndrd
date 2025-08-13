@@ -26,9 +26,9 @@
                 <div class="post">
                     <div class="post-head">
                         {% if post.author.profile.profile_pic %}
-                            <img src="{{ post.author.profile.profile_pic.url }}" alt="profilepic">
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img src="{{ post.author.profile.profile_pic.url }}" alt="profilepic"></a>
                         {% else %}
-                            <img src="{% static 'img/user_avatar.jpg' %}" alt="profilepic">
+                            <a href="{% url 'view_profile' pk=post.author.profile.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt="profilepic"></a>
                         {% endif %}
                         <div class="post-head-bio">
                             <h4>{{post.author.profile.firstname}} {{post.author.profile.lastname}}</h4>
@@ -96,9 +96,9 @@
                                 {% for comment in post.comments.all %}
                                     <div class="sub-comment">
                                         {% if comment.user.profile.profile_pic %}
-                                            <img src="{{comment.user.profile.profile_pic.url}}" alt="">
+                                            <a href="{% url 'view_profile' pk=comment.user.profile.id %}"><img src="{{comment.user.profile.profile_pic.url}}" alt=""></a>
                                         {% else %}
-                                            <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                                            <a href="{% url 'view_profile' pk=comment.user.profile.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
                                         {% endif %}
                                         <div class="post-messages">
                                             <h4>@{{comment.user.username}}</h4>
