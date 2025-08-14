@@ -10,8 +10,8 @@ from appl import views
 urlpatterns = [
     path('admin/',admin.site.urls),
     path('signup/',views.SignupPage,name='signup'),
-    path('login/',views.LoginPage,name='login'),
-    path('',views.LoginPage,name='login_page'),
+    path('login/',views.LoginPage,name='login'),#---------------------------
+    path('',views.LoginPage,name='login_page'),#---------------------------
     path('hom',views.HomePage,name='hom'),#---------------------------------
     path('post_like/<int:pk>', views.post_like, name='post_like'),
     path('post_save/<int:pk>', views.post_save, name='post_save'),

@@ -1,4 +1,5 @@
 from django.shortcuts import render,HttpResponse,redirect, get_object_or_404
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout as auth_logout
 from .models import Post, Profile, Story, Comments, Movie, Order,Message,SavedPost
@@ -425,16 +426,18 @@ def SignupPage(request):
 #-------------------------------------------------------------------------
 #-----------------------LOGIN ------------------------------
 def LoginPage(request):
+    message = request.GET.get('message')
     if request.method == 'POST':
         username = request.POST['username']
         pass1 = request.POST['pass']
-        user = authenticate(request,username=username,password=pass1) 
+        user = authenticate(request, username=username, password=pass1)
         if user is not None:
-            login(request,user)
+            login(request, user)
             return redirect('home')
         else:
-            return HttpResponse("Attention, Username or password is incorrect")
-    return render(request, 'login&signup/login.html')
+            message = "Username or password is incorrect"
+            return redirect(reverse('login') + f'?message={message}')
+    return render(request, 'ctndrd/login.html', {'message': message})
 #-----------------------LOGIN END HERE ------------------------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
