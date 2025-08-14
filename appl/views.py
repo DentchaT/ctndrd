@@ -406,20 +406,21 @@ def delete_post(request,pk):
 #-------------------------------------------------------------------------
 #-------------------------SIGNUP------------------------
 def SignupPage(request):
+    message = request.GET.get('message')
     if request.method == 'POST':
         username = request.POST.get('username')
         email = request.POST.get('email')
         pass1 = request.POST.get('password1')
         pass2 = request.POST.get('password2')
-        gender = request.POST.get('gender')
         if pass1 != pass2:
-            return HttpResponse("Your password and comfirm password are not the same.")
+            message = "Your password and comfirm password are not the same"
+            return redirect(reverse('signup') + f'?message={message}')
         else:
             my_user = User.objects.create_user(username,email,pass1)  
             my_user.save()
             return redirect('login')
 
-    return render(request, 'login&signup/signup.html')
+    return render(request, 'ctndrd/signup.html', {'message': message})
 #-------------------------SIGNUP END HERE------------------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------

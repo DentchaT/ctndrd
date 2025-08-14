@@ -9,14 +9,14 @@ from appl import views
 #-------------------------------------------------------------------------
 urlpatterns = [
     path('admin/',admin.site.urls),
-    path('signup/',views.SignupPage,name='signup'),
+    path('signup/',views.SignupPage,name='signup'),#---------------------------
     path('login/',views.LoginPage,name='login'),#---------------------------
     path('',views.LoginPage,name='login_page'),#---------------------------
     path('hom',views.HomePage,name='hom'),#---------------------------------
     path('post_like/<int:pk>', views.post_like, name='post_like'),
     path('post_save/<int:pk>', views.post_save, name='post_save'),
     path('my_posts/',views.my_posts,name='my_posts'),#--------------------------
-    path('logout/',views.Logout,name='logout'),
+    path('logout/',views.Logout,name='logout'),#--------------------------
     path('profile/',views.profile,name='profile'),
     path('view_profile/<int:pk>/',views.view_profile,name='view_profile'),
     path('delete_post/<int:pk>/',views.delete_post,name='delete_post'),

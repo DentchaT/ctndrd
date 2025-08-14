@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ctndrd | login</title>
+    <link rel="icon" type="image/png" href="{% static 'img/ctndrd41.png' %}">
+
+    <style>
+        body{
+            background-color: #f4f6fc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            width: 97%;
+            margin: 0 5px;
+        }
+        .logo{
+            margin-top: 10%;
+            height: 150px;
+            width: 150px;
+            border-radius: 50%;
+            background-color: #f4f6fc;
+            border: none;
+            outline: none;
+            z-index: 1;
+        }
+        .logo img{
+            height: 150px;
+            margin-left: -2px;
+            width: 150px;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+        }
+        .notex{
+            display: none;
+        }
+        .form{
+            margin-top: -45px;
+            background-color: #050a30;
+            width: 100%;
+            border-radius: 8px;
+            padding-bottom: 10px;
+        }
+        .form form{
+            margin-top: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        .input_text{
+            width: 80%;
+            height: 40px;
+            margin-top: 20px;
+            border-radius: 5px;
+            padding-left: 10px;
+            border: none;
+            outline: none;
+            font-family: sans-serif;
+            font-size: 18px;
+            color: #050a30;
+            background-color: #f4f6fc;
+        }
+        .input_text::placeholder{
+            font-family: sans-serif;
+            font-size: 15px;
+            color: #050a30;
+        }
+        .check_container{
+            width: 100%;
+            display: flex;
+            gap: 10px;
+            padding-left: 90px;
+        }
+        .input_check{
+            border: none;
+            outline: none;
+            background-color: #f4f6fc;
+            color: #050a30;
+            border-radius: 5px;
+        }
+        .check_container{
+            font-family: sans-serif;
+            font-size: 15px;
+            color: #f4f6fc;
+            display: flex;
+            align-items: center;
+        }
+        .btn{
+            font-family: sans-serif;
+            font-size: 15px;
+            color: #050a30;
+            background-color: rgb(48, 241, 248);
+            width: 100px;
+            height: 40px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+        }
+        .form p{
+            font-family: sans-serif;
+            font-size: 12px;
+            color: #f4f6fc;
+            text-align: center;
+        }
+        .form a{
+            color: rgb(48, 241, 248);
+        }
+        @media screen and (min-width: 500px) {
+            body{
+                position: relative;
+                padding-top: 10%;
+            }
+            .logo{
+                display: none;
+            }
+            .form{
+                display: none;
+            }
+            .notex{
+                display: block;
+                font-family: sans-serif;
+            }
+            .notex-img{
+                width: 170px;
+                height: 170px;
+                border-radius: 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="{% static 'img/ctndrdz.png' %}" alt="">
+    </div>
+    <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
+    <div class="form">
+        <form id="login-form" method="post" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+            {% if message %}
+                <p style="color: red;" class="messagex">{{message}}......!</p>
+            {% endif %}
+            <input class="input_text" required type="text" placeholder="Username" name="username">
+            <input class="input_text" required type="email" placeholder="Email address" name="email">
+            <input class="input_text" required type="password" placeholder="Password" name="password1">
+            <input class="input_text" required type="password" placeholder="Renter Password" name="password2">
+            <div class="check_container">
+                <input class="input_check" type="checkbox">
+                <p>I agree to the terms</p>
+            </div>
+            <button type="submit" form="login-form" class="btn">Signup</button>
+        </form>
+        <p>Don't have an account? <span><a href="{% url 'login' %}">Login</a></span></p>
+        <p class="terms"><a href="{% url 'terms' %}">Terms and Conditions</a></p>
+    </div>
+</body>
+</html>
