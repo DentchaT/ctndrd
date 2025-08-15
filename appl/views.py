@@ -128,7 +128,7 @@ def my_post(request):
             post = Post.objects.get(id=post_id)
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
-            return redirect('discover')
+            return redirect('my_post')
 
     return render(request, 'ctndrd/my_posts.html', context=mydict)
 
@@ -399,7 +399,7 @@ def delete_post(request,pk):
     post=get_object_or_404(Post,pk=pk)
     if post.author==request.user:
         post.delete()
-    return redirect('my_posts')
+    return redirect('my_post')
 #--------POST DELETE END HERE-----------------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
