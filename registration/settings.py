@@ -100,7 +100,7 @@ WSGI_APPLICATION = 'registration.wsgi.application'
 #        'PASSWORD': os.environ.get('DB_PASSWORD'),
 #        'HOST': 'postgres.railway.internal',
 #        'PORT': '5432',
-#    }
+#    } 
 #}
 
 DATABASES = {
