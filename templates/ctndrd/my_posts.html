@@ -33,7 +33,7 @@
                             <h4>{{post.author.profile.firstname}} {{post.author.profile.lastname}}</h4>
                             <p>@{{post.author.username}}, posted {{post.created_at|timesince}} ago</p>
                         </div>
-                        <p><a href="{% url 'delete_post' post.id %}">Del</a></p>
+                        <a href="{% url 'delete_post' post.id %}"><p>Del</p></a>
                     </div>
                     <div class="post-image">
                         {% if post.image %}
