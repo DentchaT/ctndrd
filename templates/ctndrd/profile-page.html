@@ -30,8 +30,8 @@
                 {% endif %}
             </div>
             <div class="title one">
-                <button class="edit_account"><a href="{% url 'account-settings' %}"><i class='bx  bx-cog'></i> Edit Account details</a></button>
-                <button class="logout"><a href="{% url 'logout' %}">Logout<i class='bx  bxs-walking'  ></i> </a></button>
+                <button style="background-color: green; border-radius: 5px;"  class="edit_account"><a href="{% url 'account-settings' %}"><i class='bx  bx-cog'></i> Edit Account details</a></button>
+                <button style="background-color: red; border-radius: 5px;" class="logout"><a href="{% url 'logout' %}">Logout<i class='bx  bxs-walking'  ></i> </a></button>
             </div>
         </div>
         <div class="biodata">
@@ -79,7 +79,7 @@
                             <p>@{{s.user.username}}</p>
                         </div>
                         <div class="connect-btn-suggest">
-                            <a href="{% url 'follow_user' s.pk %}"><button>Connect <i class='bx  bx-user-plus'></i> </button></a>
+                            <a href="{% url 'follow_user' s.pk %}"><button>Connect</button></a>
                         </div>
                     </div>
                 {% endfor %}
@@ -151,14 +151,15 @@
                     <form style="
                     display: flex;
                     flex-direction: column;
-                    width: 100%;;" method="post" enctype="multipart/form-data">
+                    width: 80%;
+                    padding: 10px;" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                         <label style="margin-bottom: 10px;" for="title">Product name:</label>
                         <input style="
                         height: 30px;
                         width: 100%;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         border: 1px solid #ccc;" type="text" required id="title" name="item">
     
                         
@@ -167,7 +168,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="category" name="description">
     
@@ -175,7 +176,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="file" required id="movie" name="image">
     
@@ -183,7 +184,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="actors" name="price">
     
@@ -217,21 +218,22 @@
                     <form style="
                     display: flex;
                     flex-direction: column;
-                    width: 100%;" method="post" enctype="multipart/form-data">
+                    width: 80%;
+                    padding: 10px;" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                         <label style="margin-bottom: 10px;" for="title">Song Title:</label>
                         <input style="
                         height: 30px;
                         width: 100%;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         border: 1px solid #ccc;" type="text" required id="title" name="title">
 
                         <label style="margin-bottom: 10px;" for="title">Poster:</label>
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="file" required id="poster" name="poster">
 
@@ -239,7 +241,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="file" required id="movie" name="song">
 
@@ -247,7 +249,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="actors" name="artist">
 
@@ -255,7 +257,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="category" name="genre">
 
@@ -289,14 +291,15 @@
                     <form style="
                     display: flex;
                     flex-direction: column;
-                    width: 100%;" method="post" enctype="multipart/form-data">
+                    width: 80%;
+                    padding: 10px;" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                         <label style="margin-bottom: 10px;" for="title">Hostel name:</label>
                         <input style="
                         height: 30px;
                         width: 100%;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         border: 1px solid #ccc;" type="text" required id="title" name="name">
 
                         
@@ -305,7 +308,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="category" name="about">
 
@@ -313,7 +316,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="category" name="residents">
 
@@ -321,7 +324,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="category" name="location">
 
@@ -329,7 +332,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="file" required id="movie" name="image">
 
@@ -337,7 +340,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="file" id="movie" name="video">
 
@@ -345,7 +348,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="actors" name="price">
 
@@ -353,7 +356,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="tel" required id="category" name="contact">
 
@@ -387,21 +390,22 @@
                     <form style="
                     display: flex;
                     flex-direction: column;
-                    width: 100%;" method="post" enctype="multipart/form-data">
+                    width: 80%;
+                    padding: 10px;;" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                         <label style="margin-bottom: 10px;" for="title">Movie Title:</label>
                         <input style="
                         height: 30px;
                         width: 100%;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         border: 1px solid #ccc;" type="text" required id="title" name="title">
 
                         <label style="margin-bottom: 10px;" for="title">Poster:</label>
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="file" required id="poster" name="poster">
 
@@ -409,7 +413,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="file" required id="movie" name="movie">
 
@@ -417,7 +421,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="actors" name="actors">
 
@@ -425,7 +429,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" required type="number" id="rating" name="rating" step="0.1" min="0" max="10">
 
@@ -433,7 +437,7 @@
                         <textarea style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" required id="description" name="description"></textarea>
 
@@ -441,7 +445,7 @@
                         <input style="
                         height: 30px;
                         margin-bottom: 20px;
-                        border-radius: 12px;
+                        border-radius: 5px;
                         width: 100%;
                         border: 1px solid #ccc;" type="text" required id="category" name="category">
 
