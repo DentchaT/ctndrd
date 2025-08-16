@@ -34,14 +34,14 @@
             <div class="create">
               <div class="profile-photo">
                 {% if profile.profile_pic %}
-                  <a href="{% url 'profile' %}"><img style="
+                  <a href="{% url 'my_profile' %}"><img style="
                   width: 40px;
                   height: 40px;
                   border-radius: 50%;
                   object-fit: cover;
                   object-position: center;" src="{{ profile.profile_pic.url }}" alt=""></a>
                 {% else %}
-                <a href="{% url 'profile' %}"><img style="
+                <a href="{% url 'my_profile' %}"><img style="
                   width: 40px;
                   height: 40px;
                   border-radius: 50%;

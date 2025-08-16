@@ -132,6 +132,81 @@ def my_post(request):
 
     return render(request, 'ctndrd/my_posts.html', context=mydict)
 
+@login_required
+def my_profile(request):
+    profile=Profile.objects.get(user=request.user)
+    suggestion=Profile.objects.all().order_by('-follows')
+    followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all())
+    
+    query=request.GET.get('q')
+    if query:
+        suggestion=Profile.objects.filter(firstname__icontains=query) 
+
+    mydict = {
+        'profile':profile,
+        'suggestion':suggestion,
+        'followers':followers,
+    }
+
+    if request.method =='POST':
+        if 'product_submit' in request.POST:
+            product =Product(item=request.POST.get('item'),
+                        description=request.POST.get('description'),
+                        price=request.POST.get('price'),
+                        image=request.FILES.get('image'),
+                        author=request.user,
+                        )
+            product.save()
+            return redirect('shop')
+        elif 'movie_submit' in request.POST:
+            movie =Movie(title=request.POST.get('title'),
+                     description=request.POST.get('description'),
+                     actors=request.POST.get('actors'),
+                     rating=request.POST.get('rating'),
+                     category=request.POST.get('category'),
+                     thumbnail=request.FILES.get('poster'),
+                     movie=request.FILES.get('movie'),
+                     author=request.user,
+                     )
+            movie.save()
+            return redirect('movie')
+        elif 'hostel_submit' in request.POST:
+            hostel = Hostel(
+                author=request.user,
+                name=request.POST.get('name'),
+                about=request.POST.get('about'),
+                residents=request.POST.get('residents'),
+                location=request.POST.get('location'),
+                price=request.POST.get('price'),
+                image=request.FILES.get('image'),
+                video=request.FILES.get('video'),
+                contact=request.POST['contact']
+            )
+            hostel.save()
+            return redirect('hostel')
+        elif 'music_submit' in request.POST:
+            music =Music(title=request.POST.get('title'),
+                     artist=request.POST.get('artist'),
+                     genre=request.POST.get('genre'),
+                     poster=request.FILES.get('poster'),
+                     song=request.FILES.get('song'),
+                     author=request.user,
+                     )
+            music.save()
+            return redirect('music')
+        
+        elif 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('profile')
+    return render(request, 'ctndrd/profile-page.html', context=mydict)
+
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):

@@ -17,7 +17,7 @@ urlpatterns = [
     path('post_save/<int:pk>', views.post_save, name='post_save'),
     path('my_posts/',views.my_posts,name='my_posts'),#--------------------------
     path('logout/',views.Logout,name='logout'),#--------------------------
-    path('profile/',views.profile,name='profile'),
+    path('profile/',views.profile,name='profile'),#-----------------------------
     path('view_profile/<int:pk>/',views.view_profile,name='view_profile'),
     path('delete_post/<int:pk>/',views.delete_post,name='delete_post'),
     path('bookmark/',views.bookmark, name='bookmark'),#-------------------------
@@ -41,6 +41,7 @@ urlpatterns = [
     path('discover',views.discover, name='discover'),
     path('bookmarked/',views.bookmarked, name='bookmarked'),
     path('my_post/',views.my_post,name='my_post'),
+    path('my_profile/',views.my_profile,name='my_profile'),
 ]
 
 

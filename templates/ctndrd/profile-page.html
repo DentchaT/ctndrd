@@ -1,0 +1,118 @@
+{% extends 'ctndrd/base.html' %}
+{% load static %}
+
+{% block title %}my_profile{% endblock %}
+
+{% block content %}
+    <section>
+        <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
+
+        <div class="biodata">
+            <div class="bio">
+                <img src="{{request.user.profile.profile_pic.url}}" alt="">
+                <div class="profile">
+                    <h4>{{request.user.profile.firstname}} {{request.user.profile.lastname}}</h4>
+                    <p>@{{request.user.username}}</p>
+                    <p>{{request.user.profile.location}}</p>
+                </div>
+            </div>
+            <div class="about">
+                <h5>About</h5>
+                <p>{{request.user.profile.bio}}</p>
+            </div>
+        </div>
+        <div class="biodata">
+            <div class="title">
+                {% if profile.user.posts.all %}
+                    <a href="{% url 'my_post' %}"><h4>VIEW MY SOCIAL POSTS [{{profile.user.posts.all.count}}]</h4></a>
+                {% else %}
+                    <a href="{% url 'home' %}"><h4>ADD POSTS TO VIEW THEM</h4></a>
+                {% endif %}
+            </div>
+            <div class="title one">
+                <button class="edit_account"><a href="{% url 'account-settings' %}"><i class='bx  bx-cog'></i> Edit Account details</a></button>
+                <button class="logout"><a href="{% url 'logout' %}">Logout<i class='bx  bxs-walking'  ></i> </a></button>
+            </div>
+        </div>
+        <div class="biodata">
+            <div class="titlex">
+                <h4>REQUESTS [{{followers.count}}]</h4>
+            </div>
+            <div class="contx">
+                {% for s in followers %}
+                    <div class="titlex two">
+                        {% if s.profile_pic %}
+                            <a href="{% url 'view_profile' s.id %}"><img src="{{s.profile_pic.url}}" alt=""></a>
+                        {% else %}
+                            <a href="{% url 'view_profile' s.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                        {% endif %}
+                        <div class="connect-bio">
+                            <h5>{{s.firstname}} {{s.lastname}}</h5>
+                            <p>@{{s.user.username}}</p>
+                        </div>
+                        <div class="connect-btn">
+                            <a href="{% url 'decline_user' s.pk %}"><button>X</button></a>
+                            <a href="{% url 'follow_user' s.pk %}"><button><i class='bx  bx-user-plus'></i></button></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="biodata">
+            <div class="titlexz">
+                <h4>SUGGESTIONS [{{suggestion.count}}]</h4>
+                <form method="get" action="" class="search-suggestion">
+                    <input name="q" type="text" placeholder="Enter name">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+            <div class="contx">
+                {% for s in suggestion %}
+                    <div class="titlex two">
+                        {% if s.profile_pic %}
+                            <a href="{% url 'view_profile' s.id %}"><img src="{{s.profile_pic.url}}" alt=""></a>
+                        {% else %}
+                            <a href="{% url 'view_profile' s.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                        {% endif %}
+                        <div class="connect-bio">
+                            <h5>{{s.firstname}} {{s.lastname}}</h5>
+                            <p>@{{s.user.username}}</p>
+                        </div>
+                        <div class="connect-btn-suggest">
+                            <a href="{% url 'follow_user' s.pk %}"><button>Connect <i class='bx  bx-user-plus'></i> </button></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="biodata">
+            <div class="titlex">
+                <h4>CONNECTED TO [{{profile.follows.count}}]</h4>
+            </div>
+            <div class="contx">
+                {% for s in profile.follows.all %}
+                    <div class="titlex two">
+                        {% if s.profile_pic %}
+                            <a href="{% url 'view_profile' s.id %}"><img src="{{s.profile_pic.url}}" alt=""></a>
+                        {% else %}
+                            <a href="{% url 'view_profile' s.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                        {% endif %}
+                        <div class="connect-bio">
+                            <h5>{{s.firstname}} {{s.lastname}}</h5>
+                            <p>@{{s.user.username}}</p>
+                        </div>
+                        <div class="connect-btn-suggest">
+                            <a href="{% url 'follow_user' s.pk %}"><button style="background-color: red; color: #f4f6fc;">Disconnect</button></a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+</script>
+    
+{% endblock %}

@@ -313,6 +313,222 @@
             color: rgb(48, 241, 248);
         }
 
+        .biodata{
+            margin-bottom: 20px;
+            width: 90%;
+            padding: 5%;
+            background-color: #ebecf1;
+            border-radius: 12px;
+        }
+        .contx{
+            height: 150px;
+            overflow-y: auto;
+        }
+        .bio{
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .bio img{
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            border: 2px solid rgb(48, 241, 248);
+            outline: none;
+        }
+        .profile p{
+            margin-top: -13px;
+            color: #050a30;
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+        .profile h4{
+            font-family: sans-serif;
+            font-size: 15px;
+            width: 100%;
+            color: #050a30;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            height: 14px;
+        }
+        .about{
+            width: 90%;
+            margin-left: 5%;
+            margin-top: -20px;
+        }
+        .about p{
+            font-family: sans-serif;
+            font-size: 12px;
+            color: #050a30;
+            height: 60px;
+            overflow-y: auto;
+        }
+        .about h5{
+            font-family: sans-serif;
+            margin-left: 31%;
+            text-decoration: underline;
+            height: 5px;
+            color: #050a30;
+        }
+        .title{
+            height: 40px;
+            background-color: #f4f6fc;
+            margin-bottom: 15px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+        }
+        .title h4{
+            font-family: sans-serif;
+            text-align: center;
+            font-size: 13px;
+            padding-top: 14px;
+            color: #050a30;
+        }
+        .one{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .one button {
+            border: none;
+            margin-top: -3px;
+        }
+        .one button a {
+            height: 25px;
+            border: none;
+            outline: none;
+            font-family: sans-serif;
+            font-size: 12px;
+            text-decoration: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+        .one button:nth-child(1) a {
+            background-color: green;
+            color: #f4f6fc;
+        }
+        .one button:nth-child(2) a {
+            background-color: red;
+            color: #f4f6fc;
+        }
+        .titlex{
+            height: 40px;
+            background-color: #f4f6fc;
+            margin-bottom: 15px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+        }
+        .titlexz{
+            height: 80px;
+            background-color: #f4f6fc;
+            margin-bottom: 15px;
+            border: none;
+            outline: none;
+            border-radius: 5px;
+        }
+        .titlex h4{
+            font-family: sans-serif;
+            font-size: 13px;
+            text-align: center;
+            color: #050a30;
+            padding-top: 14px;
+        }
+        .titlexz h4{
+            font-family: sans-serif;
+            font-size: 13px;
+            text-align: center;
+            color: #050a30;
+            padding-top: 14px;
+        }
+        .two{
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        .two img{
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            border: 1px solid #f4f6fc;
+        }
+        .two img:hover{
+            border: 1px solid rgb(48, 241, 248);
+        }
+        .connect-bio h5{
+            font-family: sans-serif;
+            font-size: 13px;
+            color: #050a30;
+            height: 12px;
+            width: 160px;
+            overflow-x: hidden;
+            overflow-y: hidden;
+            margin-top: 10px;
+        }
+        .connect-bio p{
+            font-family: sans-serif;
+            font-size: 11px;
+            color: #050a30;
+            height: 12px;
+            margin-top: -20px;
+        }
+        .connect-btn{
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            margin-top: -5px;
+        }
+        .connect-btn a button{
+            border: none;
+            outline: none;
+            height: 20px;
+            font-family: sans-serif;
+            border-radius: 5px;
+        }
+        .connect-btn a:nth-child(1) button{
+            background-color: red;
+            color: #f4f6fc;
+            width: 30px;
+        }
+        .connect-btn a:nth-child(2) button{
+            background-color: rgb(48, 241, 248);
+            color: #050a30;
+            width: 40px;
+        }
+        .connect-btn-suggest a button{
+            border: none;
+            outline: none;
+            height: 20px;
+            font-family: sans-serif;
+            border-radius: 5px;
+            background-color: rgb(48, 241, 248);
+        }
+        .search-suggestion{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-suggestion input{
+            border-radius: 5px;
+            height: 25px;
+            width: 60%;
+            border: 1px solid grey;
+            align-items: center;
+            text-align: center
+        }
+        .search-suggestion button{
+            color: #050a30;
+            height: 25px;
+            font-family: sans-serif;
+            border: 1px solid gray;
+            border-radius: 5px;
+            font-weight: 500;
+            background-color: transparent;
+            font-size: 15px;
+        }
+
         @media screen and (min-width: 500px) {
         .header{
             display: none;
@@ -333,6 +549,10 @@
             display: none;
         }
         .create-post{
+            display: none;
+        }
+
+        .biodata{
             display: none;
         }
         }
@@ -367,11 +587,11 @@
             const profilepageImg = document.getElementById('profilepage');
 
             homepageImg.addEventListener('click', () => {
-                window.location.href = "{% url 'home' %}"; // Adjust URL as needed
+                window.location.href = "{% url 'home' %}";
             });
 
             profilepageImg.addEventListener('click', () => {
-                window.location.href = "{% url 'profile' %}"; // Adjust URL as needed
+                window.location.href = "{% url 'my_profile' %}";
             });
         });
 
