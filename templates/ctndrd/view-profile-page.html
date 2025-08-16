@@ -52,7 +52,7 @@
                             <p>@{{s.user.username}}</p>
                         </div>
                         <div class="connect-btn-suggest">
-                            <a href="{% url 'follow_user' s.pk %}"><button style="background-color: rgb(48, 241, 248); color: #050a30;">Connect </button></a>
+                            <a href="{% url 'view_profile' s.id %}"><button style="background-color: rgb(48, 241, 248); color: #050a30;">view </button></a>
                         </div>
                     </div>
                 {% endfor %}
@@ -76,7 +76,7 @@
                                 <p>@{{s.user.username}}</p>
                             </div>
                             <div class="connect-btn-suggest">
-                                <a href="{% url 'follow_user' s.pk %}"><button style="background-color: rgb(48, 241, 248); color: #050a30;">Connect </button></a>
+                                <a href="{% url 'view_profile' s.id %}"><button style="background-color: rgb(48, 241, 248); color: #050a30;">view </button></a>
                             </div>
                         </div>
                     {% endfor %}
