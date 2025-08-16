@@ -204,7 +204,7 @@ def my_profile(request):
             
             order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
             order.save()
-            return redirect('profile')
+            return redirect('my_profile')
     return render(request, 'ctndrd/profile-page.html', context=mydict)
 
 #--------------HOME PAGE-----------------------------------------

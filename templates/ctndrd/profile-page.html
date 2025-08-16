@@ -108,10 +108,377 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="biodata">
+            <div class="titlex">
+                <h4>{{request.user.profile.firstname}}'s Photos [{{request.user.posts.count}}]</h4>
+            </div>
+            <div class="contxx">
+                {% for s in request.user.posts.all %}
+                    <img src="{{s.image.url}}" alt="">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="biodata">
+            <div class="title">
+                <h4>CONTENT SECTION</h4>
+            </div>
+            <div class="titlem ones">
+                
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #ffffff;
+                color: #364989;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;"><a style="color: #364989; font-size: 15px;" href="{% url 'orders' %}">View orders</a></button>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #CDDFEF;
+                color: #364989;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="add-movie-btn">Product_add</button>
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="form-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Product name:</label>
+                        <input style="
+                        height: 30px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="item">
+    
+                        
+    
+                        <label style="margin-bottom: 10px;" for="category">Key statement</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="description">
+    
+                        <label style="margin-bottom: 10px;" for="title">Product Image</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="image">
+    
+                        <label style="margin-bottom: 10px;" for="actors">Price</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="price">
+    
+                        <button style="
+                        height: 30px;
+                        background-color: rgb(48, 241, 248);
+                        color: #050a30;
+                        margin-bottom: 20px;
+                        border: none;
+                        border-radius: 5px;
+                        width: 50%;
+                        cursor: pointer;" type="submit" name="product_submit">Submit</button>
+                    </form>
+                </div>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #65A7D3;
+                color: #fff;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="add-moviez-btn">Song_add</button> 
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="formz-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Song Title:</label>
+                        <input style="
+                        height: 30px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="title">
+
+                        <label style="margin-bottom: 10px;" for="title">Poster:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="poster" name="poster">
+
+                        <label style="margin-bottom: 10px;" for="title">Song:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="song">
+
+                        <label style="margin-bottom: 10px;" for="actors">Artist:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="artist">
+
+                        <label style="margin-bottom: 10px;" for="category">Genre:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="genre">
+
+                        <button style="
+                        height: 30px;
+                        background-color: rgb(48, 241, 248);
+                        color: #050a30;
+                        margin-bottom: 20px;
+                        border: none;
+                        border-radius: 5px;
+                        width: 50%;
+                        cursor: pointer;" name="music_submit" type="submit">Submit</button>
+                    </form>
+                </div>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #386CAF;
+                color: #B2D3EB;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="adda-movie-btn">Hostel_add</button>
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="forma-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Hostel name:</label>
+                        <input style="
+                        height: 30px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="name">
+
+                        
+
+                        <label style="margin-bottom: 10px;" for="category">About</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="about">
+
+                        <label style="margin-bottom: 10px;" for="category">Residents</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="residents">
+
+                        <label style="margin-bottom: 10px;" for="category">Location</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="location">
+
+                        <label style="margin-bottom: 10px;" for="title">Image</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="image">
+
+                        <label style="margin-bottom: 10px;" for="title">Hostel Video</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" id="movie" name="video">
+
+                        <label style="margin-bottom: 10px;" for="actors">Price</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="price">
+
+                        <label style="margin-bottom: 10px;" for="category">Contact</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="tel" required id="category" name="contact">
+
+                        <button style="
+                        height: 30px;
+                        background-color: rgb(48, 241, 248);
+                        color: #050a30;
+                        margin-bottom: 20px;
+                        border: none;
+                        border-radius: 5px;
+                        width: 50%;
+                        cursor: pointer;" type="submit" name="hostel_submit">Submit</button>
+                    </form>
+                </div>
+
+                <button style="
+                padding: 10px;
+                width: 100%;
+                background-color: #364989;
+                color: #CDDFEF;
+                border: none;
+                border-radius: 1px;
+                cursor: pointer;" id="add-moviex-btn">Movie_add</button>
+                <div class="form-container" style="
+                display: none;
+                width: 100%;
+                border-radius: 12px;
+                margin-top: 15px;
+                background-color: transparent;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" id="formx-container">
+                    <form style="
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                        <label style="margin-bottom: 10px;" for="title">Movie Title:</label>
+                        <input style="
+                        height: 30px;
+                        width: 100%;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        border: 1px solid #ccc;" type="text" required id="title" name="title">
+
+                        <label style="margin-bottom: 10px;" for="title">Poster:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="poster" name="poster">
+
+                        <label style="margin-bottom: 10px;" for="title">Movie:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="file" required id="movie" name="movie">
+
+                        <label style="margin-bottom: 10px;" for="actors">Actors:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="actors" name="actors">
+
+                        <label style="margin-bottom: 10px;" for="rating">Rating:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" required type="number" id="rating" name="rating" step="0.1" min="0" max="10">
+
+                        <label style="margin-bottom: 10px;" for="description">Description:</label>
+                        <textarea style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" required id="description" name="description"></textarea>
+
+                        <label style="margin-bottom: 10px;" for="category">Category:</label>
+                        <input style="
+                        height: 30px;
+                        margin-bottom: 20px;
+                        border-radius: 12px;
+                        width: 100%;
+                        border: 1px solid #ccc;" type="text" required id="category" name="category">
+
+                        <button style="
+                        height: 30px;
+                        background-color: rgb(48, 241, 248);
+                        color: #050a30;
+                        margin-bottom: 20px;
+                        border: none;
+                        border-radius: 5px;
+                        width: 50%;
+                        cursor: pointer;" name="movie_submit" type="submit">Submit</button>
+                    </form>
+                </div>
+                <br><br><br>
+                
+                <br>
+
+            </div>
+        </div>
 
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+// Reusable function to toggle form container visibility
+    function toggleFormContainer(buttonId, containerId) {
+        const button = document.getElementById(buttonId);
+        const container = document.getElementById(containerId);
+        button.addEventListener('click', () => {
+            container.style.display = container.style.display === 'block' ? 'none' : 'block';
+        });
+    }
+    // Usage
+    toggleFormContainer('add-movie-btn', 'form-container');
+    toggleFormContainer('add-moviez-btn', 'formz-container');
+    toggleFormContainer('adda-movie-btn', 'forma-container');
+    toggleFormContainer('add-moviex-btn', 'formx-container');
 
 </script>
     
