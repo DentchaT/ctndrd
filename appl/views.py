@@ -135,8 +135,8 @@ def my_post(request):
 @login_required
 def my_profile(request):
     profile=Profile.objects.get(user=request.user)
-    suggestion=Profile.objects.all().order_by('-follows')
-    followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all())
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+    followers = request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all())
     
     query=request.GET.get('q')
     if query:
@@ -211,7 +211,7 @@ def my_profile(request):
 def view_profile(request, pk):
     profile=Profile.objects.get(user=request.user)
     follower=Profile.objects.get(id=pk)
-    followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
+    followers=follower.followed_by.all() #for following user
 
     mydict = {
         'profile':profile,
