@@ -207,6 +207,19 @@ def my_profile(request):
             return redirect('my_profile')
     return render(request, 'ctndrd/profile-page.html', context=mydict)
 
+@login_required
+def view_profile(request, pk):
+    profile=Profile.objects.get(user=request.user)
+    follower=Profile.objects.get(id=pk)
+    followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
+
+    mydict = {
+        'profile':profile,
+        'follower':follower,
+        'followers':followers
+    }
+        
+    return render(request, 'ctndrd/view-profile-page.html', context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -620,7 +633,7 @@ def profile(request):
 #-------------------------------------------------------------------------
 #------------VIEW PROFILE PAGE------------------------------
 @login_required
-def view_profile(request, pk):
+def view_profile_page(request, pk):
     profile=Profile.objects.get(user=request.user)
     follower=Profile.objects.get(id=pk)
     followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right

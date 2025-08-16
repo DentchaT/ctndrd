@@ -9,7 +9,11 @@
 
         <div class="biodata">
             <div class="bio">
-                <img src="{{request.user.profile.profile_pic.url}}" alt="">
+                {% if request.user.profile.profile_pic %}
+                    <img src="{{request.user.profile.profile_pic.url}}" alt="">
+                {% else %}
+                    <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                {% endif %}
                 <div class="profile">
                     <h4>{{request.user.profile.firstname}} {{request.user.profile.lastname}}</h4>
                     <p>@{{request.user.username}}</p>
