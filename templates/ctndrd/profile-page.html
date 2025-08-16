@@ -116,11 +116,13 @@
             <div class="titlex">
                 <h4>{{request.user.profile.firstname}}'s Photos [{{request.user.posts.count}}]</h4>
             </div>
-            <div class="contxx">
-                {% for s in request.user.posts.all %}
-                    <img src="{{s.image.url}}" alt="">
-                {% endfor %}
-            </div>
+            {% if request.user.posts.all %}
+                <div class="contxx">
+                    {% for s in request.user.posts.all %}
+                        <img src="{{s.image.url}}" alt="">
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
         <div class="biodata">
             <div class="title">

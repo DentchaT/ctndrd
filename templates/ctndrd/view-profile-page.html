@@ -85,13 +85,15 @@
         </div>
         <div class="biodata">
             <div class="titlex">
-                <h4>{{request.user.profile.firstname}}'s Photos [{{request.user.posts.count}}]</h4>
+                <h4>{{follower.firstname}}'s Photos [{{follower.user.posts.count}}]</h4>
             </div>
-            <div class="contxx">
-                {% for s in request.user.posts.all %}
-                    <img src="{{s.image.url}}" alt="">
-                {% endfor %}
-            </div>
+            {% if follower.user.posts.all %}
+                <div class="contxx">
+                    {% for s in follower.user.posts.all %}
+                        <img src="{{s.image.url}}" alt="">
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
