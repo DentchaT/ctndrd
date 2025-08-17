@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     #'cloudinary_storage',#cloudinary_cloud_storage
     #'cloudinary',#cloudinary_cloud_storage
     'whitenoise.runserver_nostatic',

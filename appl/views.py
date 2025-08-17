@@ -220,6 +220,31 @@ def view_profile(request, pk):
     }
         
     return render(request, 'ctndrd/view-profile-page.html', context=mydict)
+
+@login_required 
+def acc_settings(request):
+    try:
+        profile=Profile.objects.get(user=request.user)
+
+    except Profile.DoesNotExist:
+        profile=Profile.objects.create(User=request.user)
+
+
+    if request.method == 'POST':
+        form=ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('my_profile') 
+        
+    else:
+        form=ProfileForm(instance=profile)
+    
+    mydict = {
+        'profile':profile,
+        'form':form
+    }
+
+    return render(request, 'ctndrd/acc-sets.html', context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -1083,7 +1108,7 @@ def music(request):
 #-------------------------------------------------------------------------
 #---------------------ACCOUNT SETTINGS--------------------------
 @login_required 
-def acc_settings(request):
+def acc_settingsz(request):
     try:
         profile=Profile.objects.get(user=request.user)
 

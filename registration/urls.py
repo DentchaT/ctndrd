@@ -18,7 +18,7 @@ urlpatterns = [
     path('my_posts/',views.my_posts,name='my_posts'),#--------------------------
     path('logout/',views.Logout,name='logout'),#--------------------------
     path('profile/',views.profile,name='profile'),#-----------------------------
-    path('view_profile/<int:pk>/',views.view_profile,name='view_profile'),
+    path('view_profile/<int:pk>/',views.view_profile,name='view_profile'),#--------------
     path('delete_post/<int:pk>/',views.delete_post,name='delete_post'),
     path('bookmark/',views.bookmark, name='bookmark'),#-------------------------
     path('discov/',views.discov, name='discov'),#------------------------------ 
@@ -31,7 +31,7 @@ urlpatterns = [
     path('orders/',views.vieworder,name='orders'),
     path('hostel/',views.hostel,name='hostel'),
     path('music', views.music, name='music'),
-    path('acc-settings', views.acc_settings, name='account-settings'),
+    path('acc-settings', views.acc_settings, name='account-settings'),#-----------------------
     path('messages/',views.messages, name='messages'),
     path('terms', views.terms, name='terms'),
     #-------------------------------------------------------------------------
