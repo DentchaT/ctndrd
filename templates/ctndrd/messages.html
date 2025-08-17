@@ -1,0 +1,45 @@
+{% extends 'ctndrd/base.html' %}
+{% load static %}
+
+{% block title %}my_profile{% endblock %}
+
+{% block content %}
+    <section>
+        <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
+
+        <div class="biodatary">
+            <h4>MESSAGES</h4>
+        </div>
+        <div class="continental">
+            {% if messages %}
+                {% for messag in messages|dictsortreversed:"latest_message.timestamp" %}
+                    <a href="{% url 'chat' messag.follow.id %}">
+                        <div class="biodatar">
+                            <div class="top-line"></div>
+                            <div class="message-bio">
+                                {% if messag.follow.profile_pic %}
+                                    <img src="{{messag.follow.profile_pic.url}}" alt="">
+                                {% else %}
+                                    <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                                {% endif %}
+                                <div class="name-time">
+                                    <h4>{{messag.follow.user.profile.firstname}} {{messag.follow.user.profile.lastname}}</h4>
+                                    <p>{{messag.latest_message.timestamp|timesince}} ago</p>
+                                </div>
+                            </div>
+                            <div class="message-itself">
+                                <p>{{messag.latest_message.message}}</p>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p>Connect back with users to chat with them</p>
+            {% endif %}
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+</script>
+    
+{% endblock %}

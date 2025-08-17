@@ -245,6 +245,33 @@ def acc_settings(request):
     }
 
     return render(request, 'ctndrd/acc-sets.html', context=mydict)
+
+@login_required
+def messages(request):
+    profile=Profile.objects.get(user=request.user)
+    follower=profile.follows.all()
+
+    
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+    
+    mydict = {
+        'profile':profile,
+        'follower':follower,
+        'messages':messages
+    }
+    return render(request, 'ctndrd/messages.html', context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -814,7 +841,7 @@ def viewmovie(request, pk):
 #-------------------------------------------------------------------------
 #------------------MESSAGES---------------------------
 @login_required
-def messages(request):
+def message(request):
     profile=Profile.objects.get(user=request.user)
     follower=profile.follows.all()
     followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
