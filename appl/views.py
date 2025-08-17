@@ -272,6 +272,36 @@ def messages(request):
         'messages':messages
     }
     return render(request, 'ctndrd/messages.html', context=mydict)
+
+@login_required
+def chat(request, pk): 
+    profile=Profile.objects.get(user=request.user)
+    follower=profile.follows.get(id=pk)
+
+    chats = Message.objects.filter(
+        (Q(sender=profile.user) & Q(receiver=follower.user)) | 
+        (Q(sender=follower.user) & Q(receiver=profile.user))
+    ).order_by('-timestamp')
+
+    mydict = {
+        'profile':profile,
+        'follower':follower,
+        'chats':chats
+    }
+
+    if request.method == 'POST':
+        message = request.POST['message']
+        image=request.FILES.get('image')
+        receiver_id = request.POST['receiver_id']
+        receiver = Profile.objects.get(id=receiver_id)
+        Message.objects.create(
+            sender=request.user,
+            receiver=receiver.user,
+            message=message,
+            image=image
+        )
+        return redirect('chat', pk=follower.id)
+    return render(request, 'ctndrd/chat.html', context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -872,7 +902,7 @@ def message(request):
 #-------------------------------------------------------------------------
 #------------------------CHATTING------------------------
 @login_required
-def chat(request, pk): 
+def chats(request, pk): 
     profile=Profile.objects.get(user=request.user)
     follower=profile.follows.get(id=pk)
     followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right

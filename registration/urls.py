@@ -26,13 +26,13 @@ urlpatterns = [
     path('decline/<int:pk>/', views.decline_user, name='decline_user'),
     path('movie/',views.movie,name='movie'),
     path('viewmovie/<int:pk>/',views.viewmovie,name='viewmovie'),
-    path('chat/<int:pk>/', views.chat, name='chat'),
+    path('chat/<int:pk>/', views.chat, name='chat'),#-------------------------------------
     path('shop/',views.shop,name='shop'),
     path('orders/',views.vieworder,name='orders'),
     path('hostel/',views.hostel,name='hostel'),
     path('music', views.music, name='music'),
     path('acc-settings', views.acc_settings, name='account-settings'),#-----------------------
-    path('messages/',views.messages, name='messages'),
+    path('messages/',views.messages, name='messages'),#---------------------------------------
     path('terms', views.terms, name='terms'),
     #-------------------------------------------------------------------------
     #---------------------code by Dr.James Atwiine----------------------------
