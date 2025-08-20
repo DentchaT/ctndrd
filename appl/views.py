@@ -302,6 +302,19 @@ def chat(request, pk):
         )
         return redirect('chat', pk=follower.id)
     return render(request, 'ctndrd/chat.html', context=mydict)
+
+@login_required
+def music(request):
+    query=request.GET.get('q')
+    if query:
+        music=Music.objects.filter(title__icontains=query)
+    else:
+        music=Music.objects.all().order_by('-created_at')
+
+    mydict = {
+        'music':music
+    }
+    return render(request, 'ctndrd/music.html', context=mydict)
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -1119,7 +1132,7 @@ def hostel(request):
 #-------------------------------------------------------------------------
 #------------------------MUSIC VIEW------------------------
 @login_required
-def music(request):
+def musics(request):
     query=request.GET.get('q')
     if query:
         music=Music.objects.filter(title__icontains=query)

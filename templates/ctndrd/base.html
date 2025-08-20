@@ -897,6 +897,78 @@
         .submit-msg-btn img{
             width: 30px;
         }
+
+
+        .music-container{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .music-title{
+            background-color: rgb(48, 241, 248);
+            display: flex;
+            justify-content: center;
+            width: 70%;
+            margin-left: 15%;
+            margin-top: 15px;
+            border-radius: 12px 12px 0 0;
+        }
+        .music-title h4{
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+        .music-body{
+            display: flex;
+            flex-direction: column;
+            background-color: rgb(48, 241, 248);
+            width: 96%;
+            padding: 5px;
+            margin-top: -10px;
+            border-radius: 12px;
+            max-height: 550px;
+            overflow-y: auto;
+        }
+        .musical{
+            display: flex;
+            margin-bottom: 3px;
+        }
+        .music-details{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            width: 40%;
+            padding-left: 1%;
+        }
+        .music-details h4{
+            font-family: sans-serif;
+            font-size: 10px;
+            height: 10px;
+            width: 99%;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        .music-details p{
+            font-family: sans-serif;
+            font-size: 10px;
+            margin-top: -5px;
+            width: 99%;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+        .music-song{
+            width: 60%;
+            background-color: #ffffff;
+        }
+        .music-song audio{
+            width: 99%;
+            background-color: #f0f0f0;
+            border: 1px solid #ffffff; 
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
         @media screen and (min-width: 500px) {
         .header{
             display: none;
@@ -936,6 +1008,9 @@
             display: none;
         }
         .chat-form{
+            display: none;
+        }
+        .music-container{
             display: none;
         }
         }

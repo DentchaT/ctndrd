@@ -1,0 +1,77 @@
+{% extends 'ctndrd/base.html' %}
+{% load static %}
+
+{% block title %}music{% endblock %}
+
+{% block content %}
+    <section>
+        <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
+        <div class="create-post">
+            <form id="formx" method="get" action="">
+                <div class="create-post-form">
+                    <div class="input-img">
+                        <textarea name="q" rows="1" placeholder="Enter song title or artist" id="create-post"></textarea>
+                        <div class="lst">
+                            <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
+                            <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
+                        </div>
+                    </div>
+                    <button type="submit" form="formx" name="post_submit">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="music-container">
+            <div class="music-title">
+                <h4>LISTENING TO MUSIC</h4>
+            </div>
+            <div class="music-body">
+                {% if music %}
+                    {% for m in music %}
+                        <div class="musical">
+                            <div class="music-details">
+                                <h4>{{m.title}}</h4>
+                                <p>{{m.artist}}</p>
+                            </div>
+                            <div class="music-song">
+                                <audio controls src="{{m.song.url}}"></audio>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Oooops.....song is not availabile ...!</p>
+                {% endif %}
+            </div>
+        </div>
+        
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const audioElements = document.querySelectorAll('audio');
+
+        // Stop other audios when one plays
+        audioElements.forEach(audio => {
+            audio.addEventListener('play', () => {
+            audioElements.forEach(otherAudio => {
+                if (otherAudio !== audio) {
+                otherAudio.pause();
+                otherAudio.currentTime = 0;
+                }
+            });
+            });
+
+            // Play next song on completion
+            audio.addEventListener('ended', () => {
+            const currentAudio = audio;
+            const currentDiv = currentAudio.closest('.musical');
+            const nextDiv = currentDiv.nextElementSibling;
+            if (nextDiv && nextDiv.querySelector('audio')) {
+                nextDiv.querySelector('audio').play();
+            }
+            });
+        });
+    });
+</script>
+    
+{% endblock %}
