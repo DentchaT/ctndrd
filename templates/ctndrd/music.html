@@ -23,11 +23,11 @@
 
         <div class="music-container">
             <div class="music-title">
-                <h4>LISTENING TO MUSIC</h4>
+                <h4>RECENTLY ADDED SONGS</h4>
             </div>
             <div class="music-body">
                 {% if music %}
-                    {% for m in music %}
+                    {% for m in music|slice:":50" %}
                         <div class="musical">
                             <div class="music-details">
                                 <h4>{{m.title}}</h4>
