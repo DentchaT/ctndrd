@@ -24,12 +24,12 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-mzuo-tt457h9occf(rk@cn+k4wi9-v&s+2fuk21naxpm(l^x0z'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True#False# 
+DEBUG = False# True#
 
-ALLOWED_HOSTS =[]
+#ALLOWED_HOSTS =[]
 
-#ALLOWED_HOSTS = ['https://ctndrd.com','ctndrd.com','web-production-5e1e7.up.railway.app','https://web-production-5e1e7.up.railway.app']
-#CSRF_TRUSTED_ORIGINS = ['https://ctndrd.com','https://web-production-5e1e7.up.railway.app']
+ALLOWED_HOSTS = ['https://ctndrd.com','ctndrd.com','web-production-5e1e7.up.railway.app','https://web-production-5e1e7.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://ctndrd.com','https://web-production-5e1e7.up.railway.app']
 
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'registration.wsgi.application'
 #}
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))#os.environ.get('DATABASE_URL'))#
+    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))#os.getenv('DATABASE_URL'))#
 }
 
 #-------------------------------------------------------------------------
