@@ -315,6 +315,62 @@ def music(request):
         'music':music
     }
     return render(request, 'ctndrd/music.html', context=mydict)
+
+def hostel(request):
+    profile=Profile.objects.get(user=request.user)
+    followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
+    query1=request.GET.get('s')
+    query2=request.GET.get('l')
+    query3=request.GET.get('p')
+
+    if query1:
+        hostel=Hostel.objects.filter(name__icontains=query1).order_by('-created_at')
+    elif query2:
+        hostel=Hostel.objects.filter(location__icontains=query2).order_by('-created_at')
+    elif query3:
+        hostel=Hostel.objects.filter(price__icontains=query3).order_by('-created_at')
+    elif query1 and query2 and query3:
+        hostel=Hostel.objects.filter(name__icontains=query1,location__icontains=query2,price__icontains=query3).order_by('-created_at')
+    else:
+        hostel=Hostel.objects.all().order_by('-created_at') 
+
+
+    #---------------------Messages on the right------------------------------
+    messages=[]
+    followerz=profile.follows.all()
+    for follow in followerz:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+    
+
+    if request.method=='POST':
+        if 'hostel_submit' in request.POST:
+            hostel = Hostel(
+                author=request.user,
+                name=request.POST.get('name'),
+                about=request.POST.get('about'),
+                residents=request.POST.get('residents'),
+                location=request.POST.get('location'),
+                price=request.POST.get('price'),
+                image=request.FILES.get('image'),
+                video=request.FILES.get('video'),
+                contact=request.POST['contact']
+            )
+            hostel.save()
+            return redirect('hostel')
+    return render(request, 'ctndrd/hostel.html', {'profile':profile,
+                                                  'followers':followers,
+                                                  'messages':messages,
+                                                  'hostel':hostel})
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -1071,7 +1127,7 @@ def vieworder(request):
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
 #----------------------HOSTEL-----------------------
-def hostel(request):
+def hostels(request):
     profile=Profile.objects.get(user=request.user)
     followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
     query1=request.GET.get('s')
