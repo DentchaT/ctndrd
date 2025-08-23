@@ -318,7 +318,6 @@ def music(request):
 
 def hostel(request):
     profile=Profile.objects.get(user=request.user)
-    followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
     query1=request.GET.get('s')
     query2=request.GET.get('l')
     query3=request.GET.get('p')
@@ -334,23 +333,10 @@ def hostel(request):
     else:
         hostel=Hostel.objects.all().order_by('-created_at') 
 
-
-    #---------------------Messages on the right------------------------------
-    messages=[]
-    followerz=profile.follows.all()
-    for follow in followerz:
-        conversation_messages = Message.objects.filter(
-            (Q(sender=profile.user) & Q(receiver=follow.user)) |
-            (Q(sender = follow.user) & Q(receiver=profile.user))
-        ).order_by('-timestamp')
-
-        if conversation_messages.exists():
-            latest_message=conversation_messages.first()
-            messages.append({
-                'follow':follow,
-                'latest_message':latest_message
-            })
-    
+    mydict = {
+        'profile':profile,
+        'hostel':hostel
+    }
 
     if request.method=='POST':
         if 'hostel_submit' in request.POST:
@@ -367,10 +353,46 @@ def hostel(request):
             )
             hostel.save()
             return redirect('hostel')
-    return render(request, 'ctndrd/hostel.html', {'profile':profile,
-                                                  'followers':followers,
-                                                  'messages':messages,
-                                                  'hostel':hostel})
+    return render(request, 'ctndrd/hostel.html', context=mydict)
+
+@login_required
+def shop(request):
+    query=request.GET.get('q')
+    if query:
+        product=Product.objects.filter(item__icontains=query)
+    else:
+        product=Product.objects.all().order_by('-created_at')
+
+    profile=Profile.objects.get(user=request.user)
+
+    mydict = {
+        'profile':profile,
+        'product':product
+    }
+
+    if request.method== 'POST':
+        if 'product_submit' in request.POST:
+            product =Product(item=request.POST.get('item'),
+                        description=request.POST.get('description'),
+                        price=request.POST.get('price'),
+                        image=request.FILES.get('image'),
+                        author=request.user,
+                        )
+            product.save()
+            return redirect('shop')
+        elif 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('shop')
+
+            
+    return render(request, 'ctndrd/shopping.html', context=mydict) 
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -1023,7 +1045,7 @@ def chats(request, pk):
 #-------------------------------------------------------------------------
 #-------------------SHOPPING VIEW------------------------
 @login_required
-def shop(request):
+def shops(request):
 
     followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
 
