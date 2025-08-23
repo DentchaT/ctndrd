@@ -24,28 +24,31 @@
         <div class="productsx" >
             <h2>Two-click shopping</h2>
             <div class="product-gridx">
-                {% for p in product|slice:":23" %}
-                    <div class="productz">
-                        <img src="{{p.image.url}}" alt="Product 1">
-                        <h3>{{p.item}}</h3>
-                        <p>{{p.description}}</p>
-                        <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
-                        <button class="add-to-cart">Order {{p.item}}</button>
-                        <div class="form-containerx">
-                            <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
-                            {% csrf_token %}
-                                <input type="hidden" name="product_id" value="{{p.id}}" >
-                                <label for="telephone">Telephone:</label>
-                                <input type="tel" class="telephone" name="telephone" required><br>
-                                <label for="price">Price:</label>
-                                <input type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
-                                <button type="submit" style="background-color: #3498db;" name="order_submit">Yes</button>
-                                <button style="background-color: #ee3838;" type="button" class="cancel-button">No</button>
-                            </form>
+                {% if product %}
+                    {% for p in product|slice:":23" %}
+                        <div class="productz">
+                            <img src="{{p.image.url}}" alt="Product 1">
+                            <h3>{{p.item}}</h3>
+                            <p>{{p.description}}</p>
+                            <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
+                            <button class="add-to-cart">Order {{p.item}}</button>
+                            <div class="form-containerx">
+                                <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                                {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{p.id}}" >
+                                    <label for="telephone">Telephone:</label>
+                                    <input type="tel" class="telephone" name="telephone" required><br>
+                                    <label for="price">Price:</label>
+                                    <input type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
+                                    <button type="submit" style="background-color: #3498db;" name="order_submit">Yes</button>
+                                    <button style="background-color: #ee3838;" type="button" class="cancel-button">No</button>
+                                </form>
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
-
+                    {% endfor %}
+                {% else %}
+                    <p>Oooops.....product is not availabile ...!</p>
+                {% endif %}
             </div> <br>
 
         </div>

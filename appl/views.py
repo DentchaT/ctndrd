@@ -393,6 +393,35 @@ def shop(request):
 
             
     return render(request, 'ctndrd/shopping.html', context=mydict) 
+
+import requests
+import os
+#from dotenv import load_dotenv
+#load_dotenv()
+@login_required
+def movie(request): 
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+    return render(request, 'ctndrd/movie.html', {'movies':movies, 'page':page, 'total_pages':total_pages, 'query':query})
+
+@login_required
+def viewmovie(request, movie_id):
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    url = f'https://api.themoviedb.org/3/movie/{movie_id}?api_key={api_key}&append_to_response=videos'
+    response = requests.get(url)
+    movie = response.json()
+    trailer_key = next((v['key'] for v in movie['videos']['results'] if v['type'] == 'Trailer'), None)
+    genres = movie['genres']
+    return render(request, 'ctndrd/movi.html', {'movie':movie, 'genres':genres , 'trailer_key':trailer_key}) 
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -874,7 +903,7 @@ def decline_user(request, pk):
 #-------------------------------------------------------------------------
 #---------------------MOVIE -------------------------------
 @login_required
-def movie(request):
+def movies(request):
     profile=Profile.objects.get(user=request.user) 
     actions=Movie.objects.filter(category__icontains='action')
     followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right
@@ -927,7 +956,7 @@ def movie(request):
 #-------------------------------------------------------------------------
 #---------------------VIEW MOVIE -------------------------------
 @login_required
-def viewmovie(request, pk):
+def viewmovies(request, pk):
     profile=Profile.objects.get(user=request.user)
     movie = get_object_or_404(Movie, pk=pk)
     movies=Movie.objects.all().order_by('-created_at')

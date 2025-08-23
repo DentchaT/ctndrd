@@ -24,8 +24,8 @@ urlpatterns = [
     path('discov/',views.discov, name='discov'),#------------------------------ 
     path('follow/<int:pk>/', views.follow_user, name='follow_user'),
     path('decline/<int:pk>/', views.decline_user, name='decline_user'),
-    path('movie/',views.movie,name='movie'),
-    path('viewmovie/<int:pk>/',views.viewmovie,name='viewmovie'),
+    path('movie/',views.movie,name='movie'),#--------------------------------
+    path('viewmovies/<int:pk>/',views.viewmovie,name='viewmovie'),#--------------------
     path('chat/<int:pk>/', views.chat, name='chat'),#-------------------------------------
     path('shop/',views.shop,name='shop'),
     path('orders/',views.vieworder,name='orders'),
@@ -42,6 +42,7 @@ urlpatterns = [
     path('bookmarked/',views.bookmarked, name='bookmarked'),
     path('my_post/',views.my_post,name='my_post'),
     path('my_profile/',views.my_profile,name='my_profile'),
+    path('viewmovie/<int:movie_id>/',views.viewmovie,name='viewmovie'),
 ]
 
 

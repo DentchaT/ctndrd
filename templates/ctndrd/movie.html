@@ -1,0 +1,60 @@
+{% extends 'ctndrd/base.html' %}
+{% load static %}
+
+{% block title %}movie{% endblock %}
+
+{% block content %}
+    <section>
+        <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
+        <div class="create-post">
+            <form id="formx" method="get" action="">
+                <div class="create-post-form">
+                    <div class="input-img">
+                        <textarea name="q" rows="1" placeholder="Enter movie title or actor" id="create-post"></textarea>
+                        <div class="lst">
+                            <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
+                            <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
+                        </div>
+                    </div>
+                    <button type="submit" form="formx" name="post_submit">Search</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="movie-container">
+            <div class="movie-title">
+                {% if query %}
+                    <h4>{{query}} MOVIE</h4>
+                {% else %}
+                    <h4>POPULAR MOVIES</h4>
+                {% endif %}
+            </div>
+            <div class="movie-body">
+                {% if movies %}
+                    {% for movie in movies %}
+                        {% if movie.poster_path %}
+                            <a class="movie-content" href="{% url 'viewmovie' movie.id %}">
+                                <img src="https://image.tmdb.org/t/p/w200{{movie.poster_path}}" alt="no thumbnail">
+                                <h4>{{movie.title}}</h4>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    <!--Pagination links-->
+                    {% if page > 1 %}
+                        <a class="page-link" href="?page={{ page|add:-1 }}">Previous</a>
+                    {% endif %}
+                    {% if page < total_pages %}
+                        <a class="page-link" href="?page={{ page|add:1 }}">Next</a>
+                    {% endif %}
+                {% else %}
+                    <p>Oooops.....movie is not availabile ...!</p>
+                {% endif %}
+            </div>
+        </div>
+        
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+</script>
+    
+{% endblock %}
