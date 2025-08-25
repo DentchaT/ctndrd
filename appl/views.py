@@ -422,6 +422,25 @@ def viewmovie(request, movie_id):
     trailer_key = next((v['key'] for v in movie['videos']['results'] if v['type'] == 'Trailer'), None)
     genres = movie['genres']
     return render(request, 'ctndrd/movi.html', {'movie':movie, 'genres':genres , 'trailer_key':trailer_key}) 
+
+@login_required
+def vieworder(request):
+    query = request.GET.get('q')
+    products=Product.objects.filter(author=request.user)
+
+    if query:
+        orders = Order.objects.filter(
+            product__in = products, 
+            product__item__icontains=query
+            ).order_by('-date_added')
+    else:
+        orders = Order.objects.filter(product__in = products).order_by('-date_added')
+
+    mydict = {
+        'orders':orders
+    }
+    
+    return render (request, 'ctndrd/orders.html', context=mydict) 
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
@@ -1138,7 +1157,7 @@ def shops(request):
 #-------------------------------------------------------------------------
 #-------------------VIEW ORDER------------------------
 @login_required
-def vieworder(request):
+def vieworders(request):
     query = request.GET.get('q')
     profile=Profile.objects.get(user=request.user)
     followers=request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all()) #for requests in the right

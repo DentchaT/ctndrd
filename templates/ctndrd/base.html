@@ -1334,6 +1334,51 @@
             font-family: sans-serif;
             color: #666;
         }
+
+        .xcc{
+            background-color: rgb(255, 255, 255);
+            padding: 5%;
+            border-radius: 12px;
+        }
+        .order-card{
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-image: url('{{order.product.image.url}}');
+        }
+        .climpex{
+            display: flex; 
+            max-height: 80px;
+            overflow-y: auto;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .climp img{
+            width: 40px;
+            height: 40px;
+            border: 1px solid white;
+            border-radius: 50%;
+        }
+        .climpx{
+            background-color: white;
+            padding: 5px;
+            font-size: 9px;
+            color: #050a30;
+            font-family: sans-serif;
+            border-radius: 10px;
+        }
+        .climpxv{
+            background-color: white;
+            padding: 5px;
+            font-size: 9px;
+            color: #050a30;
+            font-family: sans-serif;
+            border-radius: 10px;
+            border: 1px solid rgb(48, 241, 248);
+        }
         @media screen and (min-width: 500px) {
         .header{
             display: none;
