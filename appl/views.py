@@ -9,7 +9,7 @@ from django.http import JsonResponse
 from .forms import *
 
 def terms(request):
-    return render(request, 'terms/terms.html')
+    return render(request, 'ctndrd/terms.html')
 #------------------SIGNUP, LOGIN, LOGOUT START HERE -------------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
@@ -441,6 +441,11 @@ def vieworder(request):
     }
     
     return render (request, 'ctndrd/orders.html', context=mydict) 
+
+#-------------------------------------------------------------------------
+#---------------------code by Dr.James Atwiine----------------------------
+#-------------------------------------------------------------------------
+
 #--------------HOME PAGE-----------------------------------------
 @login_required
 def HomePage(request):
