@@ -26,7 +26,7 @@
             <div class="xcc">
                 {% if orders %}
                     {% for order in orders %}
-                        <div class="order-card">
+                        <div class="order-card" data-order-id="{{ order.id }}">
                             <div class="row">
                                 <div class="climpex"> 
                                     <div class="climp">
@@ -58,6 +58,29 @@
     </section>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    // Get all order cards
+    const orderCards = document.querySelectorAll('.order-card');
+
+    // Load selected orders from local storage
+    const selectedOrders = JSON.parse(localStorage.getItem('selectedOrders')) || {};
+
+    // Add class to previously selected orders
+    orderCards.forEach((orderCard) => {
+    const orderId = orderCard.dataset.orderId;
+    if (selectedOrders[orderId]) {
+        orderCard.classList.add('selected');
+    }
+    });
+
+    // Add event listener to each order card
+    orderCards.forEach((orderCard) => {
+    orderCard.addEventListener('click', () => {
+        const orderId = orderCard.dataset.orderId;
+        orderCard.classList.toggle('selected');
+        selectedOrders[orderId] = orderCard.classList.contains('selected');
+        localStorage.setItem('selectedOrders', JSON.stringify(selectedOrders));
+    });
+    });
 </script>
     
 {% endblock %}

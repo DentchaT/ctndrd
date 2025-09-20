@@ -137,6 +137,7 @@ def my_profile(request):
     profile=Profile.objects.get(user=request.user)
     suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
     followers = request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all())
+    product=Product.objects.filter(author=request.user).order_by('-created_at')
     
     query=request.GET.get('q')
     if query:
@@ -146,6 +147,7 @@ def my_profile(request):
         'profile':profile,
         'suggestion':suggestion,
         'followers':followers,
+        'product':product
     }
 
     if request.method =='POST':
@@ -205,6 +207,7 @@ def my_profile(request):
             order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
             order.save()
             return redirect('my_profile')
+        
     return render(request, 'ctndrd/profile-page.html', context=mydict)
 
 @login_required
@@ -212,12 +215,26 @@ def view_profile(request, pk):
     profile=Profile.objects.get(user=request.user)
     follower=Profile.objects.get(id=pk)
     followers=follower.followed_by.all() #for following user
+    product=Product.objects.filter(author=follower.user).order_by('-created_at')
 
     mydict = {
         'profile':profile,
         'follower':follower,
-        'followers':followers
+        'followers':followers,
+        'product':product
     }
+    
+    if request.method== 'POST':
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('view_profile', pk=follower.id)
         
     return render(request, 'ctndrd/view-profile-page.html', context=mydict)
 
