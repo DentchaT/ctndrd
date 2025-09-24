@@ -34,7 +34,7 @@
                                 <p>{{m.artist}}</p>
                             </div>
                             <div class="music-song">
-                                <audio controls src="{{m.song.url}}"></audio>
+                                <audio preload="none" controls src="{{m.song.url}}"></audio>
                             </div>
                         </div>
                     {% endfor %}
