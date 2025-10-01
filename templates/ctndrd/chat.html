@@ -6,84 +6,97 @@
 {% block content %}
     <section>
         <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
-
-        <div class="biodatary">
-            <h4>CHAT WITH {{follower.firstname}}</h4>
+        <div class="leftz">
+            {% include 'ctndrd/movie-side.html' %}
         </div>
-        
-        <div class="biodatara">
-            <div class="top-line"></div>
-            <div class="message-bioz">
-                <div class="name-times">
-                    <a href="{% url 'messages' %}"><i class='bx  bxs-chevrons-left'  ></i> </a>
-                </div>
-                <div class="name-times">
-                    <h4>{{ follower.firstname }} {{ follower.lastname }}</h4>
-                    <p>[..All chats are private..]</p>
-                </div>
-                {% if follower.profile_pic %}
-                    <a href="{% url 'view_profile' follower.id %}"><img src="{{follower.profile_pic.url}}" alt=""></a>
-                {% else %}
-                    <a href="{% url 'view_profile' follower.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
-                {% endif %}
+        <div class="middle">
+            <div class="biodatary">
+                <h4>CHAT WITH {{follower.firstname}}</h4>
             </div>
-        </div>
-        <div class="conversationary" >
-            {% if chats %}
-                {% for messag in chats %}
-                    {% if messag.receiver == request.user %}
-                        <div class="talkleft">
-                            {% if messag.sender.profile.profile_pic %}
-                                <img src="{{messag.sender.profile.profile_pic.url}}" alt="">
-                            {% else %}
-                                <img src="{% static 'img/user_avatar.jpg' %}" alt="">
-                            {% endif %}
-                            {% if messag.image %}
-                                <div class="talkleft-message">
-                                    <img src="{{messag.image.url}}" alt="">
-                                    <p>{{messag.message}}</p>
-                                </div>
-                            {% else %}
-                                <p>{{messag.message}}</p>
-                            {% endif %}
-                        </div>
-                    {% elif messag.sender == request.user %}    
-                        <div class="talkright">
-                            {% if messag.image %}
-                                <div class="talkright-message">
-                                    <img src="{{messag.image.url}}" alt="">
-                                    <p>{{messag.message}}</p>
-                                </div>
-                            {% else %}
-                            <p>{{messag.message}}</p>
-                            {% endif %}
-                            {% if messag.sender.profile.profile_pic %}
-                                <img src="{{messag.sender.profile.profile_pic.url}}" alt="">
-                            {% else %}
-                                <img src="{% static 'img/user_avatar.jpg' %}" alt="">
-                            {% endif %}
-                        </div>
+            
+            <div class="biodatara">
+                <div class="top-line"></div>
+                <div class="message-bioz">
+                    <div class="name-times">
+                        <a href="{% url 'messages' %}"><i class='bx  bxs-chevrons-left'  ></i> </a>
+                    </div>
+                    <div class="name-times">
+                        <h4>{{ follower.firstname }} {{ follower.lastname }}</h4>
+                        <p>[..All chats are private..]</p>
+                    </div>
+                    {% if follower.profile_pic %}
+                        <a href="{% url 'view_profile' follower.id %}"><img src="{{follower.profile_pic.url}}" alt=""></a>
+                    {% else %}
+                        <a href="{% url 'view_profile' follower.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
                     {% endif %}
-                {% endfor %}
-            {% endif %} 
-        </div>
-        <form method="post" enctype="multipart/form-data" class="chat-form">
-        {% csrf_token %}
-            <div class="container-input-stuffs">
-                <div class="files-logo-cont">
-                    <img name="image" src="{% static 'img/paper-clip.svg' %}" alt="">
-                    <input type="file" name="image" style="display: none;">
                 </div>
-                <div class="group-inp">
-                    <input type="hidden"  name="receiver_id" value="{{follower.id}}">
-                    <textarea id="chat-input" placeholder="Enter message here" required name="message" minlength="1" maxlength="10000"></textarea>
-                </div>
-                <button  class="submit-msg-btn">
-                    <img src="{% static 'img/send.svg' %}" alt="">
-                </button>
             </div>
-        </form>
+            <div class="conversationary" >
+                {% if chats %}
+                    {% for messag in chats %}
+                        {% if messag.receiver == request.user %}
+                            <div class="talkleft">
+                                {% if messag.sender.profile.profile_pic %}
+                                    <img src="{{messag.sender.profile.profile_pic.url}}" alt="">
+                                {% else %}
+                                    <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                                {% endif %}
+                                {% if messag.image %}
+                                    <div class="talkleft-message">
+                                        <img src="{{messag.image.url}}" alt="">
+                                        <p>{{messag.message}}</p>
+                                    </div>
+                                {% else %}
+                                    <p>{{messag.message}}</p>
+                                {% endif %}
+                            </div>
+                        {% elif messag.sender == request.user %}    
+                            <div class="talkright">
+                                {% if messag.image %}
+                                    <div class="talkright-message">
+                                        <img src="{{messag.image.url}}" alt="">
+                                        <p>{{messag.message}}</p>
+                                    </div>
+                                {% else %}
+                                <p>{{messag.message}}</p>
+                                {% endif %}
+                                {% if messag.sender.profile.profile_pic %}
+                                    <img src="{{messag.sender.profile.profile_pic.url}}" alt="">
+                                {% else %}
+                                    <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %} 
+            </div>
+            <form method="post" enctype="multipart/form-data" class="chat-form">
+            {% csrf_token %}
+                <div class="container-input-stuffs">
+                    <div class="files-logo-cont">
+                        <img name="image" src="{% static 'img/paper-clip.svg' %}" alt="">
+                        <input type="file" name="image" style="display: none;">
+                    </div>
+                    <div class="group-inp">
+                        <input type="hidden"  name="receiver_id" value="{{follower.id}}">
+                        <textarea id="chat-input" placeholder="Enter message here" required name="message" minlength="1" maxlength="10000"></textarea>
+                    </div>
+                    <button  class="submit-msg-btn">
+                        <img src="{% static 'img/send.svg' %}" alt="">
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="rightz">
+            {% include 'ctndrd/shopping-side.html' %}
+        </div>
     </section>
+    <footer class="footer">
+        <div class="foot">
+            <a href="{% url 'discover' %}"><button>Discover</button></a>
+            <a href="{% url 'bookmarked' %}"><button>Saved</button></a>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     //for file input in chat

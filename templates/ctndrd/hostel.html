@@ -6,63 +6,77 @@
 {% block content %}
     <section>
         <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
-        <div class="hostel-search" id="search-section">
-            <h2>Find Your Perfect Hostel</h2>
-            <form class="hostel-form" method="get" id="search-form">
-                <input type="text" name="s" id="search-input" placeholder="Enter Hostel...">
-                <select name="l" id="location-select">
-                    <option value="">Select Location</option>
-                    <option value="kampala">Kampala</option>
-                    <option value="Nakawa">Nakawa</option>
-                    <option value="Mbarara">Mbarara</option>
-                    <option value="Western region">Western region</option>
-                    <option value="Central region">Central region</option>
-                    <option value="Entebbe">Entebbe</option>
-                    <option value="Uganda">Uganda</option>
-                    <option value="Northern region">Northern region</option>
-                    <option value="Eastern region">Eastern region</option>
-                </select>
-                <select name="p" id="price-select">
-                    <option value="">Select Price Range</option>
-                    <option value="200,000">shs:200,000</option>
-                    <option value="400,000">shs:400,000</option>
-                    <option value="500,000">shs:500,000</option>
-                    <option value="1,000,000">shs:1,000,000</option>
-                    <option value="1,500,000">shs:1,500,000</option>
-                </select>
-                <button id="search-button">Search <i class="fa-solid fa-magnifying-glass"></i></button>
-            </form>
+        <div class="leftz">
+            {% include 'ctndrd/movie-side.html' %}
         </div>
-        <div class="hostel-list" id="hostel-list">
-            {% for host in hostel %}
-                <div class="hostel-card">
-                    <img src="{{host.image.url}}" alt="Hostel Image">
-                    <div class="hostel-info">
-                        <h2>{{host.name}}</h2>
-                        <div class="hostel-detail">
-                            <div class="each">
-                                <h4>Location:</h4>
-                                <p>{{host.location}}</p>
+        <div class="middle">
+            <div class="hostel-search" id="search-section">
+                <h2>Find Your Perfect Hostel</h2>
+                <form class="hostel-form" method="get" id="search-form">
+                    <input type="text" name="s" id="search-input" placeholder="Enter Hostel...">
+                    <select name="l" id="location-select">
+                        <option value="">Select Location</option>
+                        <option value="kampala">Kampala</option>
+                        <option value="Nakawa">Nakawa</option>
+                        <option value="Mbarara">Mbarara</option>
+                        <option value="Western region">Western region</option>
+                        <option value="Central region">Central region</option>
+                        <option value="Entebbe">Entebbe</option>
+                        <option value="Uganda">Uganda</option>
+                        <option value="Northern region">Northern region</option>
+                        <option value="Eastern region">Eastern region</option>
+                    </select>
+                    <select name="p" id="price-select">
+                        <option value="">Select Price Range</option>
+                        <option value="200,000">shs:200,000</option>
+                        <option value="400,000">shs:400,000</option>
+                        <option value="500,000">shs:500,000</option>
+                        <option value="1,000,000">shs:1,000,000</option>
+                        <option value="1,500,000">shs:1,500,000</option>
+                    </select>
+                    <button id="search-button">Search <i class="fa-solid fa-magnifying-glass"></i></button>
+                </form>
+            </div>
+            <div class="hostel-list" id="hostel-list">
+                {% for host in hostel %}
+                    <div class="hostel-card">
+                        <img src="{{host.image.url}}" alt="Hostel Image">
+                        <div class="hostel-info">
+                            <h2>{{host.name}}</h2>
+                            <div class="hostel-detail">
+                                <div class="each">
+                                    <h4>Location:</h4>
+                                    <p>{{host.location}}</p>
+                                </div>
+                                <div class="each">
+                                    <h4>Price:</h4>
+                                    <p>Ugshs.{{host.price}}</p>
+                                </div>
+                                <div class="each">
+                                    <h4>About:</h4>
+                                    <p>{{host.about}}</p>
+                                </div>
+                                <div class="each">
+                                    <h4>For:</h4>
+                                    <p>{{host.residents}}</p>
+                                </div>
                             </div>
-                            <div class="each">
-                                <h4>Price:</h4>
-                                <p>Ugshs.{{host.price}}</p>
-                            </div>
-                            <div class="each">
-                                <h4>About:</h4>
-                                <p>{{host.about}}</p>
-                            </div>
-                            <div class="each">
-                                <h4>For:</h4>
-                                <p>{{host.residents}}</p>
-                            </div>
+                            <button class="view-contact-btn" data-phone-number="{{host.contact}}">View Contact <i class="fa-solid fa-phone-flip"></i></button>
                         </div>
-                        <button class="view-contact-btn" data-phone-number="{{host.contact}}">View Contact <i class="fa-solid fa-phone-flip"></i></button>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="rightz">
+            {% include 'ctndrd/shopping-side.html' %}
         </div>
     </section>
+    <footer class="footer">
+        <div class="foot">
+            <a href="{% url 'discover' %}"><button>Discover</button></a>
+            <a href="{% url 'bookmarked' %}"><button>Saved</button></a>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 

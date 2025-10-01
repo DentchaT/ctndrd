@@ -21,10 +21,52 @@ def home(request):
     for post in posts:
         post.has_commented = post.comments.filter(user=request.user).exists()
     saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
+
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
         'posts':posts,
         'saved_posts':saved_posts,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
+    
     if request.method == 'POST':
         if 'post_submit' in request.POST:
             post_form = Postform(request.POST, request.FILES)
@@ -50,6 +92,17 @@ def home(request):
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
             return redirect('home')
+        #For order submit on featured products on the right side
+        elif 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('home')
     return render(request,'ctndrd/home.html',context=mydict)
 
 @login_required
@@ -69,9 +122,49 @@ def discover(request):
         for post in posts:
             post.has_commented = post.comments.filter(user=request.user).exists()
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict={
         'posts':posts,
-        'saved_posts':saved_posts
+        'saved_posts':saved_posts,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
     if request.method=='POST':
         if 'comment_submit' in request.POST:
@@ -79,6 +172,17 @@ def discover(request):
             post = Post.objects.get(id=post_id)
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
+            return redirect('discover')
+        #For order submit on featured products on the right side
+        elif 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
             return redirect('discover')
 
     return render(request, 'ctndrd/discover.html',context=mydict) 
@@ -89,9 +193,49 @@ def bookmarked(request):
     for post in posts:
         post.has_commented = post.comments.filter(user=request.user).exists()
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict={
         'posts':posts,
-        'saved_posts':saved_posts
+        'saved_posts':saved_posts,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
     
     if request.method=='POST':
@@ -100,6 +244,17 @@ def bookmarked(request):
             post = Post.objects.get(id=post_id)
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
+            return redirect('bookmarked')
+        #For order submit on featured products on the right side
+        elif 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
             return redirect('bookmarked')
         
     return render(request, 'ctndrd/bookmarked.html',context=mydict)
@@ -116,10 +271,50 @@ def my_post(request):
         posts = Post.objects.filter(author=request.user).order_by('-id')
         for post in posts:
             post.has_commented = post.comments.filter(user=request.user).exists() 
+    
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
 
     mydict = {
         'posts':posts,
-        'saved_posts':saved_posts
+        'saved_posts':saved_posts,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
 
     if request.method=='POST':
@@ -128,6 +323,17 @@ def my_post(request):
             post = Post.objects.get(id=post_id)
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
+            return redirect('my_post')
+        #For order submit on featured products on the right side
+        elif 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
             return redirect('my_post')
 
     return render(request, 'ctndrd/my_posts.html', context=mydict)
@@ -143,11 +349,51 @@ def my_profile(request):
     if query:
         suggestion=Profile.objects.filter(firstname__icontains=query) 
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
         'profile':profile,
         'suggestion':suggestion,
         'followers':followers,
-        'product':product
+        'product':product,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
 
     if request.method =='POST':
@@ -196,7 +442,7 @@ def my_profile(request):
                      )
             music.save()
             return redirect('music')
-        
+        # Also for order submit of featured products in the right
         elif 'order_submit' in request.POST:
             product_id=request.POST.get('product_id')
             product=Product.objects.get(id=product_id)
@@ -217,14 +463,55 @@ def view_profile(request, pk):
     followers=follower.followed_by.all() #for following user
     product=Product.objects.filter(author=follower.user).order_by('-created_at')
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    followerx=profile.follows.all()
+    messages=[]
+    for follow in followerx:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
         'profile':profile,
         'follower':follower,
         'followers':followers,
-        'product':product
+        'product':product,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
     
     if request.method== 'POST':
+        # Also for order submit of featured products in the right  
         if 'order_submit' in request.POST:
             product_id=request.POST.get('product_id')
             product=Product.objects.get(id=product_id)
@@ -246,19 +533,70 @@ def acc_settings(request):
     except Profile.DoesNotExist:
         profile=Profile.objects.create(User=request.user)
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    followerx=profile.follows.all()
+    messages=[]
+    for follow in followerx:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
 
     if request.method == 'POST':
-        form=ProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
-            return redirect('my_profile') 
+        #For order submit of featured products in the right
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('account-settings')
+        else:
+            form=ProfileForm(request.POST, request.FILES, instance=profile)
+            if form.is_valid():
+                form.save()
+                return redirect('my_profile') 
         
     else:
         form=ProfileForm(instance=profile)
-    
+        
     mydict = {
         'profile':profile,
-        'form':form
+        'form':form,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
 
     return render(request, 'ctndrd/acc-sets.html', context=mydict)
@@ -268,6 +606,25 @@ def messages(request):
     profile=Profile.objects.get(user=request.user)
     follower=profile.follows.all()
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
     
     messages=[]
     for follow in follower:
@@ -286,8 +643,23 @@ def messages(request):
     mydict = {
         'profile':profile,
         'follower':follower,
-        'messages':messages
+        'messages':messages,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
     }
+    #For order submit of featured products in the right
+    if request.method== 'POST':  
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('messages')
     return render(request, 'ctndrd/messages.html', context=mydict)
 
 @login_required
@@ -300,24 +672,76 @@ def chat(request, pk):
         (Q(sender=follower.user) & Q(receiver=profile.user))
     ).order_by('-timestamp')
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    followerx=profile.follows.all()
+    messages=[]
+    for follow in followerx:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
         'profile':profile,
         'follower':follower,
-        'chats':chats
+        'chats':chats,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
 
     if request.method == 'POST':
-        message = request.POST['message']
-        image=request.FILES.get('image')
-        receiver_id = request.POST['receiver_id']
-        receiver = Profile.objects.get(id=receiver_id)
-        Message.objects.create(
-            sender=request.user,
-            receiver=receiver.user,
-            message=message,
-            image=image
-        )
-        return redirect('chat', pk=follower.id)
+        #For order submit of featured products in the right  
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('chat', pk=follower.id)
+        else:
+            message = request.POST['message']
+            image=request.FILES.get('image')
+            receiver_id = request.POST['receiver_id']
+            receiver = Profile.objects.get(id=receiver_id)
+            Message.objects.create(
+                sender=request.user,
+                receiver=receiver.user,
+                message=message,
+                image=image
+            )
+            return redirect('chat', pk=follower.id)
     return render(request, 'ctndrd/chat.html', context=mydict)
 
 @login_required
@@ -328,9 +752,63 @@ def music(request):
     else:
         music=Music.objects.all().order_by('-created_at')
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    followerx=profile.follows.all()
+    messages=[]
+    for follow in followerx:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
-        'music':music
+        'music':music,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
+
+    if request.method == 'POST':
+        #For order submit of featured products in the right  
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('chat', pk=follower.id)
+        
     return render(request, 'ctndrd/music.html', context=mydict)
 
 def hostel(request):
@@ -350,9 +828,49 @@ def hostel(request):
     else:
         hostel=Hostel.objects.all().order_by('-created_at') 
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    followerx=profile.follows.all()
+    messages=[]
+    for follow in followerx:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
         'profile':profile,
-        'hostel':hostel
+        'hostel':hostel,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
 
     if request.method=='POST':
@@ -370,6 +888,17 @@ def hostel(request):
             )
             hostel.save()
             return redirect('hostel')
+        #For order submit of featured products in the right  
+        elif 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('hostel')
     return render(request, 'ctndrd/hostel.html', context=mydict)
 
 @login_required
@@ -382,9 +911,49 @@ def shop(request):
 
     profile=Profile.objects.get(user=request.user)
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
         'profile':profile,
-        'product':product
+        'product':product,
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages
     }
 
     if request.method== 'POST':
@@ -428,7 +997,51 @@ def movie(request):
     data = response.json()
     movies = data['results']
     total_pages = data['total_pages']
-    return render(request, 'ctndrd/movie.html', {'movies':movies, 'page':page, 'total_pages':total_pages, 'query':query})
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
+    #For order submit of featured products in the right
+    if request.method == 'POST':  
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('movie') 
+
+    return render(request, 'ctndrd/movie.html', 
+                  {'movies':movies, 
+                   'page':page, 
+                   'productx':productx, 
+                   'suggestion':suggestion, 
+                   'messages':messages, 
+                   'total_pages':total_pages, 
+                   'query':query})
 
 @login_required
 def viewmovie(request, movie_id):
@@ -438,7 +1051,65 @@ def viewmovie(request, movie_id):
     movie = response.json()
     trailer_key = next((v['key'] for v in movie['videos']['results'] if v['type'] == 'Trailer'), None)
     genres = movie['genres']
-    return render(request, 'ctndrd/movi.html', {'movie':movie, 'genres':genres , 'trailer_key':trailer_key}) 
+
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
+    #For order submit of featured products in the right
+    if request.method == 'POST':  
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('viewmovie', movie_id)
+
+
+    return render(request, 'ctndrd/movi.html', 
+                  {'movie':movie, 
+                   'genres':genres, 
+                   'movies':movies,
+                   'productx':productx,
+                   'suggestion':suggestion,
+                   'messages':messages,
+                   'trailer_key':trailer_key}) 
 
 @login_required
 def vieworder(request):
@@ -453,10 +1124,63 @@ def vieworder(request):
     else:
         orders = Order.objects.filter(product__in = products).order_by('-date_added')
 
+    # For movies on the left side
+    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    page = request.GET.get('page', 1)
+    query = request.GET.get('q')
+    if query:
+        url = f'https://api.themoviedb.org/3/search/movie?api_key={api_key}&query={query}'
+    else:
+        url = f'https://api.themoviedb.org/3/movie/popular?api_key={api_key}&page={page}'
+    response = requests.get(url)
+    data = response.json()
+    movies = data['results']
+    total_pages = data['total_pages']
+
+    # For featured products on the right side
+    productx=Product.objects.all().order_by('-created_at')
+
+    # For suggestions on the right side
+    profile=Profile.objects.get(user=request.user)
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+
+    #For messages on the left side
+    follower=profile.follows.all()
+    messages=[]
+    for follow in follower:
+        conversation_messages = Message.objects.filter(
+            (Q(sender=profile.user) & Q(receiver=follow.user)) |
+            (Q(sender = follow.user) & Q(receiver=profile.user))
+        ).order_by('-timestamp')
+
+        if conversation_messages.exists():
+            latest_message=conversation_messages.first()
+            messages.append({
+                'follow':follow,
+                'latest_message':latest_message
+            })
+
     mydict = {
-        'orders':orders
+        'orders':orders, 
+        'movies':movies,
+        'productx':productx,
+        'suggestion':suggestion,
+        'messages':messages,
     }
-    
+
+    #For order submit of featured products in the right
+    if request.method == 'POST':  
+        if 'order_submit' in request.POST:
+            product_id=request.POST.get('product_id')
+            product=Product.objects.get(id=product_id)
+            buyer=request.user
+            telephone=request.POST.get('telephone')
+            price=request.POST.get('price')
+            
+            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            order.save()
+            return redirect('orders')
+
     return render (request, 'ctndrd/orders.html', context=mydict) 
 
 #-------------------------------------------------------------------------

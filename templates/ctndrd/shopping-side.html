@@ -1,0 +1,103 @@
+{% load static %}
+
+{% block content %}
+    <section>
+        <div class="movie-containers" >
+            <div class="movie-title">
+                <h4>FEATURED PRODUCTS</h4>
+            </div>
+            <div class="movie-bodys">
+                {% if productx %}
+                    {% for p in productx|slice:":12" %}
+                        <div class="productzs">
+                            <img src="{{p.image.url}}" alt="Product 1">
+                            <h3>{{p.item}}</h3>
+                            <p>{{p.description}}</p>
+                            <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
+                            <button class="add-to-cart">Order {{p.item}}</button>
+                            <div class="form-containerx">
+                                <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                                {% csrf_token %}
+                                    <input type="hidden" name="product_id" value="{{p.id}}" >
+                                    <label for="telephone">Telephone:</label>
+                                    <input type="tel" class="telephone" name="telephone" required><br>
+                                    <label for="price">Price:</label>
+                                    <input type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
+                                    <button type="submit" style="background-color: #3498db;" name="order_submit">Yes</button>
+                                    <button style="background-color: #ee3838;" type="button" class="cancel-button">No</button>
+                                </form>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>Oooops.....product is not availabile ...!</p>
+                {% endif %}
+            </div>
+            <div class="contxs">
+                <h4>MESSAGES</h4>
+                <div class="myrrh">
+                    {% if messages %}
+                        {% for messag in messages|dictsortreversed:"latest_message.timestamp" %}
+                            <a href="{% url 'chat' messag.follow.id %}">
+                                <div class="biodatar">
+                                    <div class="top-line"></div>
+                                    <div class="message-bio">
+                                        {% if messag.follow.profile_pic %}
+                                            <img src="{{messag.follow.profile_pic.url}}" alt="">
+                                        {% else %}
+                                            <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                                        {% endif %}
+                                        <div class="name-time">
+                                            <h4>{{messag.follow.user.profile.firstname}} {{messag.follow.user.profile.lastname}}</h4>
+                                            <p>{{messag.latest_message.timestamp|timesince}} ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="message-itself">
+                                        <p>{{messag.latest_message.message}}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    {% else %}
+                        <p style="color: #050a30;">Your messages will appear here</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const formContainer = button.nextElementSibling;
+            formContainer.style.display = 'block';
+            button.style.display = 'none';
+        });
+    });
+
+    const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+
+    addToCartForms.forEach(form => {
+        form.addEventListener('submit', () => {
+            // Add logic to handle form submission, e.g., send data to server
+            const formContainer = form.parentNode;
+            const addToCartButton = formContainer.previousElementSibling;
+            formContainer.style.display = 'none';
+            addToCartButton.style.display = 'inline-block';
+            //form.reset();
+        });
+
+        const cancelButton = form.querySelector('.cancel-button');
+        cancelButton.addEventListener('click', () => {
+            const formContainer = form.parentNode;
+            const addToCartButton = formContainer.previousElementSibling;
+            formContainer.style.display = 'none';
+            addToCartButton.style.display = 'inline-block';
+            form.reset();
+        });
+    });
+</script>
+    
+{% endblock %}

@@ -6,54 +6,66 @@
 {% block content %}
     <section>
         <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
-        <div class="create-post">
-            <form id="formx" method="get" action="">
-                <div class="create-post-form">
-                    <div class="input-img">
-                        <textarea name="q" rows="1" placeholder="Enter product's name to search" id="create-post"></textarea>
-                        <div class="lst">
-                            <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
-                            <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
-                        </div>
-                    </div>
-                    <button type="submit" form="formx" name="post_submit">Search</button>
-                </div>
-            </form>
+        <div class="leftz">
+            {% include 'ctndrd/movie-side.html' %}
         </div>
-
-        <div class="productsx" >
-            <h2>Two-click shopping</h2>
-            <div class="product-gridx">
-                {% if product %}
-                    {% for p in product|slice:":23" %}
-                        <div class="productz">
-                            <img src="{{p.image.url}}" alt="Product 1">
-                            <h3>{{p.item}}</h3>
-                            <p>{{p.description}}</p>
-                            <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
-                            <button class="add-to-cart">Order {{p.item}}</button>
-                            <div class="form-containerx">
-                                <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
-                                {% csrf_token %}
-                                    <input type="hidden" name="product_id" value="{{p.id}}" >
-                                    <label for="telephone">Telephone:</label>
-                                    <input type="tel" class="telephone" name="telephone" required><br>
-                                    <label for="price">Price:</label>
-                                    <input type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
-                                    <button type="submit" style="background-color: #3498db;" name="order_submit">Yes</button>
-                                    <button style="background-color: #ee3838;" type="button" class="cancel-button">No</button>
-                                </form>
+        <div class="middle">
+            <div class="create-post">
+                <form id="formx" method="get" action="">
+                    <div class="create-post-form">
+                        <div class="input-img">
+                            <textarea name="q" rows="1" placeholder="Enter product's name to search" id="create-post"></textarea>
+                            <div class="lst">
+                                <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
+                                <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
                             </div>
                         </div>
-                    {% endfor %}
-                {% else %}
-                    <p>Oooops.....product is not availabile ...!</p>
-                {% endif %}
-            </div> <br>
+                        <button type="submit" form="formx" name="post_submit">Search</button>
+                    </div>
+                </form>
+            </div>
 
+            <div class="productsx" >
+                <h2>Two-click shopping</h2>
+                <div class="product-gridx">
+                    {% if product %}
+                        {% for p in product|slice:":23" %}
+                            <div class="productz">
+                                <img src="{{p.image.url}}" alt="Product 1">
+                                <h3>{{p.item}}</h3>
+                                <p>{{p.description}}</p>
+                                <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
+                                <button class="add-to-cart">Order {{p.item}}</button>
+                                <div class="form-containerx">
+                                    <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                                    {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{p.id}}" >
+                                        <label for="telephone">Telephone:</label>
+                                        <input type="tel" class="telephone" name="telephone" required><br>
+                                        <label for="price">Price:</label>
+                                        <input type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
+                                        <button type="submit" style="background-color: #3498db;" name="order_submit">Yes</button>
+                                        <button style="background-color: #ee3838;" type="button" class="cancel-button">No</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Oooops.....product is not availabile ...!</p>
+                    {% endif %}
+                </div> <br>
+            </div>
         </div>
-        
+        <div class="rightz">
+            {% include 'ctndrd/shopping-side.html' %}
+        </div>
     </section>
+    <footer class="footer">
+        <div class="foot">
+            <a href="{% url 'discover' %}"><button>Discover</button></a>
+            <a href="{% url 'bookmarked' %}"><button>Saved</button></a>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     const addToCartButtons = document.querySelectorAll('.add-to-cart');

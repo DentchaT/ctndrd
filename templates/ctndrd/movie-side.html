@@ -1,0 +1,61 @@
+{% load static %}
+
+{% block content %}
+    <section>
+        <div class="movie-containers">
+            <div class="movie-title">
+                {% if query %}
+                    <h4>{{query}} MOVIE</h4>
+                {% else %}
+                    <h4>POPULAR MOVIES</h4>
+                {% endif %}
+            </div>
+            <div class="movie-bodys">
+                {% if movies %}
+                    {% for movie in movies %}
+                        {% if movie.poster_path %}
+                            <a class="movie-content" href="{% url 'viewmovie' movie.id %}">
+                                <img src="https://image.tmdb.org/t/p/w200{{movie.poster_path}}" alt="no thumbnail">
+                                <h4>{{movie.title}}</h4>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                    <!--Pagination links-->
+                    {% if page > 1 %}
+                        <a class="page-link" href="?page={{ page|add:-1 }}">Previous</a>
+                    {% endif %}
+                    {% if page < total_pages %}
+                        <a class="page-link" href="?page={{ page|add:1 }}">Next</a>
+                    {% endif %}
+                {% else %}
+                    <p>Oooops.....movie is not availabile ...!</p>
+                {% endif %}
+            </div>
+            <div class="contxs">
+                <h4>SUGGESTIONS</h4>
+                <div class="myrrh">
+                    {% for s in suggestion %}
+                        <div class="titlex two">
+                            {% if s.profile_pic %}
+                                <a href="{% url 'view_profile' s.id %}"><img src="{{s.profile_pic.url}}" alt=""></a>
+                            {% else %}
+                                <a href="{% url 'view_profile' s.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                            {% endif %}
+                            <div class="connect-bio">
+                                <h5>{{s.firstname}} {{s.lastname}}</h5>
+                                <p>@{{s.user.username}}</p>
+                            </div>
+                            <div class="connect-btn-suggest">
+                                <a href="{% url 'follow_user' s.pk %}"><button>Connect</button></a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+</script>
+    
+{% endblock %}

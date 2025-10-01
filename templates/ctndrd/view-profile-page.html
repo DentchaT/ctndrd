@@ -6,68 +6,46 @@
 {% block content %}
     <section>
         <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
-
-        <div class="biodata">
-            <div class="bio">
-                {% if follower.profile_pic %}
-                    <img src="{{follower.profile_pic.url}}" alt="">
-                {% else %}
-                    <img src="{% static 'img/user_avatar.jpg' %}" alt="">
-                {% endif %}
-                <div class="profile">
-                    <h4>{{follower.firstname}} {{follower.lastname}}</h4>
-                    <p>@{{follower.user.username}}</p>
-                    <p>{{follower.location}}</p>
+        <div class="leftz">
+            {% include 'ctndrd/movie-side.html' %}
+        </div>
+        <div class="middle">
+            <div class="biodata">
+                <div class="bio">
+                    {% if follower.profile_pic %}
+                        <img src="{{follower.profile_pic.url}}" alt="">
+                    {% else %}
+                        <img src="{% static 'img/user_avatar.jpg' %}" alt="">
+                    {% endif %}
+                    <div class="profile">
+                        <h4>{{follower.firstname}} {{follower.lastname}}</h4>
+                        <p>@{{follower.user.username}}</p>
+                        <p>{{follower.location}}</p>
+                    </div>
+                </div>
+                <div class="about">
+                    <h5>About</h5>
+                    <p>{{follower.bio}}</p>
                 </div>
             </div>
-            <div class="about">
-                <h5>About</h5>
-                <p>{{follower.bio}}</p>
-            </div>
-        </div>
-        <div class="biodata">
-            <div class="title">
-                {% if follower in profile.follows.all %}
-                    <div class="simanyi">
-                        <a href="{% url 'follow_user' follower.pk %}"><h4 style="color: red;">DISCONNECT</h4></a>
-                        <a href="{% url 'chat' follower.pk %}"><h4 style="color: green;">CHAT</h4></a>
-                    </div>
-                {% else %}
-                    <a href="{% url 'follow_user' follower.pk %}"><h4 style="color: green;">CONNECT WITH {{follower.firstname}}</h4></a>    
-                {% endif %}
-            </div>
-        </div>
-        </div>
-        <div class="biodata">
-            <div class="titlex">
-                <h4>CONNECTED BY [{{followers.count}}]</h4>
-            </div>
-            <div class="contx">
-                {% for s in followers %}
-                    <div class="titlex two">
-                        {% if s.profile_pic %}
-                            <a href="{% url 'view_profile' s.id %}"><img src="{{s.profile_pic.url}}" alt=""></a>
-                        {% else %}
-                            <a href="{% url 'view_profile' s.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
-                        {% endif %}
-                        <div class="connect-bio">
-                            <h5>{{s.firstname}} {{s.lastname}}</h5>
-                            <p>@{{s.user.username}}</p>
+            <div class="biodata">
+                <div class="title">
+                    {% if follower in profile.follows.all %}
+                        <div class="simanyi">
+                            <a href="{% url 'follow_user' follower.pk %}"><h4 style="color: red;">DISCONNECT</h4></a>
+                            <a href="{% url 'chat' follower.pk %}"><h4 style="color: green;">CHAT</h4></a>
                         </div>
-                        <div class="connect-btn-suggest">
-                            <a href="{% url 'view_profile' s.id %}"><button style="background-color: rgb(48, 241, 248); color: #050a30;">view </button></a>
-                        </div>
-                    </div>
-                {% endfor %}
+                    {% else %}
+                        <a href="{% url 'follow_user' follower.pk %}"><h4 style="color: green;">CONNECT WITH {{follower.firstname}}</h4></a>    
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        <div class="biodata">
-            <div class="titlex">
-                <h4>CONNECTED TO [{{follower.follows.count}}]</h4>
-            </div>
-            {% if follower.follows.all %}
+            <div class="biodata">
+                <div class="titlex">
+                    <h4>CONNECTED BY [{{followers.count}}]</h4>
+                </div>
                 <div class="contx">
-                    {% for s in follower.follows.all %}
+                    {% for s in followers %}
                         <div class="titlex two">
                             {% if s.profile_pic %}
                                 <a href="{% url 'view_profile' s.id %}"><img src="{{s.profile_pic.url}}" alt=""></a>
@@ -84,51 +62,85 @@
                         </div>
                     {% endfor %}
                 </div>
-            {% endif %}
-        </div>
-        <div class="biodata">
-            <div class="titlex">
-                <h4>{{follower.firstname}}'s Photos [{{follower.user.posts.count}}]</h4>
             </div>
-            {% if follower.user.posts.all %}
-                <div class="contxx">
-                    {% for s in follower.user.posts.all %}
-                        <img src="{{s.image.url}}" alt="">
-                    {% endfor %}
+            <div class="biodata">
+                <div class="titlex">
+                    <h4>CONNECTED TO [{{follower.follows.count}}]</h4>
                 </div>
-            {% endif %}
-        </div> 
-        <div class="productsx" >
-            <h2>{{follower.firstname}}'s products</h2>
-            <div class="product-gridx">
-                {% if product %}
-                    {% for p in product|slice:":23" %}
-                        <div class="productz">
-                            <img src="{{p.image.url}}" alt="Product 1">
-                            <h3>{{p.item}}</h3>
-                            <p>{{p.description}}</p>
-                            <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
-                            <button class="add-to-cart">Order {{p.item}}</button>
-                            <div class="form-containerx">
-                                <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
-                                {% csrf_token %}
-                                    <input type="hidden" name="product_id" value="{{p.id}}" >
-                                    <label for="telephone">Telephone:</label>
-                                    <input type="tel" class="telephone" name="telephone" required><br>
-                                    <label for="price">Price:</label>
-                                    <input type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
-                                    <button type="submit" style="background-color: #3498db;" name="order_submit">Yes</button>
-                                    <button style="background-color: #ee3838;" type="button" class="cancel-button">No</button>
-                                </form>
+                {% if follower.follows.all %}
+                    <div class="contx">
+                        {% for s in follower.follows.all %}
+                            <div class="titlex two">
+                                {% if s.profile_pic %}
+                                    <a href="{% url 'view_profile' s.id %}"><img src="{{s.profile_pic.url}}" alt=""></a>
+                                {% else %}
+                                    <a href="{% url 'view_profile' s.id %}"><img src="{% static 'img/user_avatar.jpg' %}" alt=""></a>
+                                {% endif %}
+                                <div class="connect-bio">
+                                    <h5>{{s.firstname}} {{s.lastname}}</h5>
+                                    <p>@{{s.user.username}}</p>
+                                </div>
+                                <div class="connect-btn-suggest">
+                                    <a href="{% url 'view_profile' s.id %}"><button style="background-color: rgb(48, 241, 248); color: #050a30;">view </button></a>
+                                </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>Oooops.....no products to show ...!</p>
+                        {% endfor %}
+                    </div>
                 {% endif %}
-            </div> <br>
+            </div>
+            <div class="biodata">
+                <div class="titlex">
+                    <h4>{{follower.firstname}}'s Photos [{{follower.user.posts.count}}]</h4>
+                </div>
+                {% if follower.user.posts.all %}
+                    <div class="contxx">
+                        {% for s in follower.user.posts.all %}
+                            <img src="{{s.image.url}}" alt="">
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div> 
+            <div class="productsx" >
+                <h2>{{follower.firstname}}'s products</h2>
+                <div class="product-gridx">
+                    {% if product %}
+                        {% for p in product|slice:":23" %}
+                            <div class="productz">
+                                <img src="{{p.image.url}}" alt="Product 1">
+                                <h3>{{p.item}}</h3>
+                                <p>{{p.description}}</p>
+                                <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
+                                <button class="add-to-cart">Order {{p.item}}</button>
+                                <div class="form-containerx">
+                                    <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
+                                    {% csrf_token %}
+                                        <input type="hidden" name="product_id" value="{{p.id}}" >
+                                        <label for="telephone">Telephone:</label>
+                                        <input type="tel" class="telephone" name="telephone" required><br>
+                                        <label for="price">Price:</label>
+                                        <input type="text" class="price" name="price" value="Ugshs.{{p.price}}" readonly><br>
+                                        <button type="submit" style="background-color: #3498db;" name="order_submit">Yes</button>
+                                        <button style="background-color: #ee3838;" type="button" class="cancel-button">No</button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>Oooops.....no products to show ...!</p>
+                    {% endif %}
+                </div> <br>
+            </div>
+        </div>
+        <div class="rightz">
+            {% include 'ctndrd/shopping-side.html' %}
         </div>
     </section>
+    <footer class="footer">
+        <div class="foot">
+            <a href="{% url 'discover' %}"><button>Discover</button></a>
+            <a href="{% url 'bookmarked' %}"><button>Saved</button></a>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     const addToCartButtons = document.querySelectorAll('.add-to-cart');

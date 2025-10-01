@@ -13,6 +13,13 @@
         body{
             background-color: #f4f6fc;
         }
+        ::-webkit-scrollbar {
+            width: 1px;
+            color: #f4f6fc;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f4f6fc;
+        }
         header{
             position: fixed;
             width: 99%;
@@ -50,8 +57,8 @@
         }
         section{
             padding: 100px 20px 20px 20px;
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            /*flex-direction: column;*/
         }
         .notex{
             display: none;
@@ -1390,63 +1397,225 @@
             color: #050a30;
             font-family: sans-serif;
         }
-        @media screen and (min-width: 500px) {
-        .header{
+        .leftz{
             display: none;
         }
-        .post{
+        .rightz{
             display: none;
         }
-        .notex{
-            display: block;
-            font-family: sans-serif;
-        }
-        .notex-img{
-            width: 170px;
-            height: 170px;
-            border-radius: 50%;
-        }
-        .footer{
-            display: none;
-        }
-        .create-post{
-            display: none;
+        @media (min-width: 500px) and (max-width: 1199px) {
+            .header{
+                display: none;
+            }
+            .main_container{
+                display: none;
+            }
+            .post{
+                display: none;
+            }
+            .notex{
+                display: block;
+                font-family: sans-serif;
+            }
+            .notex-img{
+                width: 170px;
+                height: 170px;
+                border-radius: 50%;
+            }
+            .footer{
+                display: none;
+            }
+            .create-post{
+                display: none;
+            }
+
+            .biodata{
+                display: none;
+            }
+            .biodatary{
+                display: none;
+            }
+            .biodatara{
+                display: none;
+            }
+            .continental{
+                display: none;
+            }
+            .conversationary{
+                display: none;
+            }
+            .chat-form{
+                display: none;
+            }
+            .music-container{
+                display: none;
+            }
+            .hostel-search{
+                display: none;
+            }
+            .hostel-list{
+                display: none;
+            }
+            .productsx{
+                display: none;
+            }
+            .movie-container{
+                display: none;
+            }
+            .leftz{
+                display: none;
+            }
+            .rightz{
+                display: none;
+            }
         }
 
-        .biodata{
-            display: none;
+        @media screen and (min-width: 1200px) {
+            .navbar{
+                background-color: #050a30;
+                width: 30%;
+                height: 80px;
+                position: fixed;
+                display: block;
+                top: 0px;
+                left: 35%;
+                border-radius: 12px;
+            }
+            section{
+                display: flex;
+                justify-content: space-between;
+            }
+            .notex{
+                display: none;
+            }
+            .leftz{
+                display: block;
+                background-color: #f4f6fc;
+                width: 30%;
+                border-radius: 12px;
+                border: 1px solid #050a30;
+            }
+            ::-webkit-scrollbar {
+                width: 1px;
+                color: #f4f6fc;
+            }
+            ::-webkit-scrollbar-track {
+                background: #f4f6fc;
+            }
+            .middle{
+                background-color: #f4f6fc;
+                height: 580px;
+                overflow-y: auto;
+                scrollbar-color: white;
+                margin: 1%;
+                width: 30%;
+                border-radius: 12px;
+                border: none;
+                outline: none;
+                padding-top: 1px;
+            }
+            .create-post{
+                margin-bottom: 10px;
+            }
+            .create-post-form{
+                height: 30px;
+                margin-top: auto;
+                margin-bottom: 3px;
+            }
+            .rightz{
+                display: block;
+                background-color: #f4f6fc;
+                width: 30%;
+                border-radius: 12px;
+                border: 1px solid #050a30;
+            }
+            .foot{
+                display: flex;
+                width: 100%;
+                padding: 2px 35%;
+                background-color: rgb(48, 241, 248);
+                margin-top: -3px;
+                gap: 19%;
+            }
+            .movie-containers{
+                background-color: #f4f6fc;
+                color: #ebecf1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                border-radius: 12px;
+                width: 100%;
+                margin-top: -40%;
+            }
+            .movie-bodys{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgb(48, 241, 248);
+            border-radius: 12px;
+            background-color: white;
+            margin-top: -20px;
+            height: 280px;
+            overflow-y: auto;
         }
-        .biodatary{
-            display: none;
+        .productzs{
+            width: 44%;
+            text-align: center;
+            background-color: #ffffff;
+            padding: 10px;
+            border: 1px solid rgb(48, 241, 248);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .biodatara{
-            display: none;
+        .productzs img{
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border: 1px solid rgb(48, 241, 248);
+            border-radius: 10px 10px 0 0;
         }
-        .continental{
-            display: none;
+        .productzs h3{
+            font-family: sans-serif;
+            color: #050a30; 
+            font-size: 13px;
+            background-color: #f4f6fc;
+            padding: 3px 5px;
+            border-radius: 5px;
+            margin-top: -1px;
         }
-        .conversationary{
-            display: none;
+        .productzs p{
+            font-family: sans-serif;
+            color: #050a30;
+            margin-top: -12px;
+            font-size: 12px;
         }
-        .chat-form{
-            display: none;
+        .productzs p:nth-child(2){
+            font-family: sans-serif;
+            color: #050a30;
+            margin-top: -12px;
+            text-decoration: underline;
+            font-size: 12px;
         }
-        .music-container{
-            display: none;
+        .contxs{
+            max-height: 300px;
+            width: 100%;
         }
-        .hostel-search{
-            display: none;
+        .contxs h4{
+            color: #f4f6fc;
+            font-family: sans-serif;
+            background-color: #050a30;
+            padding: 5px 20px;
         }
-        .hostel-list{
-            display: none;
+        .myrrh{
+            max-height: 260px;
+            overflow-y: auto;
         }
-        .productsx{
-            display: none;
         }
-        .movie-container{
-            display: none;
-        }
-    }
+        
+    
     </style>
 </head>
 <body>

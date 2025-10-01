@@ -6,56 +6,69 @@
 {% block content %}
     <section>
         <p class="notex">Display for this device's screen width is coming soon <img class="notex-img" src="{% static 'img/ctndrd4.png' %}" alt="ctndrd"></p>
-        <div class="create-post">
-            <form id="formx" method="get" action="">
-                <div class="create-post-form">
-                    <div class="input-img">
-                        <textarea name="q" rows="1" placeholder="Enter product's name to search" id="create-post"></textarea>
-                        <div class="lst">
-                            <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
-                            <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
-                        </div>
-                    </div>
-                    <button type="submit" form="formx" name="post_submit">Search</button>
-                </div>
-            </form>
+        <div class="leftz">
+            {% include 'ctndrd/movie-side.html' %}
         </div>
+        <div class="middle">
+            <div class="create-post">
+                <form id="formx" method="get" action="">
+                    <div class="create-post-form">
+                        <div class="input-img">
+                            <textarea name="q" rows="1" placeholder="Enter product's name to search" id="create-post"></textarea>
+                            <div class="lst">
+                                <input style="display: none;" type="file" class="btn btn-primary"  name="media" accept=".jpg, .jpeg, .png, .mp4, .webm, .ogg"/>
+                                <img style="display: none; width: 20px;height: 20px; border-radius: 50%;" src="{% static 'img/file.png' %}" alt="">
+                            </div>
+                        </div>
+                        <button type="submit" form="formx" name="post_submit">Search</button>
+                    </div>
+                </form>
+            </div>
 
-        <div class="productsx" >
-            <h2>View your orders here</h2>
-            <div class="xcc">
-                {% if orders %}
-                    {% for order in orders %}
-                        <div class="order-card" data-order-id="{{ order.id }}">
-                            <div class="row">
-                                <div class="climpex"> 
-                                    <div class="climp">
-                                        {% if order.buyer.profile.profile_pic %}
-                                            <img src="{{order.buyer.profile.profile_pic.url}}" alt="Buyer Profile Pic" class="buyer-profile-pic">
-                                        {% else %}
-                                            <img src="{% static 'img/user_avatar.jpg' %}" alt="Buyer Profile Pic" class="buyer-profile-pic">
-                                        {% endif %}
-                                    </div>
-                                    <div class="climpx">
-                                        <p><b style="color: rgb(48, 241, 248);">Item Name:</b> {{order.product.item}}</p>
-                                        <p><b>Price:</b>Ugshs.{{order.product.price}}</p>
-                                    </div>
-                                    <div class="climpxv">
-                                        <span> <b style="color: rgb(48, 241, 248);">Buyer:</b> {{order.buyer.profile.firstname}} {{order.buyer.profile.lastname}}</span>
-                                        <p class="vvv"><b>Contact:</b> <span style="font-size: 8px;">{{order.telephone}}</span></p>
-                                        <p> <b>Date:</b> {{order.date_added}}</p>
+            <div class="productsx" >
+                <h2>View your orders here</h2>
+                <div class="xcc">
+                    {% if orders %}
+                        {% for order in orders %}
+                            <div class="order-card" data-order-id="{{ order.id }}">
+                                <div class="row">
+                                    <div class="climpex"> 
+                                        <div class="climp">
+                                            {% if order.buyer.profile.profile_pic %}
+                                                <img src="{{order.buyer.profile.profile_pic.url}}" alt="Buyer Profile Pic" class="buyer-profile-pic">
+                                            {% else %}
+                                                <img src="{% static 'img/user_avatar.jpg' %}" alt="Buyer Profile Pic" class="buyer-profile-pic">
+                                            {% endif %}
+                                        </div>
+                                        <div class="climpx">
+                                            <p><b style="color: rgb(48, 241, 248);">Item Name:</b> {{order.product.item}}</p>
+                                            <p><b>Price:</b>Ugshs.{{order.product.price}}</p>
+                                        </div>
+                                        <div class="climpxv">
+                                            <span> <b style="color: rgb(48, 241, 248);">Buyer:</b> {{order.buyer.profile.firstname}} {{order.buyer.profile.lastname}}</span>
+                                            <p class="vvv"><b>Contact:</b> <span style="font-size: 8px;">{{order.telephone}}</span></p>
+                                            <p> <b>Date:</b> {{order.date_added}}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>Oooops.....order not availabile ...!</p>
-                {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <p>Oooops.....order not availabile ...!</p>
+                    {% endif %}
+                </div>
             </div>
         </div>
-        
+        <div class="rightz">
+            {% include 'ctndrd/shopping-side.html' %}
+        </div>
     </section>
+    <footer class="footer">
+        <div class="foot">
+            <a href="{% url 'discover' %}"><button>Discover</button></a>
+            <a href="{% url 'bookmarked' %}"><button>Saved</button></a>
+        </div>
+    </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     // Get all order cards
