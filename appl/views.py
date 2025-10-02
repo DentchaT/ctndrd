@@ -341,8 +341,7 @@ def my_post(request):
 @login_required
 def my_profile(request):
     profile=Profile.objects.get(user=request.user)
-    latest_profiles = Profile.objects.values('user_id').annotate(max_id=Max('id')).values_list('max_id', flat=True)
-    suggestion = Profile.objects.filter(id_in=latest_profiles).exclude(user_in=profile.follows.all().values_list('user', flat=True))
+    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('?')
     followers = request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all())
     product=Product.objects.filter(author=request.user).order_by('-created_at')
     
