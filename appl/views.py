@@ -341,7 +341,7 @@ def my_post(request):
 @login_required
 def my_profile(request):
     profile=Profile.objects.get(user=request.user)
-    suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
+    suggestion = Profile.objects.exclude(user_id__in=profile.follows.all().values_list('user_id', flat=True))
     followers = request.user.profile.followed_by.exclude(id__in=request.user.profile.follows.all())
     product=Product.objects.filter(author=request.user).order_by('-created_at')
     
@@ -807,7 +807,7 @@ def music(request):
             
             order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
             order.save()
-            return redirect('chat', pk=follower.id)
+            return redirect('music')
         
     return render(request, 'ctndrd/music.html', context=mydict)
 
