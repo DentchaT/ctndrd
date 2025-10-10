@@ -1403,7 +1403,69 @@
         .rightz{
             display: none;
         }
-        @media (min-width: 500px) and (max-width: 1199px) {
+        @media (min-width: 500px) and (max-width: 750px){
+            body{
+                display: flex;
+                gap: 10%;
+            }
+            section{
+                width: 100%;
+                padding: 40px 25px 5px 5px;
+            }
+            .navbar{
+                position: fixed;
+                left: 0;
+                top: 15%;
+                width: 100px;
+                height: fit-content;
+                border-radius: 12px;
+                padding: 3px 5px;
+            }
+            .nav-content{
+                display: flex;
+                width: 100%;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .nav-content p,a{
+                color: #f4f6fc;
+                font-size: 30px;
+            }
+            .nav-content img{
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                border: 2px solid #f4f6fc;
+            }
+            .nav-content a:hover{
+                color: rgb(48, 241, 248);
+            }
+            .nav-content img:hover{
+                border: 2px solid rgb(48, 241, 248);
+            }
+            .middle{
+                margin-left: 120px;
+            }
+            ::-webkit-scrollbar {
+                width: 1px;
+                color: #f4f6fc;
+            }
+            ::-webkit-scrollbar-track {
+                background: #f4f6fc;
+            }
+            .music-body{
+                height: 900px;
+            }
+            .foot{
+                display: flex;
+                width: 100%;
+                padding: 2px 20%;
+                background-color: rgb(48, 241, 248);
+                margin-top: -3px;
+                gap: 39%;
+            }
+        }
+        @media (min-width: 751px) and (max-width: 1199px) {
             .header{
                 display: none;
             }
