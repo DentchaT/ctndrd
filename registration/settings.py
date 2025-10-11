@@ -177,13 +177,13 @@ cloudinary.config(
     cloud_name= os.environ.get("CLOUD_NAME"),#os.getenv('CLOUD_NAME'),
     api_key= os.environ.get("CLOUD_API_KEY"),#os.getenv('CLOUD_API_KEY'),
     api_secret= os.environ.get("CLOUD_API_SECRET"),#os.getenv('CLOUD_API_SECRET')
+    secure= True
 )
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),#os.getenv('CLOUD_NAME'),
     'API_KEY': os.environ.get('CLOUD_API_KEY'),#os.getenv('CLOUD_API_KEY'),
     'API_SECRET': os.environ.get('CLOUD_API_SECRET'),#os.getenv('CLOUD_API_SECRET')
-    'SECURE': True,
     #'MEDIA_TAG': 'media',
     #'INVALID_VIDEO_ERROR_MESSAGE': 'Please upload a valid video file.',
 }
