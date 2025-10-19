@@ -38,6 +38,7 @@ urlpatterns = [
     #---------------------code by Dr.James Atwiine----------------------------
     #-------------------------------------------------------------------------
     path('home',views.home,name='home'),
+    path('load-more-posts/', load_more_posts, name='load_more_posts'),
     path('discover',views.discover, name='discover'),
     path('bookmarked/',views.bookmarked, name='bookmarked'),
     path('my_post/',views.my_post,name='my_post'),
