@@ -104,20 +104,7 @@ def home(request):
             order.save()
             return redirect('home')
     return render(request,'ctndrd/home.html',context=mydict)
-
-@login_required
-def load_more_posts(request):
-    offset = int(request.GET.get('offset'))
-    posts = Post.objects.all().order_by('-created_at')[offset:offset+10]
-    data = []
-    for post.get('id')
-        data.append({
-            'content': post.content,
-            'image': post.image.url if post.image else '',
-            'video': post.video.url if post.video else '',
-        })
-    return JsonResponse(data, safe=False)
-
+    
 @login_required
 def discover(request):
     saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)

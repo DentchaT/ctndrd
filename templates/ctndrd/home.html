@@ -213,35 +213,6 @@
     }
     });
 
-    // LAZY LOADER--------------------
-    const postContainer = document.querySelector('.middle');
-    let offset = 10;
-
-    function loadMorePosts() {
-    fetch(`/load-more-posts?offset=${offset}`)
-        .then(response => response.json())
-        .then(data => {
-        data.forEach(post => {
-            const postElement = document.createElement('div');
-            postElement.innerHTML = `
-            <div class="post">
-                <p>${post.content}</p>
-                ${post.image ? `<img src="${post.image}" alt="">` : ''}
-                ${post.video ? `<video src="${post.video}" controls></video>` : ''}
-            </div>
-            `;
-            postContainer.appendChild(postElement);
-        });
-        offset += 10;
-        });
-    }
-
-    window.addEventListener('scroll', () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
-        loadMorePosts();
-    }
-    });
-
 </script>
     
 {% endblock %}
