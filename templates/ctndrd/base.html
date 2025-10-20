@@ -1491,7 +1491,7 @@
             }
         }
         @media (min-width: 751px) and (max-width: 1199px) {
-            .header{
+            /*.header{
                 display: none;
             }
             .main_container{
@@ -1554,7 +1554,152 @@
             }
             .rightz{
                 display: none;
+            }*/
+            .navbar{
+                background-color: #050a30;
+                width: 40%;
+                height: 80px;
+                position: fixed;
+                display: block;
+                top: 0px;
+                left: 30%;
+                border-radius: 12px;
             }
+            section{
+                display: flex;
+                justify-content: space-between;
+            }
+            .notex{
+                display: none;
+            }
+            .leftz{
+                display: block;
+                background-color: #f4f6fc;
+                width: 27%;
+                height: 800px;
+                border-radius: 12px;
+                border: 1px solid #050a30;
+            }
+            ::-webkit-scrollbar {
+                width: 1px;
+                color: #f4f6fc;
+            }
+            ::-webkit-scrollbar-track {
+                background: #f4f6fc;
+            }
+            .middle{
+                background-color: #f4f6fc;
+                height: 800px;
+                overflow-y: auto;
+                scrollbar-color: white;
+                margin: 1%;
+                width: 41%;
+                border-radius: 12px;
+                border: none;
+                outline: none;
+                padding-top: 1px;
+            }
+            .create-post{
+                margin-bottom: 10px;
+            }
+            .create-post-form{
+                height: 30px;
+                margin-top: auto;
+                margin-bottom: 3px;
+            }
+            .rightz{
+                display: block;
+                background-color: #f4f6fc;
+                width: 27%;
+                height: 800px;
+                border-radius: 12px;
+                border: 1px solid #050a30;
+            }
+            .foot{
+                display: flex;
+                width: 100%;
+                padding: 2px 30%;
+                background-color: rgb(48, 241, 248);
+                margin-top: -3px;
+                gap: 19%;
+            }
+            .movie-containers{
+                background-color: #f4f6fc;
+                color: #ebecf1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                border-radius: 12px;
+                width: 100%;
+                margin-top: -40%;
+            }
+            .movie-bodys{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid rgb(48, 241, 248);
+            border-radius: 12px;
+            background-color: white;
+            margin-top: -20px;
+            height: 280px;
+            overflow-y: auto;
+            }
+            .productzs{
+                width: 95%;
+                text-align: center;
+                background-color: #ffffff;
+                padding: 10px;
+                border: 1px solid rgb(48, 241, 248);
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .productzs img{
+                width: 100%;
+                height: 120px;
+                object-fit: cover;
+                border: 1px solid rgb(48, 241, 248);
+                border-radius: 10px 10px 0 0;
+            }
+            .productzs h3{
+                font-family: sans-serif;
+                color: #050a30; 
+                font-size: 13px;
+                background-color: #f4f6fc;
+                padding: 3px 5px;
+                border-radius: 5px;
+                margin-top: -1px;
+            }
+            .productzs p{
+                font-family: sans-serif;
+                color: #050a30;
+                margin-top: -12px;
+                font-size: 12px;
+            }
+            .productzs p:nth-child(2){
+                font-family: sans-serif;
+                color: #050a30;
+                margin-top: -12px;
+                text-decoration: underline;
+                font-size: 12px;
+            }
+            .contxs{
+                max-height: 300px;
+                width: 100%;
+            }
+            .contxs h4{
+                color: #f4f6fc;
+                font-family: sans-serif;
+                background-color: #050a30;
+                padding: 5px 20px;
+            }
+            .myrrh{
+                max-height: 260px;
+                overflow-y: auto;
+            }
+        
         }
 
         @media screen and (min-width: 1200px) {
@@ -1647,59 +1792,59 @@
             margin-top: -20px;
             height: 280px;
             overflow-y: auto;
-        }
-        .productzs{
-            width: 43%;
-            text-align: center;
-            background-color: #ffffff;
-            padding: 10px;
-            border: 1px solid rgb(48, 241, 248);
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        .productzs img{
-            width: 100%;
-            height: 120px;
-            object-fit: cover;
-            border: 1px solid rgb(48, 241, 248);
-            border-radius: 10px 10px 0 0;
-        }
-        .productzs h3{
-            font-family: sans-serif;
-            color: #050a30; 
-            font-size: 13px;
-            background-color: #f4f6fc;
-            padding: 3px 5px;
-            border-radius: 5px;
-            margin-top: -1px;
-        }
-        .productzs p{
-            font-family: sans-serif;
-            color: #050a30;
-            margin-top: -12px;
-            font-size: 12px;
-        }
-        .productzs p:nth-child(2){
-            font-family: sans-serif;
-            color: #050a30;
-            margin-top: -12px;
-            text-decoration: underline;
-            font-size: 12px;
-        }
-        .contxs{
-            max-height: 300px;
-            width: 100%;
-        }
-        .contxs h4{
-            color: #f4f6fc;
-            font-family: sans-serif;
-            background-color: #050a30;
-            padding: 5px 20px;
-        }
-        .myrrh{
-            max-height: 260px;
-            overflow-y: auto;
-        }
+            }
+            .productzs{
+                width: 43%;
+                text-align: center;
+                background-color: #ffffff;
+                padding: 10px;
+                border: 1px solid rgb(48, 241, 248);
+                border-radius: 10px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+            .productzs img{
+                width: 100%;
+                height: 120px;
+                object-fit: cover;
+                border: 1px solid rgb(48, 241, 248);
+                border-radius: 10px 10px 0 0;
+            }
+            .productzs h3{
+                font-family: sans-serif;
+                color: #050a30; 
+                font-size: 13px;
+                background-color: #f4f6fc;
+                padding: 3px 5px;
+                border-radius: 5px;
+                margin-top: -1px;
+            }
+            .productzs p{
+                font-family: sans-serif;
+                color: #050a30;
+                margin-top: -12px;
+                font-size: 12px;
+            }
+            .productzs p:nth-child(2){
+                font-family: sans-serif;
+                color: #050a30;
+                margin-top: -12px;
+                text-decoration: underline;
+                font-size: 12px;
+            }
+            .contxs{
+                max-height: 300px;
+                width: 100%;
+            }
+            .contxs h4{
+                color: #f4f6fc;
+                font-family: sans-serif;
+                background-color: #050a30;
+                padding: 5px 20px;
+            }
+            .myrrh{
+                max-height: 260px;
+                overflow-y: auto;
+            }
         }
         
     
