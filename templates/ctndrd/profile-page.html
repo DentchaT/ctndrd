@@ -486,7 +486,7 @@
                                 <h3>{{p.item}}</h3>
                                 <p>{{p.description}}</p>
                                 <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
-                                <button class="add-to-cart">Order {{p.item}}</button>
+                                <button class="add-to-cartz">Order {{p.item}}</button>
                                 <div class="form-containerx">
                                     <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
                                     {% csrf_token %}
@@ -519,51 +519,57 @@
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-// Reusable function to toggle form container visibility
+    // Reusable function to toggle form container visibility
     function toggleFormContainer(buttonId, containerId) {
-        const button = document.getElementById(buttonId);
-        const container = document.getElementById(containerId);
-        button.addEventListener('click', () => {
-            container.style.display = container.style.display === 'block' ? 'none' : 'block';
-        });
+    const button = document.getElementById(buttonId);
+    const container = document.getElementById(containerId);
+
+    button.addEventListener('click', () => {
+        container.style.display = container.style.display === 'block' ? 'none' : 'block';
+    });
     }
-    // Usage
-    toggleFormContainer('add-movie-btn', 'form-container');
-    toggleFormContainer('add-moviez-btn', 'formz-container');
-    toggleFormContainer('adda-movie-btn', 'forma-container');
-    toggleFormContainer('add-moviex-btn', 'formx-container');
 
-    
-    const addToCartButtons = document.querySelectorAll('.add-to-cart');
+    // Initialize toggle functionality for multiple buttons and containers
+    const toggleButtons = [
+    { buttonId: 'add-movie-btn', containerId: 'form-container' },
+    { buttonId: 'add-moviez-btn', containerId: 'formz-container' },
+    { buttonId: 'adda-movie-btn', containerId: 'forma-container' },
+    { buttonId: 'add-moviex-btn', containerId: 'formx-container' },
+    ];
 
-    addToCartButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const formContainer = button.nextElementSibling;
-            formContainer.style.display = 'block';
-            button.style.display = 'none';
-        });
+    toggleButtons.forEach((toggle) => {
+    toggleFormContainer(toggle.buttonId, toggle.containerId);
     });
 
-    const addToCartForms = document.querySelectorAll('.add-to-cart-form');
+    // Handle add to cart button clicks
+    document.querySelectorAll('.add-to-cartz').forEach((button) => {
+    button.addEventListener('click', () => {
+        const formContainer = button.nextElementSibling;
+        formContainer.style.display = 'block';
+        button.style.display = 'none';
+    });
+    });
 
-    addToCartForms.forEach(form => {
-        form.addEventListener('submit', () => {
-            // Add logic to handle form submission, e.g., send data to server
-            const formContainer = form.parentNode;
-            const addToCartButton = formContainer.previousElementSibling;
-            formContainer.style.display = 'none';
-            addToCartButton.style.display = 'inline-block';
-            //form.reset();
-        });
+    // Handle form submissions and cancel button clicks
+    document.querySelectorAll('.add-to-cart-form').forEach((form) => {
+    form.addEventListener('submit', (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+        // Add logic to handle form submission, e.g., send data to server
+        const formContainer = form.parentNode;
+        const addToCartButton = formContainer.previousElementSibling;
+        formContainer.style.display = 'none';
+        addToCartButton.style.display = 'inline-block';
+        form.reset();
+    });
 
-        const cancelButton = form.querySelector('.cancel-button');
-        cancelButton.addEventListener('click', () => {
-            const formContainer = form.parentNode;
-            const addToCartButton = formContainer.previousElementSibling;
-            formContainer.style.display = 'none';
-            addToCartButton.style.display = 'inline-block';
-            form.reset();
-        });
+    const cancelButton = form.querySelector('.cancel-button');
+    cancelButton.addEventListener('click', () => {
+        const formContainer = form.parentNode;
+        const addToCartButton = formContainer.previousElementSibling;
+        formContainer.style.display = 'none';
+        addToCartButton.style.display = 'inline-block';
+        form.reset();
+    });
     });
 </script>
     
