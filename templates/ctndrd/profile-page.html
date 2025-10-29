@@ -486,7 +486,7 @@
                                 <h3>{{p.item}}</h3>
                                 <p>{{p.description}}</p>
                                 <p style="text-decoration: underline;">Ugshs.{{p.price}}</p> <br>
-                                <button class="add-to-cartz">Order {{p.item}}</button>
+                                <button class="add-to-cart">Order {{p.item}}</button>
                                 <div class="form-containerx">
                                     <form method="post" enctype="multipart/form-data" class="add-to-cart-form">
                                     {% csrf_token %}
@@ -542,7 +542,7 @@
     });
 
     // Handle add to cart button clicks
-    document.querySelectorAll('.add-to-cartz').forEach((button) => {
+    document.querySelectorAll('.add-to-cart').forEach((button) => {
     button.addEventListener('click', () => {
         const formContainer = button.nextElementSibling;
         formContainer.style.display = 'block';
