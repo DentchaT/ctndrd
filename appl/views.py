@@ -6,6 +6,8 @@ from .models import Post, Profile, Story, Comments, Movie, Order,Message,SavedPo
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
+from django.core.paginator import Paginator
+from django.template.loader import render_to_string 
 from .forms import *
 
 def terms(request):
@@ -16,14 +18,19 @@ def terms(request):
 #-------------------------------------------------------------------------
 @login_required
 def home(request):
-    followed_users=request.user.profile.follows.all()
-    posts=Post.objects.filter(author_id__in=followed_users.values_list('user_id', flat=True)).order_by('-created_at')
+    # Get followed users
+    followed_users = request.user.profile.follows.all()
+
+    # Get posts from followed users
+    posts = Post.objects.filter(author_id__in=followed_users.values_list('user_id', flat=True)).order_by('-created_at')
     for post in posts:
         post.has_commented = post.comments.filter(user=request.user).exists()
+
+    # Get saved posts
     saved_posts = SavedPost.objects.filter(user=request.user).values_list('post_id', flat=True)
 
-    # For movies on the left side
-    api_key = os.environ.get('API_KEY')#os.getenv('API_KEY')#
+    # Get movies from TMDB API
+    api_key = os.environ.get('API_KEY')
     page = request.GET.get('page', 1)
     query = request.GET.get('q')
     if query:
@@ -35,38 +42,39 @@ def home(request):
     movies = data['results']
     total_pages = data['total_pages']
 
-    # For featured products on the right side
-    productx=Product.objects.all().order_by('-created_at')
+    # Get featured products
+    productx = Product.objects.all().order_by('-created_at')
 
-    # For suggestions on the right side
-    profile=Profile.objects.get(user=request.user)
+    # Get suggestions
+    profile = Profile.objects.get(user=request.user)
     suggestion = Profile.objects.exclude(id__in=profile.follows.all()).order_by('follows')
 
-    #For messages on the left side
-    follower=profile.follows.all()
-    messages=[]
+    # Get messages
+    follower = profile.follows.all()
+    messages = []
     for follow in follower:
         conversation_messages = Message.objects.filter(
-            (Q(sender=profile.user) & Q(receiver=follow.user)) |
-            (Q(sender = follow.user) & Q(receiver=profile.user))
+            (Q(sender=profile.user) & Q(receiver=follow.user)) | 
+            (Q(sender=follow.user) & Q(receiver=profile.user))
         ).order_by('-timestamp')
-
         if conversation_messages.exists():
-            latest_message=conversation_messages.first()
+            latest_message = conversation_messages.first()
             messages.append({
-                'follow':follow,
-                'latest_message':latest_message
+                'follow': follow,
+                'latest_message': latest_message
             })
 
+    # Create context dictionary
     mydict = {
-        'posts':posts,
-        'saved_posts':saved_posts,
-        'movies':movies,
-        'productx':productx,
-        'suggestion':suggestion,
-        'messages':messages
+        'posts': posts,
+        'saved_posts': saved_posts,
+        'movies': movies,
+        'productx': productx,
+        'suggestion': suggestion,
+        'messages': messages
     }
-    
+
+    # Handle POST requests
     if request.method == 'POST':
         if 'post_submit' in request.POST:
             post_form = Postform(request.POST, request.FILES)
@@ -83,7 +91,6 @@ def home(request):
                         post.image = post_media
                     elif file_type == 'video':
                         post.video = post_media
-                        
                 post.save()
                 return redirect('home')
         elif 'comment_submit' in request.POST:
@@ -92,18 +99,26 @@ def home(request):
             comment = Comments.objects.create(post=post, user=request.user, body=request.POST.get('body'))
             comment.save()
             return redirect('home')
-        #For order submit on featured products on the right side
         elif 'order_submit' in request.POST:
-            product_id=request.POST.get('product_id')
-            product=Product.objects.get(id=product_id)
-            buyer=request.user
-            telephone=request.POST.get('telephone')
-            price=request.POST.get('price')
-            
-            order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
+            product_id = request.POST.get('product_id')
+            product = Product.objects.get(id=product_id)
+            buyer = request.user
+            telephone = request.POST.get('telephone')
+            price = request.POST.get('price')
+            order = Order.objects.create(product=product, buyer=buyer, telephone=telephone, price=price)
             order.save()
             return redirect('home')
-    return render(request,'ctndrd/home.html',context=mydict)
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+        paginator = Paginator(posts, 10)
+        page_number = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        return JsonResponse({
+            'posts': [{'html': render_to_string('post.html', {'post': post})} for post in page_obj.object_list],
+            'has_next': page_obj.has_next(),
+        })
+
+    return render(request, 'ctndrd/home.html', context=mydict)
     
 @login_required
 def discover(request):
