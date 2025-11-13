@@ -110,7 +110,7 @@ def home(request):
             return redirect('home')
 
     if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
-        paginator = Paginator(posts, 10)
+        paginator = Paginator(posts, 5)
         page_number = request.GET.get('page', 1)
         page_obj = paginator.get_page(page_number)
         return JsonResponse({
@@ -199,7 +199,15 @@ def discover(request):
             order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
             order.save()
             return redirect('discover')
-
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+        paginator = Paginator(posts, 5)
+        page_number = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        return JsonResponse({
+            'posts': [{'html': render_to_string('post.html', {'post': post})} for post in page_obj.object_list],
+            'has_next': page_obj.has_next(),
+        })
+    
     return render(request, 'ctndrd/discover.html',context=mydict) 
 @login_required
 def bookmarked(request):
