@@ -1535,6 +1535,9 @@ def LoginPage(request):
             message = "Username or password is incorrect"
             return redirect(reverse('login') + f'?message={message}')
     return render(request, 'ctndrd/login.html', {'message': message})
+
+def csrf_failure(request, message="Don't click the submit button more than once!"):
+    return render(request, 'ctndrd/login.html', {'message':message})
 #-----------------------LOGIN END HERE ------------------------------
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------

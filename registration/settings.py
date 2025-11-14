@@ -108,6 +108,8 @@ DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))#os.getenv('DATABASE_URL'))#
 }
 
+CSRF_FAILURE_VIEW = 'appl.views.csrf_failure'
+
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
