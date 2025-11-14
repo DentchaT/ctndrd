@@ -279,6 +279,15 @@ def bookmarked(request):
             order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
             order.save()
             return redirect('bookmarked')
+    
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+        paginator = Paginator(posts, 5)
+        page_number = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        return JsonResponse({
+            'posts': [{'html': render_to_string('post.html', {'post': post})} for post in page_obj.object_list],
+            'has_next': page_obj.has_next(),
+        })
         
     return render(request, 'ctndrd/bookmarked.html',context=mydict)
 
@@ -358,6 +367,15 @@ def my_post(request):
             order=Order.objects.create(product=product,buyer=buyer,telephone=telephone,price=price)
             order.save()
             return redirect('my_post')
+        
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest': 
+        paginator = Paginator(posts, 5)
+        page_number = request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        return JsonResponse({
+            'posts': [{'html': render_to_string('post.html', {'post': post})} for post in page_obj.object_list],
+            'has_next': page_obj.has_next(),
+        })
 
     return render(request, 'ctndrd/my_posts.html', context=mydict)
 

@@ -126,77 +126,104 @@
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    //for file input in post
-    const fileInputs = document.querySelectorAll('input[name="media"]');
-    fileInputs.forEach((fileInput) => {
-        const parent = fileInput.parentNode;
-        const image = parent.querySelector('img');
-        image.addEventListener('click', () => {
-            fileInput.click();
-        });
-    });
-
-    //for post like
-    $(document).ready(function() {
-        $('.like-btn').click(function(event) {
-            event.preventDefault();
-            var $button = $(this); // Store $(this)
-            var post_id = $button.data('post-id');
-            var $icon = $('#like-icon-' + post_id);
-            $.ajax({
-                type: 'POST',
-                url: '{% url "post_like" 0 %}'.replace('0', post_id),
-                data: {
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function(response) {
-                    if (response.liked) {
-                        $icon.removeClass('bx-heart').addClass('bxs-heart').css('color', 'red').hide().fadeIn(200);
-                    } else {
-                        $icon.removeClass('bxs-heart').addClass('bx-heart').css('color', '#050a30').hide().fadeIn(200);
-                    }
-                    // Update like count display
-                    $button.closest('.post').find('.likes-count span').text(response.like_count);
-                }
+    <script>
+        //for file input in post
+        const fileInputs = document.querySelectorAll('input[name="media"]');
+        fileInputs.forEach((fileInput) => {
+            const parent = fileInput.parentNode;
+            const image = parent.querySelector('img');
+            image.addEventListener('click', () => {
+                fileInput.click();
             });
         });
-    });
     
-    //--------------------- for bookmark---------------
-    $(document).ready(function() {
-        $('.save-post').click(function(event) {
-            event.preventDefault();
-            var post_id = $(this).data('post-id');
-            var bookmarkIcon = $(this).find('i');
-            $.ajax({
-                type: 'POST',
-                url: '{% url "post_save" 0 %}'.replace('0', post_id),
-                data: {
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function(response) {
-                    if (response.saved) {
-                        bookmarkIcon.removeClass('bx-bookmark-alt').addClass('bxs-bookmark-alt').closest('p').css('color', '#050a30');
-                    } else {
-                        bookmarkIcon.removeClass('bxs-bookmark-alt').addClass('bx-bookmark-alt').closest('p').css('color', '');
+        //for post like
+        $(document).ready(function() {
+            $('.like-btn').click(function(event) {
+                event.preventDefault();
+                var $button = $(this); // Store $(this)
+                var post_id = $button.data('post-id');
+                var $icon = $('#like-icon-' + post_id);
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "post_like" 0 %}'.replace('0', post_id),
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.liked) {
+                            $icon.removeClass('bx-heart').addClass('bxs-heart').css('color', 'red').hide().fadeIn(200);
+                        } else {
+                            $icon.removeClass('bxs-heart').addClass('bx-heart').css('color', '#050a30').hide().fadeIn(200);
+                        }
+                        // Update like count display
+                        $button.closest('.post').find('.likes-count span').text(response.like_count);
                     }
-                }
+                });
             });
         });
-    });
-    //for video pause when it goes out of view
-    const video = document.getElementById('post-video');
-
-    document.addEventListener('scroll', () => {
-    const rect = video.getBoundingClientRect();
-    if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        video.pause();
-    } else {
-        video.play();
-    }
-    });
-
-</script>
+    
+        //--------------------- for bookmark---------------
+        $(document).ready(function() {
+            $('.save-post').click(function(event) {
+                event.preventDefault();
+                var post_id = $(this).data('post-id');
+                var bookmarkIcon = $(this).find('i');
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "post_save" 0 %}'.replace('0', post_id),
+                    data: {
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.saved) {
+                            bookmarkIcon.removeClass('bx-bookmark-alt').addClass('bxs-bookmark-alt').closest('p').css('color', '#050a30');
+                        } else {
+                            bookmarkIcon.removeClass('bxs-bookmark-alt').addClass('bx-bookmark-alt').closest('p').css('color', '');
+                        }
+                    }
+                });
+            });
+        });
+    
+        //for video pause when it goes out of view
+        const video = document.getElementById('post-video');
+        document.addEventListener('scroll', () => {
+            const rect = video.getBoundingClientRect();
+            if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                video.pause();
+            } else {
+                video.play();
+            }
+        });
+    
+        // Lazy loading
+        let page = 1;
+        let loading = false;
+    
+        window.addEventListener('scroll', () => {
+            if (window, document.body.offsetHeight - 100 && !loading) {
+                loading = true;
+                loadMorePosts();
+            }
+        });
+    
+        function loadMorePosts() {
+            fetch(`/posts/?page=${page + 1}`)
+                .then(response => response.json())
+                .then(data => {
+                    const postContainer = document.getElementById('post-container');
+                    data.posts.forEach(post => {
+                        const postElement = document.createElement('div');
+                        postElement.className = 'post';
+                        postElement.innerHTML = post.html;
+                        postContainer.appendChild(postElement);
+                    });
+                    page++;
+                    loading = false;
+                })
+                .catch(error => console.error(error));
+        }
+    </script>
     
 {% endblock %}
