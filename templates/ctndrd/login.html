@@ -167,6 +167,9 @@
             {% if message %}
                 <p style="color: red;" class="messagex">{{message}}......!</p>
             {% endif %}
+            {% if reason %}
+                <p style="color: red;" class="messagex">{{reason}}</p>
+            {% endif %}
             <input class="input_text" required type="text" placeholder="Username" name="username">
             <input class="input_text" required type="password" placeholder="Password" name="pass">
             <div class="check_container">
