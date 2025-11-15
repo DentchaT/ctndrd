@@ -785,6 +785,7 @@ def chat(request, pk):
             return redirect('chat', pk=follower.id)
     return render(request, 'ctndrd/chat.html', context=mydict)
 
+from gtts import gTTS
 @login_required
 def music(request):
     query=request.GET.get('q')
@@ -838,6 +839,19 @@ def music(request):
     }
 
     if request.method == 'POST':
+        #For converting text to audio
+        if 'tts_submit' in request.POST:
+            text_to_convert = request.POST.get('text', '')
+            if text_to_convert:
+                tts = gTTS(text=text_to_convert, lang='en')
+                audio_file_path = "temp_audio.mp3"  # You might want a more robust file naming
+                tts.save(audio_file_path)
+
+                with open(audio_file_path, 'rb') as f:
+                    response = HttpResponse(f.read(), content_type='audio/mpeg')
+                    response['Content-Disposition'] = 'attachment; filename="speech.mp3"'
+                os.remove(audio_file_path)  # Clean up the temporary file
+                return response
         #For order submit of featured products in the right  
         if 'order_submit' in request.POST:
             product_id=request.POST.get('product_id')
@@ -852,6 +866,7 @@ def music(request):
         
     return render(request, 'ctndrd/music.html', context=mydict)
 
+@login_required
 def hostel(request):
     profile=Profile.objects.get(user=request.user)
     query1=request.GET.get('s')
