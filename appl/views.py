@@ -866,7 +866,6 @@ def music(request):
         
     return render(request, 'ctndrd/music.html', context=mydict)
 
-@login_required
 def hostel(request):
     profile=Profile.objects.get(user=request.user)
     query1=request.GET.get('s')
