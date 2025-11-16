@@ -844,11 +844,10 @@ def music(request):
         #For converting text to audio
         if 'tts_submit' in request.POST:
             text = request.POST.get('text_to_convert')
-            # Generate audio in-memory
             tts = gTTS(text=text, lang='en')
             audio_io = BytesIO()
             tts.write_to_fp(audio_io)
-            audio_io.seek(0) # Important: move the pointer to the start
+            audio_io.seek(0)
             audio_base64 = base64.b64encode(audio_io.read()).decode('utf-8')
             return render(request, 'ctndrd/music.html', {'audio_base64':audio_base64})
 
