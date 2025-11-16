@@ -844,16 +844,19 @@ def music(request):
         if 'tts_submit' in request.POST:
             text = request.POST.get('text_to_convert', 'converted by standard.com')
             if text:
-                # Generate audio in-memory
-                tts = gTTS(text, lang='en')
-                audio_io = BytesIO()
-                tts.write_to_fp(audio_io)
-                audio_io.seek(0) # Important: move the pointer to the start
+                try:
+                    # Generate audio in-memory
+                    tts = gTTS(text, lang='en')
+                    audio_io = BytesIO()
+                    tts.write_to_fp(audio_io)
+                    audio_io.seek(0) # Important: move the pointer to the start
 
-                # Return the audio as an HttpResponse with the correct MIME type
-                response = HttpResponse(audio_io.read(), content_type='audio/mpeg')
-                response['Content-Disposition'] = 'inline; filename="speech.mp3"'
-                return response
+                    # Return the audio as an HttpResponse with the correct MIME type
+                    response = HttpResponse(audio_io.read(), content_type='audio/mpeg')
+                    response['Content-Disposition'] = 'inline; filename="speech.mp3"'
+                    return response
+                except Exception as e:
+                    return HttpResponse(f"Error generating audio:{str(e)}")
 
         #For order submit of featured products in the right  
         if 'order_submit' in request.POST:
