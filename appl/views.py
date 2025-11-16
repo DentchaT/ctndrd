@@ -787,6 +787,7 @@ def chat(request, pk):
 
 from gtts import gTTS
 from io import BytesIO
+import base64
 @login_required
 def music(request):
     query=request.GET.get('q')
@@ -842,24 +843,17 @@ def music(request):
     if request.method == 'POST':
         #For converting text to audio
         if 'tts_submit' in request.POST:
-            text = request.POST.get('text_to_convert', 'converted by standard.com')
-            if text:
-                try:
-                    # Generate audio in-memory
-                    tts = gTTS(text, lang='en')
-                    audio_io = BytesIO()
-                    tts.write_to_fp(audio_io)
-                    audio_io.seek(0) # Important: move the pointer to the start
-
-                    # Return the audio as an HttpResponse with the correct MIME type
-                    response = HttpResponse(audio_io.read(), content_type='audio/mpeg')
-                    response['Content-Disposition'] = 'inline; filename="speech.mp3"'
-                    return response
-                except Exception as e:
-                    return HttpResponse(f"Error generating audio:{str(e)}")
+            text = request.POST.get('text_to_convert')
+            # Generate audio in-memory
+            tts = gTTS(text=text, lang='en')
+            audio_io = BytesIO()
+            tts.write_to_fp(audio_io)
+            audio_io.seek(0) # Important: move the pointer to the start
+            audio_base64 = base64.b64encode(audio_io.read()).decode('utf-8')
+            return render(request, 'ctndrd/music.html', {'audio_base64':audio_base64})
 
         #For order submit of featured products in the right  
-        if 'order_submit' in request.POST:
+        elif 'order_submit' in request.POST:
             product_id=request.POST.get('product_id')
             product=Product.objects.get(id=product_id)
             buyer=request.user
