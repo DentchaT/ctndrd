@@ -786,6 +786,7 @@ def chat(request, pk):
     return render(request, 'ctndrd/chat.html', context=mydict)
 
 from gtts import gTTS
+from io import BytesIO
 @login_required
 def music(request):
     query=request.GET.get('q')
@@ -841,17 +842,19 @@ def music(request):
     if request.method == 'POST':
         #For converting text to audio
         if 'tts_submit' in request.POST:
-            text_to_convert = request.POST.get('text', '')
-            if text_to_convert:
-                tts = gTTS(text=text_to_convert, lang='en')
-                audio_file_path = "temp_audio.mp3"  # You might want a more robust file naming
-                tts.save(audio_file_path)
+            text = request.POST.get('text_to_convert', 'converted by standard.com')
+            if text:
+                # Generate audio in-memory
+                tts = gTTS(text, lang='en')
+                audio_io = BytesIO()
+                tts.write_to_fp(audio_io)
+                audio_io.seek(0) # Important: move the pointer to the start
 
-                with open(audio_file_path, 'rb') as f:
-                    response = HttpResponse(f.read(), content_type='audio/mpeg')
-                    response['Content-Disposition'] = 'attachment; filename="speech.mp3"'
-                os.remove(audio_file_path)  # Clean up the temporary file
+                # Return the audio as an HttpResponse with the correct MIME type
+                response = HttpResponse(audio_io.read(), content_type='audio/mpeg')
+                response['Content-Disposition'] = 'inline; filename="speech.mp3"'
                 return response
+
         #For order submit of featured products in the right  
         if 'order_submit' in request.POST:
             product_id=request.POST.get('product_id')

@@ -31,19 +31,19 @@
                 </div>
                 <div class="music-body" style="background-color: #f4f6fc;">
                     <div class="create-post" style="margin-top: 10px;">
-                        <form id="formx" method="post" enctype="multipart/form-data" action="">
-                        {% csrf_token %}
+                        <form id="formxc" method="post" enctype="multipart/form-data" action="">
+                            {% csrf_token %}
                             <div class="create-post-form">
                                 <div class="input-img">
-                                    <textarea name="text" required rows="1" placeholder="Enter text to be converted here..." id="create-post"></textarea>
+                                    <textarea name="text_to_convert" required rows="1" placeholder="Enter text to be converted here..." id="create-post"></textarea>
                                 </div>
-                                <button style="background-color: green; color: #fff;" type="submit" form="formx" name="tts_submit">Convert</button>
+                                <button style="background-color: green; color: #fff;" type="submit" form="formxc" name="tts_submit">Convert</button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </div><br>          
-
+            </div><br>
+             
             <div class="music-container">
                 <div class="music-title">
                     <h4>RECENTLY ADDED SONGS</h4>
