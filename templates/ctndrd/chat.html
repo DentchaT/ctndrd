@@ -70,18 +70,18 @@
                     {% endfor %}
                 {% endif %} 
             </div>
-            <form method="post" enctype="multipart/form-data" class="chat-form">
-            {% csrf_token %}
+            <form class="chat-form">
+                {% csrf_token %}
                 <div class="container-input-stuffs">
                     <div class="files-logo-cont">
                         <img name="image" src="{% static 'img/paper-clip.svg' %}" alt="">
                         <input type="file" name="image" style="display: none;">
                     </div>
                     <div class="group-inp">
-                        <input type="hidden"  name="receiver_id" value="{{follower.id}}">
-                        <textarea id="chat-input" placeholder="Enter message here" required name="message" minlength="1" maxlength="10000"></textarea>
+                        <input type="hidden" name="receiver_id" value="{{follower.id}}">
+                        <textarea id="chat-input" placeholder="Enter message here" name="message" minlength="1" maxlength="10000"></textarea>
                     </div>
-                    <button  class="submit-msg-btn">
+                    <button class="submit-msg-btn" type="button">
                         <img src="{% static 'img/send.svg' %}" alt="">
                     </button>
                 </div>
@@ -143,16 +143,17 @@
             console.error('Chat socket closed unexpectedly');
         };
     
-        document.querySelector('.chat-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        document.querySelector('.submit-msg-btn').addEventListener('click', function() {
             const messageInputDom = document.querySelector('#chat-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message,
-                'sender': senderId,
-                'receiver': receiverId,
-            }));
-            messageInputDom.value = '';
+            const message = messageInputDom.value.trim();
+            if (message) {
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'sender': senderId,
+                    'receiver': receiverId,
+                }));
+                messageInputDom.value = '';
+            }
         });
     </script>
     
