@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'channels',
     #'cloudinary_storage',#cloudinary_cloud_storage
     #'cloudinary',#cloudinary_cloud_storage
     'whitenoise.runserver_nostatic',
@@ -86,6 +87,14 @@ TEMPLATES = [
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
 WSGI_APPLICATION = 'registration.wsgi.application'
+
+ASGI_APPLICATION = 'registration.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer'
+    }
+}
 #-------------------------------------------------------------------------
 #---------------------code by Dr.James Atwiine----------------------------
 #-------------------------------------------------------------------------
