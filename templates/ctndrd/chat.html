@@ -114,7 +114,7 @@
         const receiverId = '{{ follower.id }}';
     
         const chatSocket = new WebSocket(
-            'ws://' + window.location.host +
+            'wss://' + window.location.host +
             '/ws/chat/' + roomName + '/'
         );
     
