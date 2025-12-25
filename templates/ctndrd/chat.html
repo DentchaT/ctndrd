@@ -70,18 +70,18 @@
                     {% endfor %}
                 {% endif %} 
             </div>
-            <form class="chat-form">
-                {% csrf_token %}
+            <form method="post" enctype="multipart/form-data" class="chat-form">
+            {% csrf_token %}
                 <div class="container-input-stuffs">
                     <div class="files-logo-cont">
                         <img name="image" src="{% static 'img/paper-clip.svg' %}" alt="">
                         <input type="file" name="image" style="display: none;">
                     </div>
                     <div class="group-inp">
-                        <input type="hidden" name="receiver_id" value="{{follower.id}}">
-                        <textarea id="chat-input" placeholder="Enter message here" name="message" minlength="1" maxlength="10000"></textarea>
+                        <input type="hidden"  name="receiver_id" value="{{follower.id}}">
+                        <textarea id="chat-input" placeholder="Enter message here" required name="message" minlength="1" maxlength="10000"></textarea>
                     </div>
-                    <button class="submit-msg-btn" type="button">
+                    <button  class="submit-msg-btn">
                         <img src="{% static 'img/send.svg' %}" alt="">
                     </button>
                 </div>
@@ -98,63 +98,16 @@
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        //for file input in chat
-        const images = document.querySelectorAll('img[src*="paper-clip.svg"]');
-        images.forEach((image) => {
-            image.addEventListener('click', () => {
-                const fileInput = image.nextElementSibling;
-                fileInput.click();
-            });
+<script>
+    //for file input in chat
+    const images = document.querySelectorAll('img[src*="paper-clip.svg"]');
+
+    images.forEach((image) => {
+        image.addEventListener('click', () => {
+            const fileInput = image.nextElementSibling;
+            fileInput.click();
         });
-    
-        // REAL TIME CHAT
-        const roomName = '{{ follower.id }}';
-        const senderId = '{{ request.user.id }}';
-        const receiverId = '{{ follower.id }}';
-    
-        const chatSocket = new WebSocket(
-            'wss://' + window.location.host +
-            '/ws/chat/' + roomName + '/'
-        );
-    
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            const message = data.message;
-            const sender = data.sender;
-            const receiver = data.receiver;
-    
-            // Update the chat window with the new message
-            const chatWindow = document.querySelector('.conversationary');
-            const messageElement = document.createElement('div');
-            if (sender == senderId) {
-                messageElement.className = 'talkright';
-            } else {
-                messageElement.className = 'talkleft';
-            }
-            messageElement.innerHTML = `
-                <p>${message}</p>
-            `;
-            chatWindow.appendChild(messageElement);
-            chatWindow.scrollTop = chatWindow.scrollHeight;
-        };
-    
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-    
-        document.querySelector('.submit-msg-btn').addEventListener('click', function() {
-            const messageInputDom = document.querySelector('#chat-input');
-            const message = messageInputDom.value.trim();
-            if (message) {
-                chatSocket.send(JSON.stringify({
-                    'message': message,
-                    'sender': senderId,
-                    'receiver': receiverId,
-                }));
-                messageInputDom.value = '';
-            }
-        });
-    </script>
+    });
+</script>
     
 {% endblock %}
